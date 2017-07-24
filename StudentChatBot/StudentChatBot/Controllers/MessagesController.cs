@@ -16,14 +16,19 @@ namespace StudentChatBot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            // checking if the user's message is indeed a message (as opposed to a command to delete, update, etc a record)
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                // a new message triggers the root dialog, let's go there next...
+                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());    
             }
             else
             {
+                // handle delete, update, etc for a record
                 HandleSystemMessage(activity);
             }
+            
+            // this handles the status code in the bottom right corner of the chat emulator
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
