@@ -15,7 +15,7 @@ namespace StudentChatBot.Dialogs
 
         private const string PathwayOption = "Pathway Resources";
 
-        private const string JoshSpellCheckOption = "Josh White Board Emulator";
+        private const string JoshWhiteBoardOption = "Josh White Board Emulator";
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -27,7 +27,7 @@ namespace StudentChatBot.Dialogs
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { TechnicalOption, PathwayOption, JoshSpellCheckOption }, "Are you looking to search for Technical info, Pathway resources, or use the Josh Tulchoski Spell Check Emulator?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { TechnicalOption, PathwayOption, JoshWhiteBoardOption }, "Are you looking to search for Technical info, Pathway resources, or use the Josh Tulchoski Spell Check Emulator?", "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -46,9 +46,9 @@ namespace StudentChatBot.Dialogs
                         context.Call(new PathwayDialog(), this.ResumeAfterOptionDialog);
                         break;
 
-                    //case JoshSpellCheckOption:
-                    //    context.Call(new JoshSpellCheckDialog(), this.ResumeAfterOptionDialog);
-                    //    break;
+                    case JoshWhiteBoardOption:
+                        context.Call(new JoshWhiteBoardDialog(), this.ResumeAfterOptionDialog);
+                        break;
 
                 }
             }
