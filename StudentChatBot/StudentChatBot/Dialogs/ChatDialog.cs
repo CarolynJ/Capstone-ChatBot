@@ -26,6 +26,7 @@ namespace StudentChatBot.Dialogs
             var chat = "Let's talk buddy!";
 
             await context.PostAsync(chat);
+            context.Done(true);
         }
 
     }
