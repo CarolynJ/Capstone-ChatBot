@@ -24,10 +24,10 @@ namespace StudentChatBot.Dialogs
             return Task.CompletedTask;
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
 
-            var activity = await result as Activity;
+            var activity = await result;
 
             // the user's message is sent back to us in the activity object (aka IAwaitable result)
             // we save the text of the message as a string all in lowercase to a var
@@ -52,7 +52,7 @@ namespace StudentChatBot.Dialogs
             }
 
             // wait 
-            context.Wait(MessageReceivedAsync);
+            //context.Wait(MessageReceivedAsync);
         }
 
         private async Task ResumeAfterGreetingDialog(IDialogContext context, IAwaitable<object> result)

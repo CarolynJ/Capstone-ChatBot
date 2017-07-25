@@ -11,11 +11,11 @@ namespace StudentChatBot.Dialogs
     [Serializable]
     public class ChatDialog : IDialog<object>
     {
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
+            await context.PostAsync("Welcome to chat!");
 
-            return Task.CompletedTask;
+            context.Wait(MessageReceivedAsync);
 
         }
 
