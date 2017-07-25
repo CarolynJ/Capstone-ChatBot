@@ -22,9 +22,9 @@ namespace StudentChatBot.Dialogs
         {
             var activity = await result as Activity;
 
-            var currentTimeOfDay = DateTime.Now.Hour;
+            var currentTimeOfDay = activity.LocalTimestamp.Value.Hour;
             var greeting = "";
-
+            
             if (currentTimeOfDay >= 0 && currentTimeOfDay < 5)
             {
                 greeting = "What are you doing up at this hour??";
