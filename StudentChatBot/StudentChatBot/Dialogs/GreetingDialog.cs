@@ -68,6 +68,8 @@ namespace StudentChatBot.Dialogs
 
             await context.PostAsync(greeting);
 
+            context.Done(true);
+
             //context.Wait(MessageReceivedAsync);
         }
     }

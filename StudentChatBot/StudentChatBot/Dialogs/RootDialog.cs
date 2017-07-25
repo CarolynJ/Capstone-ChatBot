@@ -14,6 +14,8 @@ namespace StudentChatBot.Dialogs
 
         private const string ChatOption = "Chat";
 
+        private const string HelpOption = "Help";
+
         public Task StartAsync(IDialogContext context)
         {
             // context is an object of all chat information specific to this instance of the chat
@@ -38,6 +40,7 @@ namespace StudentChatBot.Dialogs
             {
                 // take this context and add a new dialog (the greeting dialog). when it's done, call the ResumeAfterGreetingDialog method to continue
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
+
             }
             else
             {
@@ -66,7 +69,7 @@ namespace StudentChatBot.Dialogs
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { SearchOption, ChatOption }, "Are you looking to search for info or just chat?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { SearchOption, ChatOption, HelpOption }, "Are you looking to search for info, get help, or just chat?", "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -84,6 +87,11 @@ namespace StudentChatBot.Dialogs
                     case ChatOption:
                         context.Call(new ChatDialog(), this.ResumeAfterOptionDialog);
                         break;
+
+                    case HelpOption:
+                        context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
                 }
             }
             catch (TooManyAttemptsException ex)
