@@ -4,17 +4,22 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Threading;
 using System.Collections.Generic;
+using StudentChatBot.DAL;
 
 namespace StudentChatBot.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
     {
+        private IMotivationDAL motivationDal;
+
         private const string SearchOption = "Search";
 
         private const string ChatOption = "Chat";
 
         private const string HelpOption = "Help";
+
+        private const string MotivationOption = "Motivation";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -61,7 +66,7 @@ namespace StudentChatBot.Dialogs
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { SearchOption, ChatOption, HelpOption }, "Are you looking to search for info, get help, or just chat?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { SearchOption, ChatOption, HelpOption, MotivationOption }, "Are you looking to search for info, get help, chat, or get motivation?", "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -83,6 +88,11 @@ namespace StudentChatBot.Dialogs
                     case HelpOption:
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
                         break;
+
+                    case MotivationOption:
+                        context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
 
                 }
             }
