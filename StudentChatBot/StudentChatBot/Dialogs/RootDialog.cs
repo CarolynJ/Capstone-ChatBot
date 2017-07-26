@@ -4,16 +4,20 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Threading;
 using System.Collections.Generic;
+using StudentChatBot.DAL;
 
 namespace StudentChatBot.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
     {
+
         private const string SearchOption = "Search";
         private const string ChatOption = "Chat";
         private const string HelpOption = "Help";
         private const string ExitOption = "Exit";
+
+        private const string MotivationOption = "Motivation";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -78,6 +82,10 @@ namespace StudentChatBot.Dialogs
 
                     case HelpOption:
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
+                    case MotivationOption:
+                        context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
                         break;
 
                     case ExitOption:

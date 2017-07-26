@@ -4,12 +4,18 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using StudentChatBot.DAL;
 
 namespace StudentChatBot
 {
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        private IMotivationDAL instance;
+        public MessagesController(IMotivationDAL instance)
+        {
+            this.instance = instance;
+        }
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
