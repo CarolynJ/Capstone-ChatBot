@@ -39,8 +39,9 @@ namespace StudentChatBot.Dialogs
             if (userInput == "hello" || userInput == "hey" || userInput == "hi")
             {
                 // take this context and add a new dialog (the greeting dialog). when it's done, call the ResumeAfterGreetingDialog method to continue
-                await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
 
+                context.Call(new GreetingDialog(), this.ResumeAfterGreetingDialog);
+                
             }
             else
             {
@@ -65,7 +66,7 @@ namespace StudentChatBot.Dialogs
             //await context.PostAsync("done with the greeting command");
             context.Wait(this.MessageReceivedAsync);
             Thread.Sleep(1000);
-            await context.PostAsync("What is your name?");
+            await context.PostAsync("Hello, What is your name?");
 
             // working on getting a response from a user
             //var activity = PromptDialog.Text
