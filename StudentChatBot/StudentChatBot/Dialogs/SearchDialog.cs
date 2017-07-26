@@ -15,7 +15,7 @@ namespace StudentChatBot.Dialogs
 
         private const string PathwayOption = "Pathway Resources";
 
-        private const string JoshWhiteBoardOption = "Josh White Board Emulator";
+        private const string JoshWhiteBoardOption = "Josh White Board Simulator";
 
         public async Task StartAsync(IDialogContext context)
         {
