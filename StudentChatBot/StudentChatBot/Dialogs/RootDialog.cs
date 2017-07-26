@@ -63,8 +63,15 @@ namespace StudentChatBot.Dialogs
             //var userInput = await result;
 
             //await context.PostAsync("done with the greeting command");
+            context.Wait(this.MessageReceivedAsync);
+            Thread.Sleep(1000);
+            await context.PostAsync("What is your name?");
 
-            await context.PostAsync("So what can I help you with today?");
+            // working on getting a response from a user
+            //var activity = PromptDialog.Text
+            
+            //await context.Forward(new NameResponseDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
+
             context.Done(true);
         }
 
