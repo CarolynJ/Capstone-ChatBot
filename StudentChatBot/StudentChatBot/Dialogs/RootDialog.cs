@@ -62,9 +62,10 @@ namespace StudentChatBot.Dialogs
         {
             //var userInput = await result;
 
-            await context.PostAsync("done with the greeting command");
+            //await context.PostAsync("done with the greeting command");
 
-            context.Wait(this.MessageReceivedAsync);
+            await context.PostAsync("So what can I help you with today?");
+            context.Done(true);
         }
 
         private void ShowOptions(IDialogContext context)
