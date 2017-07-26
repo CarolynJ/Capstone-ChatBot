@@ -12,22 +12,24 @@ namespace StudentChatBot.Dialogs
     public class SearchDialog : IDialog<object>
     {
         private const string TechnicalOption = "Techincal Questions";
-
         private const string PathwayOption = "Pathway Resources";
-
         private const string JoshWhiteBoardOption = "Josh White Board Simulator";
+        private const string ExitOption = "Go Back to Previous Menu";
 
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("Welcome to Search!");
 
             this.ShowOptions(context);
-
         }
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { TechnicalOption, PathwayOption, JoshWhiteBoardOption }, "Are you looking to search for Technical info, Pathway resources, or use the Josh Tulchoski Spell Check Emulator?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
+                { TechnicalOption, PathwayOption, JoshWhiteBoardOption, ExitOption }, 
+                "Do any of these options suit your fancy?", 
+                "Hmm, I didn't understand that, try again.", 
+                2);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -50,6 +52,9 @@ namespace StudentChatBot.Dialogs
                         context.Call(new JoshWhiteBoardDialog(), this.ResumeAfterOptionDialog);
                         break;
 
+                    case ExitOption:
+                        context.Done(true);
+                        break;
                 }
             }
             catch (TooManyAttemptsException ex)

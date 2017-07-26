@@ -17,12 +17,14 @@ namespace StudentChatBot.Dialogs
 
             return Task.CompletedTask;
         }
-
+        
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
+            await context.PostAsync("I've been called!");
             var activity = await result as Activity;
 
             var currentTimeOfDay = activity.LocalTimestamp.Value.Hour;
+
             var greeting = "";
             
             if (currentTimeOfDay >= 0 && currentTimeOfDay < 5)
@@ -49,7 +51,7 @@ namespace StudentChatBot.Dialogs
 
                 if (randomResult == 1)
                 {
-                    greeting += " So what have you gotten done today, huh?";
+                    greeting += " Hope you've been productive, or at least almost productive.";
                 }
             }
             else if (currentTimeOfDay >= 17)
@@ -68,7 +70,7 @@ namespace StudentChatBot.Dialogs
 
             await context.PostAsync(greeting);
 
-            context.Done(true);
+            //context.Done(true);
         }
 
     }
