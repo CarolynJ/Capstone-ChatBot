@@ -13,8 +13,6 @@ namespace StudentChatBot.Dialogs
     {
         public Task StartAsync(IDialogContext context)
         {
-            context.PostAsync("Say that again buddy I couldn't hear you!");
-
             context.Wait(MessageReceivedAsync);
 
             return Task.CompletedTask;

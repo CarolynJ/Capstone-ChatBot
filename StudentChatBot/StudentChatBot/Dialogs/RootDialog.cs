@@ -18,11 +18,8 @@ namespace StudentChatBot.Dialogs
 
         public Task StartAsync(IDialogContext context)
         {
-            // context is an object of all chat information specific to this instance of the chat
-            // based on THIS context, we call the MessageReceivedAsync method, which handles logic/chat functionality
             context.Wait(MessageReceivedAsync);
 
-            // when that's all done, let's tell the controller that we're done. this task object includes info about success/failure/etc
             return Task.CompletedTask;
         }
 
@@ -31,48 +28,34 @@ namespace StudentChatBot.Dialogs
 
             var activity = await result;
 
-            // the user's message is sent back to us in the activity object (aka IAwaitable result)
-            // we save the text of the message as a string all in lowercase to a var
             var userInput = activity.Text.ToString().ToLower();
 
-            // if the user's message contains blah blah blah
             if (userInput == "hello" || userInput == "hey" || userInput == "hi")
             {
-                // take this context and add a new dialog (the greeting dialog). when it's done, call the ResumeAfterGreetingDialog method to continue
+                //context.Call(new GreetingDialog(), this.ResumeAfterGreetingDialog);
+                await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
 
-                context.Call(new GreetingDialog(), this.ResumeAfterGreetingDialog);
-                
             }
             else
             {
                 this.ShowOptions(context);
-
-                // calculate something for us to return
-                //int length = (activity.Text ?? string.Empty).Length;
-
-                // return our reply to the user
-                //await context.PostAsync($"You sent {activity.Text} which was {length} characters");
-
+                
             }
 
-            // wait 
             //context.Wait(MessageReceivedAsync);
+        }
+
+        private void GiveGreeting(IDialogContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task ResumeAfterGreetingDialog(IDialogContext context, IAwaitable<object> result)
         {
-            //var userInput = await result;
-
-            //await context.PostAsync("done with the greeting command");
             context.Wait(this.MessageReceivedAsync);
             Thread.Sleep(1000);
             await context.PostAsync("Hello, What is your name?");
-
-            // working on getting a response from a user
-            //var activity = PromptDialog.Text
             
-            //await context.Forward(new NameResponseDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
-
             context.Done(true);
         }
 
