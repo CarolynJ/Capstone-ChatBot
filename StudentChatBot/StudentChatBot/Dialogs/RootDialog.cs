@@ -11,10 +11,9 @@ namespace StudentChatBot.Dialogs
     public class RootDialog : IDialog<object>
     {
         private const string SearchOption = "Search";
-
         private const string ChatOption = "Chat";
-
         private const string HelpOption = "Help";
+        private const string ExitOption = "Exit";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -25,43 +24,40 @@ namespace StudentChatBot.Dialogs
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-
             var activity = await result;
 
             var userInput = activity.Text.ToString().ToLower();
 
             if (userInput == "hello" || userInput == "hey" || userInput == "hi")
             {
-                //context.Call(new GreetingDialog(), this.ResumeAfterGreetingDialog);
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
-
+            }
+            else if (userInput.Contains("help"))
+            {
+                this.ShowOptions(context);
             }
             else
             {
-                this.ShowOptions(context);
-                
+                await context.PostAsync("Sorry, I didn't understand that command.");
+                context.Done(true);
             }
-
-            //context.Wait(MessageReceivedAsync);
-        }
-
-        private void GiveGreeting(IDialogContext context)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task ResumeAfterGreetingDialog(IDialogContext context, IAwaitable<object> result)
         {
-            context.Wait(this.MessageReceivedAsync);
             Thread.Sleep(1000);
-            await context.PostAsync("Hello, What is your name?");
-            
+            await context.PostAsync("So, what can I help you with today?");
+
             context.Done(true);
         }
 
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { SearchOption, ChatOption, HelpOption }, "Are you looking to search for info, get help, or just chat?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
+                { SearchOption, ChatOption, HelpOption, ExitOption }, 
+                "Are you looking to search for info, get help, or just chat?", 
+                "Hmmm, I didn't understand that, try again...", 
+                2);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -84,11 +80,17 @@ namespace StudentChatBot.Dialogs
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
                         break;
 
+                    case ExitOption:
+                        await context.PostAsync("Alrighty, well is there anything else I can help you with?");
+                        context.Done(true);
+                        break;
                 }
+
+                context.Done(true);
             }
             catch (TooManyAttemptsException ex)
             {
-                await context.PostAsync($"Ooops! Too many attemps :(. But don't worry, I'm handling that exception and you can try again!");
+                await context.PostAsync("Ooops! Too many attemps :(. But don't worry, I'm handling that exception and you can try again!");
 
                 context.Wait(this.MessageReceivedAsync);
             }
@@ -99,6 +101,9 @@ namespace StudentChatBot.Dialogs
             try
             {
                 var message = await result;
+
+                await context.PostAsync("Anything else I can help you with?");
+                context.Done(true);
             }
             catch (Exception ex)
             {

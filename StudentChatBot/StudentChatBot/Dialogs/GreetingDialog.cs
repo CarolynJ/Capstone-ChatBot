@@ -49,7 +49,7 @@ namespace StudentChatBot.Dialogs
 
                 if (randomResult == 1)
                 {
-                    greeting += " So what have you gotten done today, huh?";
+                    greeting += " Hope you've been productive, or at least almost productive.";
                 }
             }
             else if (currentTimeOfDay >= 17)
