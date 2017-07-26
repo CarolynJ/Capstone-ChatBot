@@ -20,10 +20,7 @@ namespace StudentChatBot.Dialogs
         
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync("I've been called!");
-            var activity = await result as Activity;
-
-            var currentTimeOfDay = activity.LocalTimestamp.Value.Hour;
+            var currentTimeOfDay = DateTime.UtcNow.Hour;
 
             var greeting = "";
             
@@ -67,10 +64,7 @@ namespace StudentChatBot.Dialogs
                 }
             }
 
-
             await context.PostAsync(greeting);
-
-            //context.Done(true);
         }
 
     }
