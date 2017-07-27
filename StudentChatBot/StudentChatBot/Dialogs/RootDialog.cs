@@ -48,11 +48,25 @@ namespace StudentChatBot.Dialogs
 
         private async Task ResumeAfterGreetingDialog(IDialogContext context, IAwaitable<object> result)
         {
-            Thread.Sleep(1000);
-            await context.PostAsync("So, what can I help you with today?");
+            context.Call(new NameResponseDialog(),this.ResumeAfterNameResponseDialog);
+            await context.PostAsync("nice to meet you"); // -- text here to test flow
+            //NameResponseDialog name = new NameResponseDialog();
+            //await name.StartAsync(context);
 
             context.Done(true);
         }
+
+        private async Task ResumeAfterNameResponseDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            Thread.Sleep(1000);
+            //var name = context.UserData; -- Can't access the Username here.
+            await context.PostAsync("So, what can I help you with today?");
+  
+         
+            context.Done(true);
+        }
+
+
 
         private void ShowOptions(IDialogContext context)
         {
