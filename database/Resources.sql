@@ -89,11 +89,119 @@ INSERT INTO Resources  VALUES ('Ninject', 'http://www.ninject.org/', 0);
 -- order is important, if adding a new keyword please add to the end --
 -- do not delete a keyword--
 
-Insert into keywords values ('class', 'classes', 'abstract', 'encapsulation', 'inheritance', 'polymorphism', 'abstraction', 'int', 'string', 'tdd', 'test', 'testing', 'testable', 'unit test', 'regression', 'file', 'i/o', 'cli', 'stack', 'heap', 'method', 'overriding', 'virtual', 'overloading', 'clean', 
-'git', 'version', 'bash', 'bitbucket', 'github', 'visual', 'studio', 'ide', 'collection', 'array', 'list', 'dictionary', 'stack', 'queue', 'loop', 'foreach', 'for each', 'for', 'while', 'interface', 'definition', 'using', 'exception', 'expression', 'logic', 'if', 'else', '=', '>', '>=', '==', '===', '<', '<=', 'c#', 'javascript', 
-'sql', 'server', 'mvc', 'mvc5', 'asp.net', '.net', 'model', 'view', 'controller', 'jquery', 'debugging', 'debug', 'bug', 'api', 'json', 'rick', 'astley', 'feeling', 'gonna', 'never', 'give', 'database', 'join', 'inner', 'left', 'right', 'primary', 'foreign', 'key', 'dependency', 'ninject', 'connection', 'dal', 'css', 'html',
-'tag', 'bootstrap', 'responsive', 'validation');    
-
+Insert into keywords values ('class');
+insert into keywords values ('classes');
+insert into keywords values ('abstract');
+insert into keywords values ('encapsulation');
+insert into keywords values ('inheritance');
+insert into keywords values ('polymorphism');
+insert into keywords values ('abstraction');
+insert into keywords values ('int');
+insert into keywords values ('string');
+insert into keywords values ('tdd');
+insert into keywords values ('test');
+insert into keywords values ('testing');
+insert into keywords values ('testable');
+insert into keywords values ('unit test');
+insert into keywords values ('regression');
+insert into keywords values ('file');
+insert into keywords values ('i/o');
+insert into keywords values ('cli');
+insert into keywords values ('stack');
+insert into keywords values ('heap');
+insert into keywords values ('method');
+insert into keywords values ('overriding');
+insert into keywords values ('virtual');
+insert into keywords values ('overloading');
+insert into keywords values ('clean');
+insert into keywords values ('git');
+insert into keywords values ('version');
+insert into keywords values ('bash');
+insert into keywords values ('bitbucket');
+insert into keywords values ('github');
+insert into keywords values ('visual');
+insert into keywords values ('studio');
+insert into keywords values ('ide');
+insert into keywords values ('collection');
+insert into keywords values ('array');
+insert into keywords values ('list');
+insert into keywords values ('dictionary');
+insert into keywords values ('stack');
+insert into keywords values ('queue');
+insert into keywords values ('loop');
+insert into keywords values ('foreach');
+insert into keywords values ('for each');
+insert into keywords values ('for');
+insert into keywords values ('while');
+insert into keywords values ('interface');
+insert into keywords values ('definition');
+insert into keywords values ('using');
+insert into keywords values ('exception');
+insert into keywords values ('expression');
+insert into keywords values ('logic');
+insert into keywords values ('if');
+insert into keywords values ('else');
+insert into keywords values ('=');
+insert into keywords values ('>');
+insert into keywords values ('>=');
+insert into keywords values ('==');
+insert into keywords values ('===');
+insert into keywords values ('<');
+insert into keywords values ('<=');
+insert into keywords values ('c#');
+insert into keywords values ('javascript');
+insert into keywords values ('sql');
+insert into keywords values ('server');
+insert into keywords values ('mvc');
+insert into keywords values ('mvc5');
+insert into keywords values ('asp.net');
+insert into keywords values ('.net');
+insert into keywords values ('model');
+insert into keywords values ('view');
+insert into keywords values ('controller');
+insert into keywords values ('jquery');
+insert into keywords values ('debugging');
+insert into keywords values ('debug');
+insert into keywords values ('bug');
+insert into keywords values ('api');
+insert into keywords values ('json');
+insert into keywords values ('rick');
+insert into keywords values ('astley');
+insert into keywords values ('feeling');
+insert into keywords values ('gonna');
+insert into keywords values ('never');
+insert into keywords values ('give');
+insert into keywords values ('database');
+insert into keywords values ('join');
+insert into keywords values ('inner');
+insert into keywords values ('left');
+insert into keywords values ('right');
+insert into keywords values ('primary');
+insert into keywords values ('foreign');
+insert into keywords values ('key');
+insert into keywords values ('dependency');
+insert into keywords values ('ninject');
+insert into keywords values ('connection');
+insert into keywords values ('dal');
+insert into keywords values ('css');
+insert into keywords values ('html');
+insert into keywords values ('tag');
+insert into keywords values ('bootstrap');
+insert into keywords values ('responsive');
+insert into keywords values ('validation');    
+insert into keywords values ('module 1');
+insert into keywords values ('module one');
+insert into keywords values ('object oriented programming');
+insert into keywords values ('oop');
+insert into keywords values ('fundamentals');
+insert into keywords values ('module 2');
+insert into keywords values ('module two');
+insert into keywords values ('module 3');
+insert into keywords values ('module three');
+insert into keywords values ('module 4');
+insert into keywords values ('module four');
+insert into keywords values ('module 5');
+insert into keywords values ('module five');
 
 
 insert into Motivation 
@@ -110,3 +218,6 @@ values ('Leadership is not about a title or a designation. It is about impact, i
 ('If it''s a good idea, go ahead and do it. It''s much easier to apologize than it is to get permission.', 'Grace Hopper', 'gracehopper.png'),
 ('I always did something I was a little not ready to do. I think that''s how you grow. When there''s that moment of ''Wow, I''m not really sure I can do this,'' and you push through those moments, that''s when you have a breakthrough.', 'Marissa Mayer', 'marissamayer.png'),
 ('I believe in simplicity.  I strive for simple code and straightforward explanations, and while I won''t claim I always succeed, my work is improved by the humble attempt.  The fact that yesterday''s ideas seem imperfect today gives me confidence that I''m still learning.', 'Sandi Metz', 'sandimetz.png')
+
+
+insert into Resource_Keyword values (1, 26), (1, 27), (2, 26), (2, 27), (3, 28), (3, 18), (4, 28), (4, 18);
