@@ -28,7 +28,6 @@ namespace StudentChatBot.Dialogs
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var activity = await result;
-
             var userInput = activity.Text.ToString().ToLower();
 
             if (userInput == "hello" || userInput == "hey" || userInput == "hi")
