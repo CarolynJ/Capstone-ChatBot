@@ -12,11 +12,11 @@ namespace StudentChatBot.Dialogs
     public class RootDialog : IDialog<object>
     {
 
-        private const string SearchOption = "Search";
-        private const string ChatOption = "Chat";
-        private const string HelpOption = "Help";
+        private const string SearchOption = "Search by Keyword";
+        private const string ChatOption = "Chat with Me";
+        private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
-        private const string MotivationOption = "Motivation";
+        private const string MotivationOption = "Get Motivated";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -56,7 +56,7 @@ namespace StudentChatBot.Dialogs
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { SearchOption, ChatOption, HelpOption, MotivationOption, ExitOption }, 
+                { HelpOption, SearchOption, MotivationOption, ChatOption, ExitOption }, 
                 "Are you looking to search for info, get help, or just chat?", 
                 "Hmmm, I didn't understand that, try again...", 
                 2);
