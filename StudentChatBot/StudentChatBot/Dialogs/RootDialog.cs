@@ -16,7 +16,6 @@ namespace StudentChatBot.Dialogs
         private const string ChatOption = "Chat";
         private const string HelpOption = "Help";
         private const string ExitOption = "Exit";
-
         private const string MotivationOption = "Motivation";
 
         public Task StartAsync(IDialogContext context)
@@ -42,7 +41,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command.");
+                await context.PostAsync("Sorry, I didn't understand that command. Please type help for more information.");
                 context.Done(true);
             }
         }
@@ -58,7 +57,7 @@ namespace StudentChatBot.Dialogs
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { SearchOption, ChatOption, HelpOption, ExitOption }, 
+                { SearchOption, ChatOption, HelpOption, MotivationOption, ExitOption }, 
                 "Are you looking to search for info, get help, or just chat?", 
                 "Hmmm, I didn't understand that, try again...", 
                 2);
@@ -94,7 +93,7 @@ namespace StudentChatBot.Dialogs
                         break;
                 }
 
-                context.Done(true);
+                //context.Done(true);
             }
             catch (TooManyAttemptsException ex)
             {
@@ -111,7 +110,7 @@ namespace StudentChatBot.Dialogs
                 var message = await result;
 
                 await context.PostAsync("Anything else I can help you with?");
-                context.Done(true);
+                //context.Done(true);
             }
             catch (Exception ex)
             {

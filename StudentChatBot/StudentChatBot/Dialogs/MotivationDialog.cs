@@ -37,11 +37,11 @@ namespace StudentChatBot.Dialogs
 
             Motivation motive = motivations[rmd.Next(0, motivations.Count)];
 
-            //HeroCard hero = new HeroCard();
-            //hero.Images = "~/Content/Images/" + motive.ImageCode;
 
             await context.PostAsync(motive.Quote);
             await context.PostAsync(motive.QuoteSource);
+
+            context.Done(true);
         }
 
         private void FetchMotivationList()
