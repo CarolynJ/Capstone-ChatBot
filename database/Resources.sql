@@ -26,7 +26,7 @@ create table Resource_Keyword
 ResourceId int not null,
 KeywordId int not null,
 
-constraint pk_resourcekeyword primary key (ResourceId, KeywordId)
+constraint pk_resourcekeyword primary key (ResourceId, KeywordId),
 constraint fk_resourcekeyword_resource foreign key (ResourceId) References Resources(ResourceID),
 constraint fk_resourcekeyword_keyword foreign key (KeywordId) References Keywords(KeywordId),
 
@@ -92,14 +92,14 @@ INSERT INTO Resources  VALUES ('Ninject', 'http://www.ninject.org/', 0);
 Insert into keywords values ('class', 'classes', 'abstract', 'encapsulation', 'inheritance', 'polymorphism', 'abstraction', 'int', 'string', 'tdd', 'test', 'testing', 'testable', 'unit test', 'regression', 'file', 'i/o', 'cli', 'stack', 'heap', 'method', 'overriding', 'virtual', 'overloading', 'clean', 
 'git', 'version', 'bash', 'bitbucket', 'github', 'visual', 'studio', 'ide', 'collection', 'array', 'list', 'dictionary', 'stack', 'queue', 'loop', 'foreach', 'for each', 'for', 'while', 'interface', 'definition', 'using', 'exception', 'expression', 'logic', 'if', 'else', '=', '>', '>=', '==', '===', '<', '<=', 'c#', 'javascript', 
 'sql', 'server', 'mvc', 'mvc5', 'asp.net', '.net', 'model', 'view', 'controller', 'jquery', 'debugging', 'debug', 'bug', 'api', 'json', 'rick', 'astley', 'feeling', 'gonna', 'never', 'give', 'database', 'join', 'inner', 'left', 'right', 'primary', 'foreign', 'key', 'dependency', 'ninject', 'connection', 'dal', 'css', 'html',
-'tag', 'bootstrap', 'responsive', 'validation')    
+'tag', 'bootstrap', 'responsive', 'validation');    
 
 
-)
+
 insert into Motivation 
 values ('Leadership is not about a title or a designation. It is about impact, influence and inspiration. Impact involves getting results, influence is about spreading the passion you have for your work, and you have to inspire team-mates and customers.', 'Robin S. Sharma', 'RobinSharma.png'),
 ('Inspiration is one thing and you cannot control it, but hard work is what keeps the ship moving. Good luck means, work hard. Keep up the good work.', 'Kevin Eubanks', 'kevineubanks.png'),
-('I no have education. I have inspiration. If I was educated, I would be a damn fool.', 'Bob Marely', 'bobmarely.png'),
+('I no have education. I have inspiration. If I was educated, I would be a damn fool.', 'Bob Marley', 'bobmarley.png'),
 ('Do not quench your inspiration and your imagination; do not become the slave of your model.', 'Vincent Van Gogh', 'vincentvangogh.png'),
 ('Expectations are a form of first-class truth: If people believe it, it''s true.', 'Bill Gates', 'billgates.png'),
 ('Don''t compare yourself with anyone in this world...If you do so, you are insulting yourself', 'Bill Gates', 'billgates.png'),
