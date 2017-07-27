@@ -12,6 +12,8 @@ namespace StudentChatBot.Dialogs
     public class SearchDialog : IDialog<object>
     {
         private const string KeywordOption = "Search by Keyword";
+        private const string Pathway = "Pathway Resources";
+        private const string Technical = "Technical Resources";
         private const string ExitOption = "Go Back to Previous Menu";
 
         public async Task StartAsync(IDialogContext context)
@@ -24,7 +26,7 @@ namespace StudentChatBot.Dialogs
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { KeywordOption, ExitOption }, 
+                { KeywordOption, Pathway, Technical, ExitOption }, 
                 "", 
                 "Hmm, I didn't understand that, try again.", 
                 2);
@@ -38,6 +40,12 @@ namespace StudentChatBot.Dialogs
 
                 switch (optionSelected)
                 {
+                    case Pathway:
+                        context.Call(new PathwayDialog(), this.ResumeAfterOptionDialog);
+                        break;
+                    case Technical:
+                        context.Call(new TechnicalDialog(), this.ResumeAfterOptionDialog);
+                        break;
                     case ExitOption:
                         context.Done(true);
                         break;

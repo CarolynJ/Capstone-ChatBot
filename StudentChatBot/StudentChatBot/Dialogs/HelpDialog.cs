@@ -10,8 +10,7 @@ namespace StudentChatBot.Dialogs
     [Serializable]
     public class HelpDialog : IDialog<object>
     {
-        private const string Pathway = "Pathway Resources";
-        private const string Technical = "Technical Resources";
+ 
         private const string Quote = "Motivational Quote";
         private const string Search = "Search";
         private const string Navigation = "How to get around";
@@ -38,12 +37,7 @@ namespace StudentChatBot.Dialogs
 
             switch (HelpOption)
             {
-                case Pathway:
-                    context.Call(new PathwayDialog(), this.ResumeAfterHelpMenu);
-                    break;
-                case Technical:
-                    context.Call(new TechnicalDialog(), this.ResumeAfterHelpMenu);
-                    break;
+  
                 case Quote:
                     context.Call(new MotivationDialog(), this.ResumeAfterHelpMenu);
                     break;

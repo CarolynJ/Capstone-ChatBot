@@ -12,7 +12,7 @@ namespace StudentChatBot.Dialogs
     public class RootDialog : IDialog<object>
     {
 
-        private const string SearchOption = "Search by Keyword";
+        private const string SearchOption = "Search for Information";
         private const string ChatOption = "Chat with Me";
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
