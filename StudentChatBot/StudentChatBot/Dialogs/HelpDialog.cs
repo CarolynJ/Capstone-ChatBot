@@ -11,8 +11,6 @@ namespace StudentChatBot.Dialogs
     public class HelpDialog : IDialog<object>
     {
  
-        private const string Quote = "Motivational Quote";
-        private const string Search = "Search";
         private const string Navigation = "How to get around";
         private const string ExitOption = "Exit";
 
@@ -25,7 +23,7 @@ namespace StudentChatBot.Dialogs
         private void ShowHelpMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.HelpMenuActions, new List<string>()
-                { Pathway, Technical, Quote, Search, Navigation, ExitOption },
+                { Navigation, ExitOption },
                 "What can I help you with",
                 "Hmm, I didn't understand that, try again.",
                 2);
@@ -37,13 +35,6 @@ namespace StudentChatBot.Dialogs
 
             switch (HelpOption)
             {
-  
-                case Quote:
-                    context.Call(new MotivationDialog(), this.ResumeAfterHelpMenu);
-                    break;
-                case Search:
-                    context.Call(new SearchDialog(), this.ResumeAfterHelpMenu);
-                    break;
                 case Navigation:
                     context.Call(new NavigationDialog(), this.ResumeAfterHelpMenu);
                     break;

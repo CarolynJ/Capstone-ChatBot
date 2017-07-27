@@ -161,6 +161,7 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="DAL\IMotivationDAL.cs" />
     <Compile Include="DAL\MotivationSQLDAL.cs" />
+    <Compile Include="Dialogs\BrowseDialog.cs" />
     <Compile Include="Dialogs\ChatDialog.cs" />
     <Compile Include="Dialogs\GreetingDialog.cs" />
     <Compile Include="Dialogs\HelpDialog.cs" />

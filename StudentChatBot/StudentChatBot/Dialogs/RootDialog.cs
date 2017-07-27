@@ -12,7 +12,8 @@ namespace StudentChatBot.Dialogs
     public class RootDialog : IDialog<object>
     {
 
-        private const string SearchOption = "Search for Information";
+        private const string SearchOption = "Search By Keyword";
+        private const string BrowseOption = "Browse";
         private const string ChatOption = "Chat with Me";
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
@@ -73,7 +74,9 @@ namespace StudentChatBot.Dialogs
                     case SearchOption:
                         context.Call(new SearchDialog(), this.ResumeAfterOptionDialog);
                         break;
-
+                    case BrowseOption:
+                        context.Call(new BrowseDialog(), this.ResumeAfterOptionDialog);
+                        break;
                     case ChatOption:
                         context.Call(new ChatDialog(), this.ResumeAfterOptionDialog);
                         break;
