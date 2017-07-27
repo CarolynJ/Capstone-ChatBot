@@ -91,8 +91,6 @@ namespace StudentChatBot.Dialogs
                         context.Done(true);
                         break;
                 }
-
-                //context.Done(true);
             }
             catch (TooManyAttemptsException ex)
             {
@@ -109,7 +107,6 @@ namespace StudentChatBot.Dialogs
                 var message = await result;
 
                 await context.PostAsync("Anything else I can help you with?");
-                //context.Done(true);
             }
             catch (Exception ex)
             {
