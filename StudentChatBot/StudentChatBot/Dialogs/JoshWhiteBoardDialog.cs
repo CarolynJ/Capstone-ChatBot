@@ -42,6 +42,25 @@ namespace StudentChatBot.Dialogs
                 Output.Add(newWord);
             }
             await context.PostAsync(string.Join(" ", Output));
+            await context.PostAsync("Would you like to try it again?");
+
+            context.Wait(Continue);
+
+        }
+
+        private async Task Continue(IDialogContext context, IAwaitable<object> result)
+        {
+
+            var nextActivity = await result as Activity;
+
+            var response = nextActivity.Text.ToString();
+
+            if (response == "yes" || response == "y")
+            {
+
+                context.Wait(MessageReceivedAsync);
+            }
+
             context.Done(true);
         }
 
