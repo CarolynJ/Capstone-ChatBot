@@ -20,7 +20,9 @@ namespace StudentChatBot.Dialogs
         
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-            var currentTimeOfDay = context.Activity.LocalTimestamp.Value.Hour;
+            var utcNow = DateTime.UtcNow;
+            var est = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            var currentTimeOfDay = TimeZoneInfo.ConvertTime(utcNow, est).Hour;
 
             var greeting = "";
             
