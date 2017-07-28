@@ -10,9 +10,42 @@ namespace StudentChatBot.Dialogs
     [Serializable]
     public class BrowseDialog : IDialog<object>
     {
-        public Task StartAsync(IDialogContext context)
+        private const string Pathway = "Pathway Resources";
+        private const string Technical = "Technical Resources";
+
+        public async Task StartAsync(IDialogContext context)
         {
-            throw new NotImplementedException();
+            await context.PostAsync("Which type of resources would you like to browse?");
+            this.ShowBrowseOptions(context);
         }
+
+        private void ShowBrowseOptions(IDialogContext context)
+        {
+            PromptDialog.Choice(context, this.BrowseOptions, new List<string>()
+            { Pathway, Technical},
+            "What can I help you with",
+                "Hmm, I didn't understand that, try again.",
+                2);
+        }
+        private async Task BrowseOptions(IDialogContext context, IAwaitable<string> result)
+        {
+            var BrowseOption = await result;
+
+            switch (BrowseOption)
+            {
+                case Pathway:
+                    context.Call(new PathwayDialog(), this.ResumeAfterBrowse);
+                    break;
+                case Technical:
+                    context.Call(new TechnicalDialog(), this.ResumeAfterBrowse);
+                    break;
+            }
+        }
+        public async Task ResumeAfterBrowse(IDialogContext context, IAwaitable<object> result)
+        {
+            var BrowseOption = await result;
+            context.Done(true);
+        }
+
     }
 }

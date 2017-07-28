@@ -71,7 +71,7 @@ namespace StudentChatBot.Dialogs
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { HelpOption, SearchOption, MotivationOption, ChatOption, ExitOption }, 
+                { HelpOption, SearchOption, MotivationOption, ChatOption, BrowseOption, ExitOption }, 
                 "Are you looking to search for info, get help, or just chat?", 
                 "Hmmm, I didn't understand that, try again...", 
                 2);
