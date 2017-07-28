@@ -1,6 +1,7 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
+using StudentChatBot.DAL;
 using StudentChatBot.Models;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,7 @@ namespace StudentChatBot.Dialogs
     [Serializable]
     public class SearchDialog : IDialog<object>
     {
-        //private const string KeywordOption = "Search by Keyword";
-        //private const string Pathway = "Pathway Resources";
-        //private const string Technical = "Technical Resources";
-        //private const string ExitOption = "Go Back to Previous Menu";
+        private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
         public Task StartAsync(IDialogContext context)
         {
@@ -47,7 +45,19 @@ namespace StudentChatBot.Dialogs
                 }
                 else
                 {
-                    await context.PostAsync(data.entities[0].entity);
+                    string keyword = data.entities[0].entity;
+
+                    ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
+                    Resource link = dal.GetResource(keyword);
+                    if(link != null)
+                    {
+                        await context.PostAsync(link.ResourceTitle);
+                        await context.PostAsync(link.ResourceContent);
+                    }
+                    else
+                    {
+                        await context.PostAsync("Sorry that did not return a resource");
+                    }
                 }
             }
         }
