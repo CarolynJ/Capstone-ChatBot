@@ -160,7 +160,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="DAL\IMotivationDAL.cs" />
+    <Compile Include="DAL\ISearchByKeyword.cs" />
     <Compile Include="DAL\MotivationSQLDAL.cs" />
+    <Compile Include="DAL\SearchByKeywordSQLDAL.cs" />
     <Compile Include="Dialogs\BrowseDialog.cs" />
     <Compile Include="Dialogs\ChatDialog.cs" />
     <Compile Include="Dialogs\GreetingDialog.cs" />
@@ -178,6 +180,7 @@
     </Compile>
     <Compile Include="Models\LuisData.cs" />
     <Compile Include="Models\Motivation.cs" />
+    <Compile Include="Models\Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

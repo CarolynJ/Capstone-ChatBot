@@ -17,7 +17,7 @@ namespace StudentChatBot.Dialogs
             context.Wait(NameCollected); // from here it returns to ResumeAfterGreetingDialog in the rootdialog
 
         }
-        //it is not running this method
+
         private async Task NameCollected(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
@@ -29,9 +29,6 @@ namespace StudentChatBot.Dialogs
             StateClient stateClient = activity.GetStateClient();
             BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
             userData.SetProperty<string>("UserName", userName);
-            await stateClient.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
-
-            await context.PostAsync(userData.GetProperty<string>("UserName"));
 
             context.Done(true);
         }
