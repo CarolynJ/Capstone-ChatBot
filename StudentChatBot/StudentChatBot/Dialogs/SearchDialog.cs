@@ -3,8 +3,11 @@ using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
+using System.Web.Services.Description;
 
 namespace StudentChatBot.Dialogs
 {
@@ -12,72 +15,46 @@ namespace StudentChatBot.Dialogs
     public class SearchDialog : IDialog<object>
     {
         //private const string KeywordOption = "Search by Keyword";
-        private const string Pathway = "Pathway Resources";
-        private const string Technical = "Technical Resources";
-        private const string ExitOption = "Go Back to Previous Menu";
+        //private const string Pathway = "Pathway Resources";
+        //private const string Technical = "Technical Resources";
+        //private const string ExitOption = "Go Back to Previous Menu";
 
-        public async Task StartAsync(IDialogContext context)
+        public Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Welcome to Search!");
+            context.PostAsync("What are you looking for today?");
+            context.Wait(MessageReceivedAsync);
 
-            this.ShowOptions(context);
+            return Task.CompletedTask;
         }
 
-        private void ShowOptions(IDialogContext context)
+        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { Pathway, Technical, ExitOption },
-                "What do you want to search for?",
-                "Hmm, I didn't understand that, try again.",
-                2);
+            var activity = await result;
+            await context.PostAsync("you said: " + activity.Text.ToString());
+            var thing = LuisDecipher(activity.Text);
 
-
+            //await context.PostAsync(luisResponse.Text);
         }
 
-        private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
+        private static async Task<string> LuisDecipher(string text)
         {
-            try
+            text = Uri.EscapeDataString(text);
+
+            using (HttpClient client = new HttpClient())
             {
-                string optionSelected = await result;
+                string APIRequest = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/a6222f36-ec66-4c1d-bad1-f579d8016a0d?subscription-key=7e7ec5656b324a50bacf7929278305d9&timezoneOffset=0&verbose=true&q=" + text;
+                HttpResponseMessage msg = await client.GetAsync(APIRequest);
 
-                switch (optionSelected)
+                if(msg.IsSuccessStatusCode)
                 {
-                    case Pathway:
-                        context.Call(new PathwayDialog(), this.ResumeAfterOptionDialog);
-                        break;
-                    case Technical:
-                        context.Call(new TechnicalDialog(), this.ResumeAfterOptionDialog);
-                        break;
-                    case ExitOption:
-                        context.Done(true);
-                        break;
+                    var jsonDataResponse = await msg.Content.ReadAsStringAsync();
+                    return jsonDataResponse;
                 }
-            }
-            catch (TooManyAttemptsException ex)
-            {
-                await context.PostAsync($"Ooops! Too many attemps :(. But don't worry, I'm handling that exception and you can try again!");
 
-                context.Done(true);
+                return string.Empty;
+                
+
             }
         }
-
-        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
-        {
-            try
-            {
-                var message = await result;
-            }
-            catch (Exception ex)
-            {
-                await context.PostAsync($"Failed with message: {ex.Message}");
-            }
-            finally
-            {
-                context.Done(true);
-            }
-        }
-
-
-
     }
 }
