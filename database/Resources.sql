@@ -277,3 +277,4 @@ values ('Leadership is not about a title or a designation. It is about impact, i
 ;
 
 insert into Resource_Keyword values (1, 26), (1, 27), (2, 26), (2, 27), (3, 28), (3, 18), (4, 28), (4, 18);
+insert into Resource_Keyword values (42, 114), (42, 115), (42, 116), (43, 114), (43, 115), (43, 116), (43, 139), (45, 122), (48, 122), (49, 122), (57, 122), (57, 124), (58, 122), (58, 124), (60, 122), (60, 124);
