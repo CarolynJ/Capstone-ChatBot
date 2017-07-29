@@ -10,6 +10,7 @@ namespace teHelperResourceManager.DAL
     public interface IKeywordSource
     {
         List<Keywords> GetAllKeywords();
-        void SaveNewKeyword(Keywords newKeyword);
+        bool SaveNewKeyword(Keywords newKeyword);
+        bool DoesKeywordAlreadyExist(string checkKeyword);
     }
 }

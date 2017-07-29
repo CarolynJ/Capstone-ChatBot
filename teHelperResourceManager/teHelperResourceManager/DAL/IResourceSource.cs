@@ -9,5 +9,7 @@ namespace teHelperResourceManager.DAL
     public interface IResourceSource
     {
         List<Resource> GetAllResources();
+        bool FindMatchingLinksToResources(string resourceLink);
+        bool AddNewResource(Resource newResource);
     }
 }
