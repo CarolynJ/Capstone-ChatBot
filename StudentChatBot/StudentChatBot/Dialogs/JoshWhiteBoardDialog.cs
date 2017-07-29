@@ -48,10 +48,10 @@ namespace StudentChatBot.Dialogs
 
         }
 
-        private async Task Continue(IDialogContext context, IAwaitable<object> result)
+        private async Task Continue(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
 
-            var nextActivity = await result as Activity;
+            var nextActivity = await result;
 
             var response = nextActivity.Text.ToString();
 
@@ -60,8 +60,11 @@ namespace StudentChatBot.Dialogs
 
                 context.Wait(MessageReceivedAsync);
             }
-
-            context.Done(true);
+            else if (response == "no" || response == "n" || response == "  ")
+            {
+                context.Done(true);
+            }
+                
         }
 
     }

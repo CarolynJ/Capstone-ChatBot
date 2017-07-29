@@ -167,6 +167,7 @@
     <Compile Include="Dialogs\ChatDialog.cs" />
     <Compile Include="Dialogs\GreetingDialog.cs" />
     <Compile Include="Dialogs\HelpDialog.cs" />
+    <Compile Include="Dialogs\Mod1Dialog.cs" />
     <Compile Include="Dialogs\MotivationDialog.cs" />
     <Compile Include="Dialogs\JoshWhiteBoardDialog.cs" />
     <Compile Include="Dialogs\NameResponseDialog.cs" />

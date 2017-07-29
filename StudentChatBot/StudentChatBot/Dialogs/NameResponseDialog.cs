@@ -14,7 +14,7 @@ namespace StudentChatBot.Dialogs
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("What is your name?");
-            context.Wait(NameCollected); // from here it returns to ResumeAfterGreetingDialog in the rootdialog
+            context.Wait(NameCollected); 
 
         }
 
