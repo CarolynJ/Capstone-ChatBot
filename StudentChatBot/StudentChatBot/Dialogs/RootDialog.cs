@@ -39,6 +39,14 @@ namespace StudentChatBot.Dialogs
             {
                 this.ShowOptions(context);
             }
+            else if (userInput.Contains("menu"))
+            {
+                this.ShowOptions(context);
+            }
+            else if (userInput.Contains("search"))
+            {
+                await context.Forward(new SearchDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
+            }
             else
             {
                 await context.PostAsync("Sorry, I didn't understand that command. Please type help for more information.");
@@ -49,15 +57,20 @@ namespace StudentChatBot.Dialogs
         private async Task ResumeAfterGreetingDialog(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result;
-            context.Call(new NameResponseDialog(), this.ResumeAfterOptionDialog);            
+            context.Call(new NameResponseDialog(), this.ResumeAfterNameResponse);
+        }
+        private async Task ResumeAfterNameResponse(IDialogContext context, IAwaitable<object> result)
+        {
+            var activity = await result;
+            this.ShowOptions(context);
         }
 
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                { HelpOption, SearchOption, MotivationOption, ChatOption, BrowseOption, ExitOption }, 
-                "Are you looking to search for info, get help, or just chat?", 
-                "Hmmm, I didn't understand that, try again...", 
+                {  SearchOption, BrowseOption, MotivationOption, ChatOption,  HelpOption, ExitOption },
+                "Are you looking to search for info, get help, or just chat?",
+                "Hmmm, I didn't understand that, try again...",
                 2);
         }
 
@@ -72,8 +85,13 @@ namespace StudentChatBot.Dialogs
                     case SearchOption:
                         context.Call(new SearchDialog(), this.ResumeAfterOptionDialog);
                         break;
+
                     case BrowseOption:
                         context.Call(new BrowseDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
+                    case MotivationOption:
+                        context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
                         break;
                     case ChatOption:
                         context.Call(new ChatDialog(), this.ResumeAfterOptionDialog);
@@ -83,13 +101,9 @@ namespace StudentChatBot.Dialogs
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
                         break;
 
-                    case MotivationOption:
-                        context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
-                        break;
-
                     case ExitOption:
                         await context.PostAsync("Alrighty, well is there anything else I can help you with?");
-                        context.Done(true);
+                        context.Wait(Redirect);
                         break;
                 }
             }
@@ -103,23 +117,31 @@ namespace StudentChatBot.Dialogs
 
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
-            try
-            {
-                var message = await result;
+            var message = await result;
+            await context.PostAsync("Anything else I can help you with?");
+            context.Wait(Redirect);
 
-                await context.PostAsync("Anything else I can help you with?");
-            }
-            catch (Exception ex)
-            {
-                await context.PostAsync($"Failed with message: {ex.Message}");
-            }
-            finally
-            {
-                context.Wait(this.MessageReceivedAsync);
-            }
         }
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
 
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
 
-
+            if (userInput == "yes" || userInput == "y" || userInput == "ok")
+            {
+                this.ShowOptions(context);
+            }
+            else if (userInput.Contains("help"))
+            {
+                context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+            }
+            else if (userInput.Contains("no") || userInput.Contains("bye"))
+            {
+                context.Done(true);
+            }
+          
+        }
     }
 }
+
