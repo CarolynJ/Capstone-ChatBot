@@ -11,6 +11,7 @@ namespace teHelperResourceManager.DAL
     public class KeywordSqlDal : IKeywordSource
     {
         private const string SQL_GetAllAlphabeticalKeywords = "SELECT * FROM Keyword ORDER BY Keyword ASC;";
+        private const string SQL_SaveNewKeyword = "INSERT INTO Keyword VALUES (@keywordName);";
         private string connectionString;
 
         public KeywordSqlDal(string connectionString)
@@ -18,7 +19,7 @@ namespace teHelperResourceManager.DAL
             this.connectionString = connectionString;
         }
 
-        public List<Keyword> GetAllKeywords()
+        public List<Keywords> GetAllKeywords()
         {
             try
             {
@@ -26,9 +27,26 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    List<Keyword> allKeywords = conn.Query<Keyword>(SQL_GetAllAlphabeticalKeywords).ToList();
+                    List<Keywords> allKeywords = conn.Query<Keywords>(SQL_GetAllAlphabeticalKeywords).ToList();
 
                     return allKeywords;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void SaveNewKeyword(Keywords newKeyword)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    conn.Execute(SQL_SaveNewKeyword, new { keywordName = newKeyword.Keyword });
                 }
             }
             catch

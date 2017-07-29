@@ -9,6 +9,7 @@ namespace teHelperResourceManager.DAL
 {
     public interface IKeywordSource
     {
-        List<Keyword> GetAllKeywords();
+        List<Keywords> GetAllKeywords();
+        void SaveNewKeyword(Keywords newKeyword);
     }
 }

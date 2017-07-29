@@ -10,6 +10,8 @@ namespace teHelperResourceManager.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using teHelperResourceManager.DAL;
+    using System.Configuration;
 
     public static class NinjectWebCommon 
     {
@@ -61,6 +63,8 @@ namespace teHelperResourceManager.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IKeywordSource>().To<KeywordSqlDal>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString);
+            kernel.Bind<IResourceSource>().To<ResourceSqlDal>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString);
         }        
     }
 }

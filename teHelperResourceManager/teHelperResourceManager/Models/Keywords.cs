@@ -5,7 +5,7 @@ using System.Web;
 
 namespace teHelperResourceManager.Models
 {
-    public class Keyword
+    public class Keywords
     {
         public int KeywordId { get; set; }
         public string Keyword { get; set; }
