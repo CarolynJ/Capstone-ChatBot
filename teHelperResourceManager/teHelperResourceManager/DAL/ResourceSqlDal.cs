@@ -27,9 +27,12 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    int rowsAffected = conn.Execute(SQL_AddNewResource, 
-                        new { @resourceTitle = newResource.ResourceTitle, @resourceContent = newResource.ResourceContent,
-                            @pathwayResource = newResource.PathwayResource });
+                    int rowsAffected = conn.Execute(SQL_AddNewResource, new
+                        {
+                            resourceTitle = newResource.ResourceTitle,
+                            resourceContent = newResource.ResourceContent,
+                            pathwayResource = newResource.PathwayResource
+                        });
 
                     if (rowsAffected > 0)
                     {
