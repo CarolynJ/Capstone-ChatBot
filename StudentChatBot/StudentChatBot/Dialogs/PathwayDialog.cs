@@ -26,6 +26,7 @@ namespace StudentChatBot.Dialogs
         private const string PWInterviewOption = "Interviewing";
         private const string PWLinkedInOption = "LinkedIn";
         private const string PWUpcomingEventsOption = "Upcoming Pathway Events";
+        private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
         
 
@@ -39,7 +40,7 @@ namespace StudentChatBot.Dialogs
         private void ShowPathwayMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
-                { PWResumeOption, PWElevatorPitchOption, PWInterviewOption, PWLinkedInOption, PWUpcomingEventsOption, ExitOption },
+                { PWResumeOption, PWElevatorPitchOption, PWInterviewOption, PWLinkedInOption, PWUpcomingEventsOption, OtherOption, ExitOption },
                 "Do any of these options suit your fancy?",
                 "Hmm, I didn't understand that, try again.",
                 2);
@@ -68,7 +69,7 @@ namespace StudentChatBot.Dialogs
                     }
 
                     break;
-                    
+
                 case PWElevatorPitchOption:
                     await context.PostAsync("elevator pitch selected");
                     keyword = "elevator";
@@ -105,7 +106,7 @@ namespace StudentChatBot.Dialogs
 
                 case PWLinkedInOption:
                     await context.PostAsync("you need help with linkedin");
-                    keyword = "interview";
+                    keyword = "linkedin";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     link = dal.GetResource(keyword);
 
@@ -121,7 +122,7 @@ namespace StudentChatBot.Dialogs
                     break;
                 case PWUpcomingEventsOption:
                     await context.PostAsync("view upcoming pathway events");
-                    keyword = "interview";
+                    keyword = "events";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     link = dal.GetResource(keyword);
 
@@ -135,12 +136,21 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
                     break;
+
+                case OtherOption:
+                    context.Call(new SearchDialog(), this.ResumeAfterPathwayDialog);
+                    break;
+
                 case ExitOption:
                     context.Done(true);
                     break;
             }
+        }
 
-            context.Done(true);
+            public async Task ResumeAfterPathwayDialog(IDialogContext context, IAwaitable<object> result)
+            {
+                await context.PostAsync("I hope you found a useful resource to improve your job search.");
+                context.Done(true);
+            }
         }
     }
-}

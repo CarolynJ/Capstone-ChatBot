@@ -48,15 +48,19 @@ namespace StudentChatBot.Dialogs
                     break;
                 case Mod2:
                     await context.PostAsync("Check out these SQL resources");
+                    context.Call(new Mod2Dialog(), this.ResumeAfterLookup);
                     break;
                 case Mod3:
                     await context.PostAsync("ASP.Net MVC resources");
+                    context.Call(new Mod3Dialog(), this.ResumeAfterLookup);
                     break;
                 case Mod4:
                     await context.PostAsync("here are some reources for JQuery");
+                    context.Call(new Mod4Dialog(), this.ResumeAfterLookup);
                     break;
                 case Mod5:
                     await context.PostAsync("Security resources");
+                    context.Call(new Mod5Dialog(), this.ResumeAfterLookup);
                     break;
                 case ExitOption:
                     context.Done(true);

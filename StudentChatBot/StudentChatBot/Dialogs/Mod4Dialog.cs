@@ -16,21 +16,19 @@ using System.Web.Services.Description;
 namespace StudentChatBot.Dialogs
 {
     [Serializable]
-    public class Mod1Dialog: IDialog<object>
+    public class Mod4Dialog: IDialog<object>
     {
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
-        private const string GitOption = "Git";
-        private const string VariablesOption = "Variables";
-        private const string ObjectsOption = "OOP";
-        private const string ClassesOption = "Classes";
-        private const string TestingOption = "Testing";
+        private const string JavaScritOption = "JavaScript";
+        private const string JQueryOption = "JQuery";
+        private const string APIOption = "API";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Looking for resources to study Module 1 topics?");
+            await context.PostAsync("Looking for help with Module 3?");
 
             this.ShowPathwayMenu(context);
         }
@@ -38,7 +36,7 @@ namespace StudentChatBot.Dialogs
         private void ShowPathwayMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
-                { GitOption, VariablesOption, ObjectsOption, ClassesOption, TestingOption, OtherOption, ExitOption },
+                { JavaScritOption, JQueryOption, APIOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
@@ -50,9 +48,9 @@ namespace StudentChatBot.Dialogs
 
             switch (optionSelected)
             {
-                case GitOption:
-                    await context.PostAsync("You can read up on git");
-                    string keyword = "git";
+                case JavaScritOption:
+                    await context.PostAsync("JavaScript");
+                    string keyword = "javascript";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     Resource link = dal.GetResource(keyword);
 
@@ -68,9 +66,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case VariablesOption:
-                    await context.PostAsync("Need some help with variables?");
-                    keyword = "variables";
+                case JQueryOption:
+                    await context.PostAsync("Learn to animate your website");
+                    keyword = "JQuery";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     link = dal.GetResource(keyword);
 
@@ -85,42 +83,9 @@ namespace StudentChatBot.Dialogs
                     }
                     break;
 
-                case ObjectsOption:
-                    await context.PostAsync("Object Oriented programming (OOP)");
-                    keyword = "oop";
-                    dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
-
-                    if (link != null)
-                    {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
-                    }
-                    else
-                    {
-                        await context.PostAsync("Sorry that did not return a resource");
-                    }
-                    break;
-
-                case ClassesOption:
-                    await context.PostAsync("Classes in C# are key to understand");
-                    keyword = "classes";
-                    dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
-
-                    if (link != null)
-                    {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
-                    }
-                    else
-                    {
-                        await context.PostAsync("Sorry that did not return a resource");
-                    }
-                    break;
-                case TestingOption:
-                    await context.PostAsync("Learn to test your own code.");
-                    keyword = "testing";
+                case APIOption:
+                    await context.PostAsync("See what you can do with APIs");
+                    keyword = "api";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     link = dal.GetResource(keyword);
 
@@ -136,18 +101,17 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterModOneDialog);
+                    context.Call(new SearchDialog(), this.ResumeAfterModThreeDialog);
                     break;
 
                 case ExitOption:
                     context.Done(true);
                     break;
             }
-
-           
+            
         }
 
-        private async Task ResumeAfterModOneDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterModThreeDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource. I'll return you to the main menu now.");
             context.Done(true);

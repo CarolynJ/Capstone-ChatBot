@@ -138,6 +138,7 @@ namespace StudentChatBot.Dialogs
             }
             else if (userInput.Contains("no") || userInput.Contains("bye"))
             {
+                await context.PostAsync("Please come again. Have a nice day!");
                 context.Done(true);
             }
           
