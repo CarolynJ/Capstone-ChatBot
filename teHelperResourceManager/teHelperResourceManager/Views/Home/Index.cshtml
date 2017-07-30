@@ -2,18 +2,74 @@
 @model ResourceKeywordViewModel
 
 @{
-    Layout = null;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+<div class="row">
+    <div class="col-xs-12">
+        <h2>teHelper Existing Resources</h2>
     </div>
-</body>
-</html>
+
+    <div class="col-md-6">
+        <h3>Technical Resources</h3>
+        <table class="table">
+            <tr>
+                <th>Technical Resource Name</th>
+                <th>Keywords</th>
+            </tr>
+
+            @foreach (KeyValuePair<Resource, List<Keywords>> kvp in Model.ResourcesAndKeywords)
+            {
+                if (!kvp.Key.PathwayResource)
+                {
+                    <tr style="border: 1pt solid black;">
+                        <td>@kvp.Key.ResourceTitle</td>
+                        <td>
+                            @foreach (Keywords kw in kvp.Value)
+                    {
+                                <span>@kw.Keyword</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Pathway Resources</h3>
+        <table class="table">
+            <tr>
+                <th>Pathway Resource Name</th>
+                <th>Keywords</th>
+            </tr>
+
+            @foreach (KeyValuePair<Resource, List<Keywords>> kvp in Model.ResourcesAndKeywords)
+            {
+                if (kvp.Key.PathwayResource)
+                {
+                    <tr style="border: 1pt solid black;">
+                        <td>@kvp.Key.ResourceTitle</td>
+                        <td>
+                            @foreach (Keywords kw in kvp.Value)
+                    {
+                                <span>@kw.Keyword</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+</div>
+
+@*@using(Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    ValidateAntiForgeryTokenAttribute;
+
+
+}*@
+

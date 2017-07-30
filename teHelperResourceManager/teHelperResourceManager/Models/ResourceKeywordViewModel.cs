@@ -9,6 +9,6 @@ namespace teHelperResourceManager.Models
     {
         public List<Keywords> allKeywords { get; set; }
         public List<Resource> allResources { get; set; }
-        public Dictionary<int, int[]> ResourcesAndKeywordsToSave { get; set; }
+        public Dictionary<Resource, List<Keywords>> ResourcesAndKeywords { get; set; }
     }
 }

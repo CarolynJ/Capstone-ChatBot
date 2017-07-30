@@ -10,6 +10,7 @@ namespace teHelperResourceManager.DAL
     public interface IKeywordSource
     {
         List<Keywords> GetAllKeywords();
+        List<Keywords> GetAllKeywordsForAResource(Resource r);
         bool SaveNewKeyword(Keywords newKeyword);
         bool DoesKeywordAlreadyExist(string checkKeyword);
         bool AddKeywordsToOneResource(List<Keywords> kw, Resource r);

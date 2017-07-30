@@ -26,8 +26,13 @@ namespace teHelperResourceManager.Controllers
             {
                 allKeywords = keywordDal.GetAllKeywords(),
                 allResources = resourceDal.GetAllResources(),
-                ResourcesAndKeywordsToSave = new Dictionary<int, int[]>()
+                ResourcesAndKeywords = new Dictionary<Resource, List<Keywords>>()
             };
+
+            foreach(Resource r in model.allResources)
+            {
+                model.ResourcesAndKeywords.Add(r, keywordDal.GetAllKeywordsForAResource(r));
+            }
 
             return View("Index", model);
         }
