@@ -31,7 +31,7 @@ namespace StudentChatBot.Dialogs
         {
             PromptDialog.Choice(context, this.ResumeAfterTechnicalMenu, new List<string>()
                 { Mod1, Mod2, Mod3, Mod4, Mod5, ExitOption },
-                "Do any of these options suit your fancy?",
+                "Which module do you need help with?",
                 "Hmm, I didn't understand that, try again.",
                 2);
         }
@@ -44,6 +44,7 @@ namespace StudentChatBot.Dialogs
             {
                 case Mod1:
                     await context.PostAsync("learn more about C# and .Net fundementals");
+                    context.Call(new Mod1Dialog(), this.ResumeAfterLookup);
                     break;
                 case Mod2:
                     await context.PostAsync("Check out these SQL resources");
@@ -61,7 +62,10 @@ namespace StudentChatBot.Dialogs
                     context.Done(true);
                     break;
             }
-
+        }
+        public async Task ResumeAfterLookup(IDialogContext context, IAwaitable<object> result)
+        {
+            var BrowseOption = await result;
             context.Done(true);
         }
     }

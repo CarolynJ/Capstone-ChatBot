@@ -22,6 +22,7 @@ namespace StudentChatBot.Dialogs
         {
             var activity = await result as Activity;
             var userName = activity.Text.ToString().ToLower();
+            userName = userName.Substring(0, 1).ToUpper() + userName.Substring(1);
 
             var response = "It's nice to meet you " + userName;
             await context.PostAsync(response);

@@ -23,7 +23,7 @@ namespace StudentChatBot.Dialogs
         {
             PromptDialog.Choice(context, this.BrowseOptions, new List<string>()
             { Pathway, Technical},
-            "What can I help you with",
+            " ",
                 "Hmm, I didn't understand that, try again.",
                 2);
         }

@@ -67,10 +67,7 @@ namespace StudentChatBot.Dialogs
             }
 
             await context.PostAsync(greeting);
-            //NameResponseDialog name = new NameResponseDialog();
-            //await name.StartAsync(context);
-            //context.Call(new NameResponseDialog(), this.MessageReceivedAsync);
-
+            
             context.Done(true);
         }
 
