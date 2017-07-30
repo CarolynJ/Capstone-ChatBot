@@ -15,6 +15,7 @@ namespace teHelperResourceManager.DAL
         private const string SQL_FindAllExistingKeywordMatches = "SELECT * FROM Keywords WHERE Keyword = @checkKeyword;";
         private const string SQL_DeleteResourceAndKeywordCombo = "DELETE FROM Keyword_Resource WHERE ResourceId = @resourceId AND KeywordId = @keywordId;";
         private const string SQL_AddKeywordToResource = "INSERT INTO Resource_Keyword VALUES(@ResourceId, @KeywordId);";
+        private const string SQL_GetAllKeywordsForAResource = "SELECT Keywords.* FROM Resource_Keyword INNER JOIN Resources on Resource_Keyword.ResourceId = Resources.ResourceId INNER JOIN Keywords on Resource_Keyword.KeywordId = Keywords.KeywordId WHERE Resources.ResourceId = @resourceId;";
         private string connectionString;
 
         public KeywordSqlDal(string connectionString)
@@ -112,6 +113,25 @@ namespace teHelperResourceManager.DAL
                     List<Keywords> allKeywords = conn.Query<Keywords>(SQL_GetAllAlphabeticalKeywords).ToList();
 
                     return allKeywords;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<Keywords> GetAllKeywordsForAResource(Resource r)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    List<Keywords> allKeywordsForAResource = conn.Query<Keywords>(SQL_GetAllKeywordsForAResource, new { resourceId = r.ResourceId }).ToList();
+
+                    return allKeywordsForAResource;
                 }
             }
             catch
