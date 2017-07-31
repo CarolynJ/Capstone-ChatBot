@@ -45,7 +45,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command. Please type help for more information.");
+                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information.");
                 context.Done(true);
             }
         }
@@ -115,8 +115,8 @@ namespace StudentChatBot.Dialogs
         {
             var message = await result;
             await context.PostAsync("Anything else I can help you with?");
-            //context.Wait(Redirect);
-            context.Done(true);
+            context.Wait(Redirect);
+            //context.Done(true);
 
         }
         private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)

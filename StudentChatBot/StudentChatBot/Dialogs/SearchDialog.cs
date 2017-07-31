@@ -41,7 +41,7 @@ namespace StudentChatBot.Dialogs
 
                 if (data.entities.Length == 0)
                 {
-                    await context.PostAsync("Sorry, I didn't understand that. Try saying, 'Help me with OOP'");
+                    await context.PostAsync("Sorry, I didn't understand that. Try saying, 'Help me with ...'");
                 }
                 else
                 {

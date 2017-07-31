@@ -12,6 +12,8 @@ namespace StudentChatBot.Dialogs
     {
         private const string Pathway = "Pathway Resources";
         private const string Technical = "Technical Resources";
+        private const string MainMenu = "Main Menu";
+        
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -22,15 +24,16 @@ namespace StudentChatBot.Dialogs
         private void ShowBrowseOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.BrowseOptions, new List<string>()
-            { Pathway, Technical},
+            { Pathway, Technical, MainMenu},
             " ",
                 "Hmm, I didn't understand that, try again.",
                 2);
         }
         private async Task BrowseOptions(IDialogContext context, IAwaitable<string> result)
         {
+            
             var BrowseOption = await result;
-
+           
             switch (BrowseOption)
             {
                 case Pathway:
@@ -39,6 +42,9 @@ namespace StudentChatBot.Dialogs
                 case Technical:
                     context.Call(new TechnicalDialog(), this.ResumeAfterBrowse);
                     break;
+                //case MainMenu:
+                //    context.Done(true);
+
             }
         }
         public async Task ResumeAfterBrowse(IDialogContext context, IAwaitable<object> result)
