@@ -129,6 +129,8 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KeywordController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="DAL\IKeywordSource.cs" />
     <Compile Include="DAL\IResourceSource.cs" />
     <Compile Include="DAL\KeywordSqlDal.cs" />
@@ -159,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Keyword\" />
+    <Folder Include="Views\Resource\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

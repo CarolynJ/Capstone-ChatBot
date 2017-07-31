@@ -31,12 +31,7 @@
                 {
                     <tr style="border: 1pt solid black;">
                         <td>@kvp.Key.ResourceTitle</td>
-                        <td>
-                            @foreach (Keywords kw in kvp.Value)
-                    {
-                                <span>@kw.Keyword</span>
-                            }
-                        </td>
+                        <td>@string.Join(", ", kvp.Value.Select(x => x.Keyword))</td>
                     </tr>
                 }
             }
@@ -58,12 +53,7 @@
                 {
                     <tr style="border: 1pt solid black;">
                         <td>@kvp.Key.ResourceTitle</td>
-                        <td>
-                            @foreach (Keywords kw in kvp.Value)
-                    {
-                                <span>@kw.Keyword</span>
-                            }
-                        </td>
+                        <td>@string.Join(", ", kvp.Value.Select(x => x.Keyword))</td>
                     </tr>
                 }
             }
