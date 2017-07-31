@@ -181,12 +181,12 @@ namespace teHelperResourceManager.DAL
 
                     foreach (Keywords k in newKeywords)
                     {
-                        conn.Execute(SQL_AddKeywordToResource, new { rId = r.ResourceId, kId = k.KeywordId });
+                        int oneSuccessfulRow = conn.Execute(SQL_AddKeywordToResource, new { rId = r.ResourceId, kId = k.KeywordId });
 
-                        //if (oneSuccessfulRow > 0)
-                        //{
-                        //    rowsAffected++;
-                        //}
+                        if (oneSuccessfulRow > 0)
+                        {
+                            rowsAffected++;
+                        }
                     }
 
                     if (rowsAffected == newKeywords.Count)
