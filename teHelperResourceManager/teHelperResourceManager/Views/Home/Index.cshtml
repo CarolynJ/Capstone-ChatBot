@@ -14,6 +14,16 @@
             <p class="centered success-message">Keyword has been added!</p>
         }
 
+        @if (TempData["NewResource_Success"] != null)
+        {
+            <p class="centered success-message">Resource has been added!</p>
+        }
+
+        @if(TempData["UpdateResource_Success"] != null)
+        {
+            <p class="centered success-message">Resource has been updated!</p>
+        }
+
         <h2>teHelper Existing Resources</h2>
     </div>
 
@@ -30,7 +40,7 @@
                 if (!kvp.Key.PathwayResource)
                 {
                     <tr style="border: 1pt solid black;">
-                        <td>@kvp.Key.ResourceTitle</td>
+                        <td><a href="@Url.Action("Edit", "Resource", new { id = kvp.Key.ResourceId })">@kvp.Key.ResourceTitle</a></td>
                         <td>@string.Join(", ", kvp.Value.Select(x => x.Keyword))</td>
                     </tr>
                 }

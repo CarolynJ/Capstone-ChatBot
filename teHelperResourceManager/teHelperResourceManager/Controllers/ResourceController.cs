@@ -47,12 +47,12 @@ namespace teHelperResourceManager.Controllers
 
             foreach (string kw in newKeywordStrings)
             {
-                if (keywordDal.DoesKeywordAlreadyExist(kw) == null)
+                if (keywordDal.GetSingleKeyword(kw) == null)
                 {
                     keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw });
                 }
 
-                newKeywords.Add(keywordDal.DoesKeywordAlreadyExist(kw));
+                newKeywords.Add(keywordDal.GetSingleKeyword(kw));
             }
 
             bool successfullyAddedResource = keywordDal.AddKeywordsToOneResource(newKeywords, r);
@@ -63,7 +63,49 @@ namespace teHelperResourceManager.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
 
+        //GET: Resource/Edit/Id
+        public ActionResult Edit(int id)
+        {
+            Resource r = resourceDal.GetResource(id);
+
+            if(r == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
+            NewResourceKeywordViewModel model = new NewResourceKeywordViewModel()
+            {
+                newResource = r,
+                keywordsAsString = string.Join(", ", keywordDal.GetAllKeywordsForAResource(r).Select(x => x.Keyword))
+            };
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(NewResourceKeywordViewModel model)
+        {
+            Resource r = resourceDal.GetResource(model.newResource.ResourceTitle);
+
+            List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
+            List<Keywords> newKeywords = new List<Keywords>();
+            
+            foreach (string kw in newKeywordStrings)
+            {
+                keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw }); // only saves it if it's not already in the db
+                newKeywords.Add(keywordDal.GetSingleKeyword(kw));
+            }
+
+            bool successfullyUpdatedResource = keywordDal.UpdateKeywordsToOneResource(newKeywords, r);
+
+            if (successfullyUpdatedResource)
+            {
+                TempData["UpdateResource_Success"] = true;
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

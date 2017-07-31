@@ -150,8 +150,9 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\AddKeyword.cshtml" />
-    <Content Include="Views\Home\AddResource.cshtml" />
+    <Content Include="Views\Keyword\AddKeyword.cshtml" />
+    <Content Include="Views\Resource\AddResource.cshtml" />
+    <Content Include="Views\Resource\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -161,8 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Keyword\" />
-    <Folder Include="Views\Resource\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

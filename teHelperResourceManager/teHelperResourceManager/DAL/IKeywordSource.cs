@@ -12,9 +12,9 @@ namespace teHelperResourceManager.DAL
         List<Keywords> GetAllKeywords();
         List<Keywords> GetAllKeywordsForAResource(Resource r);
         bool SaveNewKeyword(Keywords newKeyword);
-        Keywords DoesKeywordAlreadyExist(string checkKeyword);
         bool AddKeywordsToOneResource(List<Keywords> kw, Resource r);
         bool DeleteKeywordFromResource(Keywords kw, Resource r);
         Keywords GetSingleKeyword(string kw);
+        bool UpdateKeywordsToOneResource(List<Keywords> newKeywords, Resource r);
     }
 }

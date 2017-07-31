@@ -2,14 +2,15 @@
 @model NewResourceKeywordViewModel
 
 @{
-    ViewBag.Title = "Add a New Resource";
+    ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row">
-    <div class="col-sm-6">
-        <h2>Add a New Resource</h2>
-        @using (Html.BeginForm("AddResource", "Home", FormMethod.Post))
+    <div class="col-xs-12">
+        <h2>Edit: @Model.newResource.ResourceTitle</h2>
+
+        @using (Html.BeginForm("Edit", "Resource", FormMethod.Post))
         {
             Html.AntiForgeryToken();
 
@@ -36,8 +37,9 @@
                 @Html.TextAreaFor(m => m.keywordsAsString, new { @class = "form-control", placeHolder = "Separate keywords with comma" })
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Keyword</button>
+            <button type="submit" class="btn btn-primary back-btn">Update Resource</button>
         }
+
+        <a class="btn btn-default" href="@Url.Action("Index", "Home")">Back</a>
     </div>
 </div>
-
