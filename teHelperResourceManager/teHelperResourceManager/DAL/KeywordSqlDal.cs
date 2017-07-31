@@ -13,6 +13,7 @@ namespace teHelperResourceManager.DAL
         private const string SQL_GetAllAlphabeticalKeywords = "SELECT * FROM Keywords ORDER BY Keyword ASC;";
         private const string SQL_SaveNewKeyword = "INSERT INTO Keywords VALUES (@keywordName);";
         private const string SQL_FindAllExistingKeywordMatches = "SELECT * FROM Keywords WHERE Keyword = @checkKeyword;";
+        private const string SQL_FindAllExistingKeywordMatchesById = "SELECT * FROM Keywords WHERE KeywordId = @kwId;";
         private const string SQL_DeleteResourceAndKeywordCombo = "DELETE FROM Keyword_Resource WHERE ResourceId = @resourceId AND KeywordId = @keywordId;";
         private const string SQL_AddKeywordToResource = "INSERT INTO Resource_Keyword VALUES (@rId, @kId);";
         private const string SQL_GetAllKeywordsForAResource = "SELECT Keywords.* FROM Resource_Keyword INNER JOIN Resources on Resource_Keyword.ResourceId = Resources.ResourceId INNER JOIN Keywords on Resource_Keyword.KeywordId = Keywords.KeywordId WHERE Resources.ResourceId = @resourceId;";
@@ -127,6 +128,25 @@ namespace teHelperResourceManager.DAL
                     conn.Open();
 
                     Keywords key = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatches, new { checkKeyword = kw }).FirstOrDefault();
+
+                    return key;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public Keywords GetSingleKeyword(int id)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    Keywords key = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatchesById, new { kwId = id }).FirstOrDefault();
 
                     return key;
                 }

@@ -138,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\KeywordAllResourcesViewModel.cs" />
     <Compile Include="Models\Keywords.cs" />
     <Compile Include="Models\NewResourceKeywordViewModel.cs" />
     <Compile Include="Models\Resource.cs" />
@@ -153,6 +154,7 @@
     <Content Include="Views\Keyword\AddKeyword.cshtml" />
     <Content Include="Views\Resource\AddResource.cshtml" />
     <Content Include="Views\Resource\Edit.cshtml" />
+    <Content Include="Views\Keyword\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

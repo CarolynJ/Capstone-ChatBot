@@ -49,5 +49,18 @@ namespace teHelperResourceManager.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult Detail(int id)
+        {
+            Keywords kw = keywordDal.GetSingleKeyword(id);
+
+            KeywordAllResourcesViewModel model = new KeywordAllResourcesViewModel()
+            {
+                AllResources = resourceDal.GetAllResourcesForAKeyword(kw),
+                Keyword = kw
+            };
+
+            return View("Detail", model);
+        }
     }
 }

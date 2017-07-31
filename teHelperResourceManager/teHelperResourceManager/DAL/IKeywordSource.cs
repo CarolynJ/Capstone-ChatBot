@@ -15,6 +15,7 @@ namespace teHelperResourceManager.DAL
         bool AddKeywordsToOneResource(List<Keywords> kw, Resource r);
         bool DeleteKeywordFromResource(Keywords kw, Resource r);
         Keywords GetSingleKeyword(string kw);
+        Keywords GetSingleKeyword(int id);
         bool UpdateKeywordsToOneResource(List<Keywords> newKeywords, Resource r);
     }
 }

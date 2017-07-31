@@ -1,0 +1,20 @@
+﻿@using teHelperResourceManager.Models;
+@model KeywordAllResourcesViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>@Model.Keyword.Keyword</h2>
+        <p><em>Showing all resources using the <strong>@Model.Keyword.Keyword</strong> keyword.</em></p>
+
+            @foreach (Resource r in Model.AllResources)
+            {
+                <p><a href="@Url.Action("Edit", "Resource", new { id = r.ResourceId })">@r.ResourceTitle</a></p>
+            }
+
+    </div>
+</div>
