@@ -125,7 +125,7 @@ namespace StudentChatBot.Dialogs
             var activity = await result;
             var userInput = activity.Text.ToString().ToLower();
 
-            if (userInput == "yes" || userInput == "y" || userInput == "ok")
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
             {
                 this.ShowOptions(context);
             }
