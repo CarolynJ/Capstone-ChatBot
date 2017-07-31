@@ -35,10 +35,6 @@ namespace StudentChatBot.Dialogs
             {
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
             }
-            else if (userInput.Contains("help"))
-            {
-                this.ShowOptions(context);
-            }
             else if (userInput.Contains("menu"))
             {
                 this.ShowOptions(context);
@@ -103,7 +99,7 @@ namespace StudentChatBot.Dialogs
 
                     case ExitOption:
                         await context.PostAsync("Alrighty, well is there anything else I can help you with?");
-                        context.Wait(Redirect);
+                        context.Done(true);
                         break;
                 }
             }
@@ -119,7 +115,8 @@ namespace StudentChatBot.Dialogs
         {
             var message = await result;
             await context.PostAsync("Anything else I can help you with?");
-            context.Wait(Redirect);
+            //context.Wait(Redirect);
+            context.Done(true);
 
         }
         private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
