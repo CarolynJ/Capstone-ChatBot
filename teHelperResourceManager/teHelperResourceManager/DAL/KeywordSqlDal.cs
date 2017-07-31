@@ -13,9 +13,11 @@ namespace teHelperResourceManager.DAL
         private const string SQL_GetAllAlphabeticalKeywords = "SELECT * FROM Keywords ORDER BY Keyword ASC;";
         private const string SQL_SaveNewKeyword = "INSERT INTO Keywords VALUES (@keywordName);";
         private const string SQL_FindAllExistingKeywordMatches = "SELECT * FROM Keywords WHERE Keyword = @checkKeyword;";
+        private const string SQL_FindAllExistingKeywordMatchesById = "SELECT * FROM Keywords WHERE KeywordId = @kwId;";
         private const string SQL_DeleteResourceAndKeywordCombo = "DELETE FROM Keyword_Resource WHERE ResourceId = @resourceId AND KeywordId = @keywordId;";
-        private const string SQL_AddKeywordToResource = "INSERT INTO Resource_Keyword VALUES(@ResourceId, @KeywordId);";
+        private const string SQL_AddKeywordToResource = "INSERT INTO Resource_Keyword VALUES (@rId, @kId);";
         private const string SQL_GetAllKeywordsForAResource = "SELECT Keywords.* FROM Resource_Keyword INNER JOIN Resources on Resource_Keyword.ResourceId = Resources.ResourceId INNER JOIN Keywords on Resource_Keyword.KeywordId = Keywords.KeywordId WHERE Resources.ResourceId = @resourceId;";
+        private const string SQL_DeleteAllReferencesToKeywordResourcePair = "DELETE FROM Resource_Keyword WHERE ResourceId = @resourceId;";
         private string connectionString;
 
         public KeywordSqlDal(string connectionString)
@@ -79,25 +81,6 @@ namespace teHelperResourceManager.DAL
             }
         }
 
-        public Keywords DoesKeywordAlreadyExist(string checkKeyword)
-        {
-            try
-            {
-                using(SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    Keywords kw = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatches, new { checkKeyword = checkKeyword }).FirstOrDefault();
-
-                    return kw;
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public List<Keywords> GetAllKeywords()
         {
             try
@@ -144,7 +127,26 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    Keywords key = conn.Query<Keywords>("SELECT * FROM Keywords WHERE Keywords.Keyword = @keyword;", new { keyword = kw }).FirstOrDefault();
+                    Keywords key = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatches, new { checkKeyword = kw }).FirstOrDefault();
+
+                    return key;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public Keywords GetSingleKeyword(int id)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    Keywords key = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatchesById, new { kwId = id }).FirstOrDefault();
 
                     return key;
                 }
@@ -163,9 +165,51 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    int rowsAffected = conn.Execute(SQL_SaveNewKeyword, new { keywordName = newKeyword.Keyword });
+                    bool keywordAlreadyExists = (conn.Query(SQL_FindAllExistingKeywordMatches, new { checkKeyword = newKeyword.Keyword }).ToList().Count > 0);
 
-                    if (rowsAffected > 0)
+                    if (!keywordAlreadyExists)
+                    {
+                        int rowsAffected = conn.Execute(SQL_SaveNewKeyword, new { keywordName = newKeyword.Keyword });
+
+                        if (rowsAffected > 0)
+                        {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public bool UpdateKeywordsToOneResource(List<Keywords> newKeywords, Resource r)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    
+                    // delete all Resource_Keyword references to that resource first, and we'll add them back in
+                    conn.Execute(SQL_DeleteAllReferencesToKeywordResourcePair, new { resourceId = r.ResourceId });
+                    
+                    int rowsAffected = 0;
+
+                    foreach (Keywords k in newKeywords)
+                    {
+                        int oneSuccessfulRow = conn.Execute(SQL_AddKeywordToResource, new { rId = r.ResourceId, kId = k.KeywordId });
+
+                        if (oneSuccessfulRow > 0)
+                        {
+                            rowsAffected++;
+                        }
+                    }
+
+                    if (rowsAffected == newKeywords.Count)
                     {
                         return true;
                     }

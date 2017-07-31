@@ -21,3 +21,15 @@ li {
     border-radius: 15px;
     margin: 20px 0 40px 0;
 }
+
+.back-btn {
+    margin-top:20px;
+}
+
+.keyword-label {
+    padding: 5px 10px;
+    margin: 2px;
+    line-height: 230%;
+    background-color: #eee;
+    border-radius: 15px;
+}

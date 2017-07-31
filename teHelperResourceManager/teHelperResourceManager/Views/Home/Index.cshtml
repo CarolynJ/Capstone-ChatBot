@@ -9,9 +9,19 @@
 
 <div class="row">
     <div class="col-xs-12">
-        @if(TempData["NewKeyword_Success"] != null)
+        @if (TempData["NewKeyword_Success"] != null)
         {
             <p class="centered success-message">Keyword has been added!</p>
+        }
+
+        @if (TempData["NewResource_Success"] != null)
+        {
+            <p class="centered success-message">Resource has been added!</p>
+        }
+
+        @if (TempData["UpdateResource_Success"] != null)
+        {
+            <p class="centered success-message">Resource has been updated!</p>
         }
 
         <h2>teHelper Existing Resources</h2>
@@ -30,11 +40,11 @@
                 if (!kvp.Key.PathwayResource)
                 {
                     <tr style="border: 1pt solid black;">
-                        <td>@kvp.Key.ResourceTitle</td>
+                        <td><a href="@Url.Action("Edit", "Resource", new { id = kvp.Key.ResourceId })">@kvp.Key.ResourceTitle</a></td>
                         <td>
                             @foreach (Keywords kw in kvp.Value)
-                    {
-                                <span>@kw.Keyword</span>
+                            {
+                                <a class="keyword-label" href="@Url.Action("Detail", "Keyword", new { id = kw.KeywordId })">@kw.Keyword</a>
                             }
                         </td>
                     </tr>
@@ -57,13 +67,15 @@
                 if (kvp.Key.PathwayResource)
                 {
                     <tr style="border: 1pt solid black;">
-                        <td>@kvp.Key.ResourceTitle</td>
+                        <td><a href="@Url.Action("Edit", "Resource", new { id = kvp.Key.ResourceId })">@kvp.Key.ResourceTitle</a></td>
                         <td>
-                            @foreach (Keywords kw in kvp.Value)
-                    {
-                                <span>@kw.Keyword</span>
+                            @foreach(Keywords kw in kvp.Value)
+                            {
+                                <a class="keyword-label" href="@Url.Action("Detail", "Keyword", new { id = kw.KeywordId })">@kw.Keyword</a>
                             }
+
                         </td>
+
                     </tr>
                 }
             }
@@ -71,4 +83,3 @@
         </table>
     </div>
 </div>
-

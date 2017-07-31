@@ -1,0 +1,45 @@
+﻿@using teHelperResourceManager.Models;
+@model NewResourceKeywordViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-6">
+        <h2>Edit: @Model.newResource.ResourceTitle</h2>
+
+        @using (Html.BeginForm("Edit", "Resource", FormMethod.Post))
+        {
+            Html.AntiForgeryToken();
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.newResource.ResourceTitle)
+                @Html.TextBoxFor(m => m.newResource.ResourceTitle, new { @class = "form-control", placeHolder = "Enter new resource title" })
+                @Html.ValidationMessageFor(m => m.newResource.ResourceTitle)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.newResource.ResourceContent)
+                @Html.TextBoxFor(m => m.newResource.ResourceContent, new { @class = "form-control", placeHolder = "Link to resource" })
+                @Html.ValidationMessageFor(m => m.newResource.ResourceContent)
+            </div>
+
+            <div class="form-group">
+                @Html.Label("pathwayResource", "Type of Resource")
+                @Html.RadioButtonFor(m => m.newResource.PathwayResource, true) Pathway Resource
+                @Html.RadioButtonFor(m => m.newResource.PathwayResource, false) Technical Resource
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.keywordsAsString)
+                @Html.TextAreaFor(m => m.keywordsAsString, new { @class = "form-control", placeHolder = "Separate keywords with comma" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Resource</button>
+        }
+
+        <a class="btn btn-default back-btn" href="@Url.Action("Index", "Home")">Back to Home</a>
+    </div>
+</div>
