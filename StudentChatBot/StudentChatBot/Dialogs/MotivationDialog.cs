@@ -40,7 +40,6 @@ namespace StudentChatBot.Dialogs
             Attachment attachment = new Attachment();
             attachment.ContentType = "image/png";
             attachment.ContentUrl = motive.ImageCode;
-
             var message = context.MakeMessage();
             message.Text = motive.Quote;
             
@@ -49,8 +48,30 @@ namespace StudentChatBot.Dialogs
             await context.PostAsync(message);
             await context.PostAsync(motive.QuoteSource);
 
+            await context.PostAsync("Would you like another quote?");
 
-            context.Done(true);
+            context.Wait(Continue);
+
+        }
+
+        private async Task Continue(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var nextActivity = await result;
+
+            var response = nextActivity.Text.ToString().ToLower();
+
+            if (response == "yes" || response == "y" || response == "sure" || response == "fine")
+            {
+                IAwaitable<IMessageActivity> forward = result;
+
+                await MessageReceivedAsync(context, forward);
+            }
+            else
+            {
+                context.Done(true);
+            }
+
         }
 
         private void FetchMotivationList()
