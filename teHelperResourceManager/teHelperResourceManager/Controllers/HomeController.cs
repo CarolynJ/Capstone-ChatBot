@@ -42,5 +42,71 @@ namespace teHelperResourceManager.Controllers
         {
             return RedirectToAction("Index");
         }
+
+        public ActionResult AddKeyword()
+        {
+            Keywords model = new Keywords();
+
+            return View("AddKeyword", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddKeyword(Keywords newKeyword)
+        {
+            if (newKeyword == null)
+            {
+                return View("AddKeyword", newKeyword);
+            }
+
+            bool successfullyAddedKeyword = keywordDal.SaveNewKeyword(newKeyword);
+
+            if (successfullyAddedKeyword)
+            {
+                TempData["NewKeyword_Success"] = true;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult AddResource()
+        {
+            NewResourceKeywordViewModel model = new NewResourceKeywordViewModel();
+
+            return View("AddResource", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddResource(NewResourceKeywordViewModel model)
+        {
+            Resource r = new Resource()
+            {
+                ResourceContent = model.newResource.ResourceContent,
+                ResourceTitle = model.newResource.ResourceTitle,
+                PathwayResource = model.newResource.PathwayResource
+            };
+
+            List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
+            List<Keywords> newKeywords = new List<Keywords>();
+
+            foreach(string kw in newKeywordStrings)
+            {
+                if (keywordDal.DoesKeywordAlreadyExist(kw) == null)
+                {
+                    keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw });
+                }
+
+                newKeywords.Add(keywordDal.DoesKeywordAlreadyExist(kw));
+            }
+
+            bool successfullyAddedResource = keywordDal.AddKeywordsToOneResource(newKeywords, r);
+
+            if (successfullyAddedResource)
+            {
+                TempData["NewResource_Success"] = true;
+            }
+
+            return RedirectToAction("Index", "Home");
+
+        }
     }
 }

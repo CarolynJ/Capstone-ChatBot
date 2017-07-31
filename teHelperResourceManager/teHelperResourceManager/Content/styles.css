@@ -1,4 +1,9 @@
-﻿ul {
+﻿body {
+    font-size: 16px;
+    line-height: 170%;
+}
+
+ul {
     list-style: none;
     padding: 0;
     margin-top: 25px;
@@ -8,4 +13,11 @@
 li {
     display: inline-block;
     margin-right: 30px;
+}
+
+.success-message {
+    background-color: #d0edbf;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0 40px 0;
 }

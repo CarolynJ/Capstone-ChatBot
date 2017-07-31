@@ -137,6 +137,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Keywords.cs" />
+    <Compile Include="Models\NewResourceKeywordViewModel.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\ResourceKeywordViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -147,6 +148,8 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\AddKeyword.cshtml" />
+    <Content Include="Views\Home\AddResource.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

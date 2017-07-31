@@ -79,7 +79,7 @@ namespace teHelperResourceManager.DAL
             }
         }
 
-        public bool DoesKeywordAlreadyExist(string checkKeyword)
+        public Keywords DoesKeywordAlreadyExist(string checkKeyword)
         {
             try
             {
@@ -87,13 +87,9 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    int rowsReturned = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatches, new { checkKeyword = checkKeyword }).ToList().Count;
+                    Keywords kw = conn.Query<Keywords>(SQL_FindAllExistingKeywordMatches, new { checkKeyword = checkKeyword }).FirstOrDefault();
 
-                    if (rowsReturned > 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return kw;
                 }
             }
             catch
@@ -132,6 +128,25 @@ namespace teHelperResourceManager.DAL
                     List<Keywords> allKeywordsForAResource = conn.Query<Keywords>(SQL_GetAllKeywordsForAResource, new { resourceId = r.ResourceId }).ToList();
 
                     return allKeywordsForAResource;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public Keywords GetSingleKeyword(string kw)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    Keywords key = conn.Query<Keywords>("SELECT * FROM Keywords WHERE Keywords.Keyword = @keyword;", new { keyword = kw }).FirstOrDefault();
+
+                    return key;
                 }
             }
             catch

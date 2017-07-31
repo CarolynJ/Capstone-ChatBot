@@ -1,0 +1,26 @@
+﻿@using teHelperResourceManager.Models;
+@model Keywords
+
+@{
+    ViewBag.Title = "Add a New Keyword";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Add a New Keyword</h2>
+        @using(Html.BeginForm("AddKeyword", "Home", FormMethod.Post))
+        {
+            Html.AntiForgeryToken();
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Keyword)
+                @Html.TextBoxFor(m => m.Keyword, new { @class = "form-control", placeHolder = "Enter new keyword name" })
+                @Html.ValidationMessageFor(m => m.Keyword)
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Keyword</button>
+        }
+    </div>
+</div>
+
