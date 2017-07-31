@@ -52,12 +52,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("JavaScript");
                     string keyword = "javascript";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    Resource link = dal.GetResource(keyword);
+                    List<Resource> resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -70,12 +73,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Learn to animate your website");
                     keyword = "JQuery";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -87,12 +93,16 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("See what you can do with APIs");
                     keyword = "api";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+
+                        }
                     }
                     else
                     {

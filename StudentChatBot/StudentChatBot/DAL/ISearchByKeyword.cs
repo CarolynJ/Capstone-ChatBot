@@ -9,6 +9,6 @@ namespace StudentChatBot.DAL
 {
     public interface ISearchByKeyword
     {
-        Resource GetResource(string keyword);
+        List<Resource> GetResources(string keyword);
     }
 }

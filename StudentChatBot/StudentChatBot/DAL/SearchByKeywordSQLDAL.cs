@@ -11,16 +11,16 @@ namespace StudentChatBot.DAL
     public class SearchByKeywordSQLDAL : ISearchByKeyword
     {
         private string connectionString;
-        private const string SQL_GetResource = "Select * from Resources inner join Resource_Keyword on Resources.ResourceID = Resource_Keyword.ResourceID inner join Keywords on Keywords.KeywordId = Resource_Keyword.KeywordId where Keywords.Keyword = @keyword;";
+        private const string SQL_GetResource = "Select top 5 * from Resources inner join Resource_Keyword on Resources.ResourceID = Resource_Keyword.ResourceID inner join Keywords on Keywords.KeywordId = Resource_Keyword.KeywordId where Keywords.Keyword = @keyword;";
 
         public SearchByKeywordSQLDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public Resource GetResource(string keyword)
+        public List<Resource> GetResources(string keyword)
         {
-            Resource r = new Resource();
+            List<Resource> r = new List<Resource>();
 
             try
             {
@@ -28,7 +28,7 @@ namespace StudentChatBot.DAL
                 {
                     conn.Open();
 
-                    r = conn.QueryFirstOrDefault<Resource>(SQL_GetResource, new { @keyword = keyword });
+                    r = conn.Query<Resource>(SQL_GetResource, new { @keyword = keyword }).ToList();
                 }
 
                 return r;

@@ -54,12 +54,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("You can read up on git");
                     string keyword = "git";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    Resource link = dal.GetResource(keyword);
+                    List<Resource> resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -72,12 +75,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Need some help with variables?");
                     keyword = "variables";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -89,12 +95,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Object Oriented programming (OOP)");
                     keyword = "oop";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -106,12 +115,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Classes in C# are key to understand");
                     keyword = "classes";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -122,12 +134,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Learn to test your own code.");
                     keyword = "testing";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {

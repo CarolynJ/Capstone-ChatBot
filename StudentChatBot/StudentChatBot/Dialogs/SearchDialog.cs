@@ -48,11 +48,15 @@ namespace StudentChatBot.Dialogs
                     string keyword = data.entities[0].entity;
 
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    Resource link = dal.GetResource(keyword);
-                    if(link != null)
+                    List<Resource> resources = dal.GetResources(keyword);
+
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -61,8 +65,6 @@ namespace StudentChatBot.Dialogs
                 }
             }
         }
-
-
 
         private async Task<LuisData> LuisDecipher(string text)
         {
@@ -74,11 +76,11 @@ namespace StudentChatBot.Dialogs
                 string APIRequest = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/a6222f36-ec66-4c1d-bad1-f579d8016a0d?subscription-key=7e7ec5656b324a50bacf7929278305d9&timezoneOffset=0&verbose=true&q=" + text;
                 HttpResponseMessage msg = await client.GetAsync(APIRequest);
 
-                if(msg.IsSuccessStatusCode)
+                if (msg.IsSuccessStatusCode)
                 {
                     var jsonDataResponse = await msg.Content.ReadAsStringAsync();
                     data = JsonConvert.DeserializeObject<LuisData>(jsonDataResponse);
-                }         
+                }
             }
 
             return data;

@@ -52,12 +52,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Http internet basics");
                     string keyword = "http";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    Resource link = dal.GetResource(keyword);
+                    List<Resource> resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -70,12 +73,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("In the end you want a good user experience");
                     keyword = "css";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -87,12 +93,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Model, View, Controllers");
                     keyword = "mvc";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources.Count > 0 )
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {

@@ -56,12 +56,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("resume option selected");
                     string keyword = "resume";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    Resource link = dal.GetResource(keyword);
+                    List<Resource> resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources != null)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach(Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -74,12 +77,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("elevator pitch selected");
                     keyword = "elevator";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources != null)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -91,12 +97,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("interviewing help selected");
                     keyword = "interview";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources != null)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -108,12 +117,15 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("you need help with linkedin");
                     keyword = "linkedin";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources != null)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
@@ -124,12 +136,16 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("view upcoming pathway events");
                     keyword = "events";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    link = dal.GetResource(keyword);
+                    resources = dal.GetResources(keyword);
 
-                    if (link != null)
+                    if (resources != null)
                     {
-                        await context.PostAsync(link.ResourceTitle);
-                        await context.PostAsync(link.ResourceContent);
+                        foreach (Resource r in resources)
+                        {
+
+                            await context.PostAsync(r.ResourceTitle);
+                            await context.PostAsync(r.ResourceContent);
+                        }
                     }
                     else
                     {
