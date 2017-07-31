@@ -32,19 +32,19 @@ namespace StudentChatBot.Dialogs
         {
             await context.PostAsync("Looking for resources to study Module 1 topics?");
 
-            this.ShowPathwayMenu(context);
+            this.ShowMod1Menu(context);
         }
 
-        private void ShowPathwayMenu(IDialogContext context)
+        private void ShowMod1Menu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
+            PromptDialog.Choice(context, this.ResumeAfterMod1Menu, new List<string>()
                 { GitOption, VariablesOption, ObjectsOption, ClassesOption, TestingOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterMod1Menu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
@@ -83,7 +83,7 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-                    break;
+                   break;
 
                 case ObjectsOption:
                     await context.PostAsync("Object Oriented programming (OOP)");

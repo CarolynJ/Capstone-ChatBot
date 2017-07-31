@@ -14,7 +14,7 @@ namespace StudentChatBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Welcome to Josh's White Board Simulator! Enter a sentence or a question and see how Josh would write it on the board.");
+            await context.PostAsync("Welcome to Josh's White Board Simulator! Enter a sentence or a question and see how Josh would write it on the board. (type 'exit' to quit)");
 
             context.Wait(MessageReceivedAsync);
 
@@ -42,8 +42,7 @@ namespace StudentChatBot.Dialogs
                 Output.Add(newWord);
             }
             await context.PostAsync(string.Join(" ", Output));
-            await context.PostAsync("Would you like to try it again?");
-
+           // await context.PostAsync("Do you have more text for the white board?");
             context.Wait(Continue);
 
         }
@@ -53,16 +52,18 @@ namespace StudentChatBot.Dialogs
 
             var nextActivity = await result;
 
-            var response = nextActivity.Text.ToString();
+            var response = nextActivity.Text.ToString().ToLower();
 
-            if (response == "yes" || response == "y")
-            {
-
-                context.Wait(MessageReceivedAsync);
-            }
-            else if (response == "no" || response == "n" || response == "  ")
+            if (response == "menu" || response == "exit" || response == "no" || response == "n")
             {
                 context.Done(true);
+
+            }
+            else 
+            {
+                IAwaitable<IMessageActivity> forward = result;
+                
+                await MessageReceivedAsync(context, forward);
             }
                 
         }

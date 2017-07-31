@@ -14,7 +14,7 @@ namespace StudentChatBot.Dialogs
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("teHelper Bot is here to help! " +
-                "At anytime you can type 'help' or 'exit' to return to the main menu or to start over.  " +
+                "At anytime you can type 'menu' or 'exit' to return to the main menu or to start over.  " +
                 "If you are looking for something in particular, enter 'search' and I can help you find whatever you are looking for.  " +
                 "If you want to chat with Josh, type 'Josh' (he's always available to chat).");
 
@@ -32,10 +32,15 @@ namespace StudentChatBot.Dialogs
             {
                 context.Call(new JoshWhiteBoardDialog(), this.ResumeAfterHelpDialog);
             }
-            
+
             else if (userInput.Contains("search"))
             {
                 context.Call(new SearchDialog(), this.ResumeAfterHelpDialog);
+            }
+
+            else if (userInput.Contains("exit") || userInput.Contains("menu"))
+            {
+                context.Done(true);
             }
             else
             {

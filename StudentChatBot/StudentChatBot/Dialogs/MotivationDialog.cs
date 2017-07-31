@@ -39,17 +39,39 @@ namespace StudentChatBot.Dialogs
 
             Attachment attachment = new Attachment();
             attachment.ContentType = "image/png";
-            attachment.ContentUrl = "https://v.cdn.vine.co/r/avatars/95538045131174948715346251776_1acd78c2a11.3.4.jpg?versionId=RO0agMbPKKLpAx_TzpUIo6ttlX44Ptfp";
-
+            attachment.ContentUrl = motive.ImageCode;
             var message = context.MakeMessage();
             message.Text = motive.Quote;
+            
             message.Attachments.Add(attachment);
 
             await context.PostAsync(message);
             await context.PostAsync(motive.QuoteSource);
 
+            await context.PostAsync("Would you like another quote?");
 
-            context.Done(true);
+            context.Wait(Continue);
+
+        }
+
+        private async Task Continue(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var nextActivity = await result;
+
+            var response = nextActivity.Text.ToString().ToLower();
+
+            if (response == "yes" || response == "y" || response == "sure" || response == "fine")
+            {
+                IAwaitable<IMessageActivity> forward = result;
+
+                await MessageReceivedAsync(context, forward);
+            }
+            else
+            {
+                context.Done(true);
+            }
+
         }
 
         private void FetchMotivationList()
