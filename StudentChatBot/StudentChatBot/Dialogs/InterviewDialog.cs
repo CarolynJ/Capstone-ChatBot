@@ -16,47 +16,47 @@ using System.Web.Services.Description;
 namespace StudentChatBot.Dialogs
 {
     [Serializable]
-    public class PathwayDialog : IDialog<object>
+    public class InterviewDialog : IDialog<object>
     {
 
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
-        private const string PWResumeOption = "Résumé";
-        private const string PWElevatorPitchOption = "Elevator Pitch";
-        private const string PWInterviewOption = "Interviewing";
-        private const string PWLinkedInOption = "LinkedIn";
-        private const string PWUpcomingEventsOption = "Upcoming Pathway Events";
-        private const string OtherOption = "Other";
+        private const string PracticeQuestionsOption = "Practice Questions";
+        private const string PhoneOption = "Phone Interviews";
+        private const string BehavioralOption = "Behavioral Interview Preparation";
+        private const string FollowUpOption = "Interview Follow Up";
+        private const string PreparationOption = "Preparation";
         private const string ExitOption = "Exit";
 
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Get your Pathway Resources here!");
+            await context.PostAsync("We have a lot of resources on interviewing.");
 
-            this.ShowPathwayMenu(context);
+            this.ShowInterviewMenu(context);
         }
 
-        private void ShowPathwayMenu(IDialogContext context)
+        private void ShowInterviewMenu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
-                { PWResumeOption, PWElevatorPitchOption, PWInterviewOption, PWLinkedInOption, PWUpcomingEventsOption, OtherOption, ExitOption },
-                "Do any of these options suit your fancy?",
+            PromptDialog.Choice(context, this.ResumeAfterInterviewMenu, new List<string>()
+                { PracticeQuestionsOption, PhoneOption, BehavioralOption, FollowUpOption, PreparationOption, ExitOption },
+                " ",
                 "Hmm, I didn't understand that, try again.",
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterInterviewMenu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
             switch (optionSelected)
             {
-                case PWResumeOption:
-                    await context.PostAsync("resume option selected");
-                    string keyword = "resume";
+                case PracticeQuestionsOption:
+                    await context.PostAsync("You can get a lot of practice with these questions");
+                    string keyword = "questions";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     List<Resource> resources = dal.GetResources(keyword);
+                   
 
                     if (resources.Count > 0)
                     {
@@ -78,9 +78,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case PWElevatorPitchOption:
-                    await context.PostAsync("elevator pitch selected");
-                    keyword = "elevator";
+                case PhoneOption:
+                    await context.PostAsync("Here are some tips to prepare for phone interviews");
+                    keyword = "phone";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
@@ -104,14 +104,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case PWInterviewOption:
-                    context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
-                   // await ResumeAfterOptionDialog(context, result);
-                    break;
-
-                case PWLinkedInOption:
-                    await context.PostAsync("you need help with linkedin");
-                    keyword = "linkedin";
+                case BehavioralOption:
+                    await context.PostAsync("Use the STAR method to prepare stellar answers!");
+                    keyword = "behavioral";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
@@ -135,9 +130,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case PWUpcomingEventsOption:
-                    await context.PostAsync("view upcoming pathway events");
-                    keyword = "events";
+                case FollowUpOption:
+                    await context.PostAsync("Remeber to follow up");
+                    keyword = "follow up";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
@@ -161,9 +156,32 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterPathwayDialog);
+                case PreparationOption:
+                    await context.PostAsync("Interview Preparation");
+                    keyword = "preparation";
+                    dal = new SearchByKeywordSQLDAL(connectionString);
+                    resources = dal.GetResources(keyword);
+
+                    if (resources.Count > 0)
+                    {
+                        foreach (Resource r in resources)
+                        {
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
+                        }
+                    }
+                    else
+                    {
+                        await context.PostAsync("Sorry that did not return a resource");
+                    }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
+
 
                 case ExitOption:
                     context.Done(true);
@@ -171,7 +189,7 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        public async Task ResumeAfterPathwayDialog(IDialogContext context, IAwaitable<object> result)
+        public async Task ResumeAfterInterviewDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource to improve your job search.");
             context.Done(true);
@@ -180,7 +198,7 @@ namespace StudentChatBot.Dialogs
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync("Would you like to browse for another pathway resource?");
+            await context.PostAsync("Would you like to browse for another resource on interviewing?");
             context.Wait(Redirect);
 
         }
@@ -193,7 +211,7 @@ namespace StudentChatBot.Dialogs
 
             if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
             {
-                this.ShowPathwayMenu(context);
+                this.ShowInterviewMenu(context);
             }
             else
             {
