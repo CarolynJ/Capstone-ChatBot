@@ -51,10 +51,33 @@ namespace teHelperResourceManager.DAL
             }
         }
 
-        public bool FindMatchingLinksToResources(string resourceLink)
+        public bool DeleteResource(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    int rowsAffected = conn.Execute("DELETE FROM Resource_Keyword WHERE ResourceId = @resourceId; DELETE FROM Resources WHERE ResourceId = @resourceId;", new { resourceId = id });
+                    
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
+
+        //public bool FindMatchingLinksToResources(string resourceLink)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<Resource> GetAllResources()
         {

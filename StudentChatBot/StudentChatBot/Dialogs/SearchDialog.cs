@@ -54,8 +54,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach(Resource r in resources)
                         {
-                            await context.PostAsync(r.ResourceTitle);
-                            await context.PostAsync(r.ResourceContent);
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
