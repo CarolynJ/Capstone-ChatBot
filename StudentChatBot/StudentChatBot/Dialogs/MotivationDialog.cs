@@ -5,6 +5,7 @@ using StudentChatBot.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -46,6 +47,7 @@ namespace StudentChatBot.Dialogs
             message.Attachments.Add(attachment);
 
             await context.PostAsync(message);
+            Thread.Sleep(5000);
             await context.PostAsync(motive.QuoteSource);
 
             await context.PostAsync("Would you like another quote?");
