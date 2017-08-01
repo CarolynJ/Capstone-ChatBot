@@ -67,6 +67,7 @@ namespace StudentChatBot.Dialogs
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
+                        await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
@@ -84,7 +85,11 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource");
+                        string title = "Variables in C#";
+                        string content = "http://lmgtfy.com/?q=C%23+variables";
+                        var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync(markdownContent);
+                        await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
@@ -103,6 +108,7 @@ namespace StudentChatBot.Dialogs
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
+                        await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
@@ -121,6 +127,7 @@ namespace StudentChatBot.Dialogs
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
+                        await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
@@ -139,6 +146,7 @@ namespace StudentChatBot.Dialogs
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
+                        await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
