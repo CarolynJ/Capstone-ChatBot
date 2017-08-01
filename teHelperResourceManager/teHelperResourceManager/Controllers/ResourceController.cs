@@ -109,10 +109,14 @@ namespace teHelperResourceManager.Controllers
             }
 
             bool successfullyUpdatedResourceKeywords = keywordDal.UpdateKeywordsToOneResource(newKeywords, r); // returns true if saving to Resource_Keyword db is successful
-
+            
             if (successfullyUpdatedResource && successfullyUpdatedResourceKeywords)
             {
                 TempData["UpdateResource_Success"] = true;
+            }
+            else
+            {
+                TempData["UpdateResource_Success"] = false;
             }
 
             return RedirectToAction("Index", "Home");

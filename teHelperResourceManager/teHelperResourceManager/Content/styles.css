@@ -15,11 +15,18 @@ li {
     margin-right: 30px;
 }
 
-.success-message {
-    background-color: #d0edbf;
+.success-message, .failure-message {
     padding: 20px;
     border-radius: 15px;
     margin: 20px 0 40px 0;
+}
+
+.success-message {
+    background-color: #d0edbf;
+}
+
+.failure-message {
+    background-color: #fda8a8;
 }
 
 .back-btn {

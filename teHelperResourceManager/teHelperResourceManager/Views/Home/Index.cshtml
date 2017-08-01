@@ -9,19 +9,31 @@
 
 <div class="row">
     <div class="col-xs-12">
-        @if (TempData["NewKeyword_Success"] != null)
+        @if (TempData["NewKeyword_Success"] as Boolean? == true)
         {
             <p class="centered success-message">Keyword has been added!</p>
         }
+        else if (TempData["NewKeyword_Success"] as Boolean? == false)
+        {
+            <p class="centered failure-message">We weren't able to add your keyword, please try again.</p>
+        }
 
-        @if (TempData["NewResource_Success"] != null)
+        @if (TempData["NewResource_Success"] as Boolean? == true)
         {
             <p class="centered success-message">Resource has been added!</p>
         }
+        else if (TempData["NewResource_Success"] as Boolean? == false)
+        {
+            <p class="centered failure-message">We weren't able to add your resource, please try again.</p>
+        }
 
-        @if (TempData["UpdateResource_Success"] != null)
+        @if (TempData["UpdateResource_Success"] as Boolean? == true)
         {
             <p class="centered success-message">Resource has been updated!</p>
+        }
+        else if (TempData["UpdateResource_Success"] as Boolean? == false)
+        {
+            <p class="centered failure-message">We weren't able to update your resource, please try again.</p>
         }
 
         <h2>teHelper Existing Resources</h2>
