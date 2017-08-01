@@ -28,6 +28,8 @@ namespace StudentChatBot.Dialogs
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
+        private List<Resource> AllResources { get; set; } = new List<Resource>();
+
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("Looking for resources to study Module 1 topics?");
@@ -54,18 +56,13 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("You can read up on git");
                     string keyword = "git";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    List<Resource> resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
 
-                            await context.PostAsync(markdownContent);
-                        }
                     }
                     else
                     {
@@ -80,18 +77,12 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Need some help with variables?");
                     keyword = "variables";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
@@ -106,18 +97,12 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Object Oriented programming (OOP)");
                     keyword = "oop";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
@@ -132,18 +117,12 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Classes in C# are key to understand");
                     keyword = "classes";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
@@ -158,18 +137,12 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Learn to test your own code.");
                     keyword = "testing";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
@@ -191,6 +164,45 @@ namespace StudentChatBot.Dialogs
 
            
         }
+
+        public async Task HowManyResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var activity = await result;
+            var userInput = activity.Text.ToString();
+            int userCount = 0;
+            Int32.TryParse(userInput, out userCount);
+            if (userCount <= 0 || userCount > this.AllResources.Count)
+            {
+                await context.PostAsync("That was not a valid response, all available resources will be shown");
+                await AllResults(context, result);
+            }
+            else
+            {
+                for (int i = 0; i < userCount; i++)
+                {
+                    string title = AllResources[i].ResourceTitle.ToString();
+                    string content = AllResources[i].ResourceContent.ToString();
+                    var markdownContent = $"[{title}]({content})";
+
+                    await context.PostAsync(markdownContent);
+                }
+                await ResumeAfterOptionDialog(context, result);
+            }
+        }
+
+        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            foreach (Resource r in this.AllResources)
+            {
+                string title = r.ResourceTitle.ToString();
+                string content = r.ResourceContent.ToString();
+                var markdownContent = $"[{title}]({content})";
+
+                await context.PostAsync(markdownContent);
+            }
+            await ResumeAfterOptionDialog(context, result);
+        }
+
 
         private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
