@@ -23,6 +23,7 @@ namespace StudentChatBot.Dialogs
         private const string AuthenticationOption = "Authentication";
         private const string AuthorizationOption = "Authorization";
         private const string SqlInjectionOption = "SQL Injection";
+        private const string XSSOption = "Cross site scripting xss";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
@@ -36,7 +37,7 @@ namespace StudentChatBot.Dialogs
         private void ShowModFiveMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterModFiveMenu, new List<string>()
-                { AuthenticationOption, AuthorizationOption, SqlInjectionOption, OtherOption, ExitOption },
+                { AuthenticationOption, AuthorizationOption, SqlInjectionOption, XSSOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
@@ -103,6 +104,32 @@ namespace StudentChatBot.Dialogs
                 case SqlInjectionOption:
                     await context.PostAsync("Learn about destruction via SQL injection");
                     keyword = "sqlinjection";
+                    dal = new SearchByKeywordSQLDAL(connectionString);
+                    resources = dal.GetResources(keyword);
+
+                    if (resources.Count > 0)
+                    {
+                        foreach (Resource r in resources)
+                        {
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
+                        }
+                    }
+                    else
+                    {
+                        await context.PostAsync("Sorry that did not return a resource");
+                    }
+
+                    await ResumeAfterOptionDialog(context, result);
+
+                    break;
+
+                case XSSOption:
+                    await context.PostAsync("Learn about cross site scripting");
+                    keyword = "xss";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 

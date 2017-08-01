@@ -22,7 +22,6 @@ namespace StudentChatBot.Dialogs
 
         private const string JavaScriptOption = "JavaScript";
         private const string JQueryOption = "JQuery";
-        private const string APIOption = "API";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
@@ -36,7 +35,7 @@ namespace StudentChatBot.Dialogs
         private void ShowModFourMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterModFourMenu, new List<string>()
-                { JavaScriptOption, JQueryOption, APIOption, OtherOption, ExitOption },
+                { JavaScriptOption, JQueryOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
@@ -99,32 +98,7 @@ namespace StudentChatBot.Dialogs
                     await ResumeAfterOptionDialog(context, result);
 
                     break;
-
-                case APIOption:
-                    await context.PostAsync("See what you can do with APIs");
-                    keyword = "api";
-                    dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
-
-                    if (resources.Count > 0)
-                    {
-                        foreach (Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
-                    }
-                    else
-                    {
-                        await context.PostAsync("Sorry that did not return a resource");
-                    }
-
-                    await ResumeAfterOptionDialog(context, result);
-
-                    break;
+   
 
                 case OtherOption:
                     context.Call(new SearchDialog(), this.ResumeAfterOtherOptionDialog);
