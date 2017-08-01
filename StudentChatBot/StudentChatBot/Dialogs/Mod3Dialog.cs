@@ -22,7 +22,7 @@ namespace StudentChatBot.Dialogs
 
         private const string HttpOption = "Http";
         private const string CSSOption = "CSS";
-        private const string MVCOption = "MVC";
+        // private const string MVCOption = "MVC";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
@@ -36,7 +36,7 @@ namespace StudentChatBot.Dialogs
         private void ShowModThreeMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterModThreeMenu, new List<string>()
-                { HttpOption, CSSOption, MVCOption, OtherOption, ExitOption },
+                { HttpOption, CSSOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
@@ -77,32 +77,6 @@ namespace StudentChatBot.Dialogs
                 case CSSOption:
                     await context.PostAsync("In the end you want a good user experience");
                     keyword = "css";
-                    dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
-
-                    if (resources.Count > 0)
-                    {
-                        foreach (Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
-                    }
-                    else
-                    {
-                        await context.PostAsync("Sorry that did not return a resource");
-                    }
-
-                    await ResumeAfterOptionDialog(context, result);
-
-                    break;
-
-                case MVCOption:
-                    await context.PostAsync("Model, View, Controllers");
-                    keyword = "mvc";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
