@@ -10,7 +10,7 @@ namespace teHelperResourceManager.DAL
     {
         List<Resource> GetAllResources();
         //bool FindMatchingLinksToResources(string resourceLink);
-        bool AddNewResource(Resource newResource);
+        int AddNewResource(Resource newResource);
         List<Resource> GetAllResourcesForAKeyword(Keywords kw);
         Resource GetResource(int resourceId);
         Resource GetResource(string resourceName);

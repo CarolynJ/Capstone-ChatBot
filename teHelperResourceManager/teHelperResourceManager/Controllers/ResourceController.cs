@@ -42,21 +42,29 @@ namespace teHelperResourceManager.Controllers
                 PathwayResource = model.newResource.PathwayResource
             };
 
-            List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
-            List<Keywords> newKeywords = new List<Keywords>();
+            int newResourceId = resourceDal.AddNewResource(r);
+            r.ResourceId = newResourceId;
 
-            foreach (string kw in newKeywordStrings)
+            bool successfullyAddedResource = true;
+
+            if (model.keywordsAsString != null)
             {
-                if (keywordDal.GetSingleKeyword(kw) == null)
+                List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
+                List<Keywords> newKeywords = new List<Keywords>();
+
+                foreach (string kw in newKeywordStrings)
                 {
-                    keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw });
+                    if (keywordDal.GetSingleKeyword(kw) == null)
+                    {
+                        keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw });
+                    }
+
+                    newKeywords.Add(keywordDal.GetSingleKeyword(kw));
                 }
 
-                newKeywords.Add(keywordDal.GetSingleKeyword(kw));
+                successfullyAddedResource = keywordDal.AddKeywordsToOneResource(newKeywords, r);
             }
-
-            bool successfullyAddedResource = keywordDal.AddKeywordsToOneResource(newKeywords, r);
-
+            
             if (successfullyAddedResource)
             {
                 TempData["NewResource_Success"] = true;
