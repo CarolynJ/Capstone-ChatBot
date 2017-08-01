@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -95,6 +96,7 @@ namespace StudentChatBot.Dialogs
             if (userCount <= 0 || userCount > this.AllResources.Count)
             {
                 await context.PostAsync("That was not a valid response, all available resources will be shown");
+                Thread.Sleep(4000);
                 await AllResults(context, result);
             }
             else

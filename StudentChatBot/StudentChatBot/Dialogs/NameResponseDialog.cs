@@ -3,6 +3,7 @@ using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -26,6 +27,7 @@ namespace StudentChatBot.Dialogs
 
             var response = "It's nice to meet you " + userName;
             await context.PostAsync(response);
+            Thread.Sleep(4000);
            
             StateClient stateClient = activity.GetStateClient();
             BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
