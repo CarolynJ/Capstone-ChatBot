@@ -19,6 +19,8 @@ namespace StudentChatBot.Dialogs
     {
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
+        private List<Resource> AllResources { get; set; } = new List<Resource>();
+
         public Task StartAsync(IDialogContext context)
         {
             context.PostAsync("What are you looking for today? (type exit when you're done searching)");
@@ -48,18 +50,13 @@ namespace StudentChatBot.Dialogs
                     string keyword = data.entities[0].entity;
 
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    List<Resource> resources = dal.GetResources(keyword);
+                    this.AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+
+                    if (this.AllResources.Count > 0)
                     {
-                        foreach(Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
@@ -87,6 +84,72 @@ namespace StudentChatBot.Dialogs
             }
 
             return data;
+        }
+
+        public async Task HowManyResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var activity = await result;
+            var userInput = activity.Text.ToString();
+            int userCount = 0;
+            Int32.TryParse(userInput, out userCount);
+            if (userCount <= 0 || userCount > this.AllResources.Count)
+            {
+                await context.PostAsync("That was not a valid response, all available resources will be shown");
+                await AllResults(context, result);
+            }
+            else
+            {
+                for (int i = 0; i < userCount; i++)
+                {
+                    string title = AllResources[i].ResourceTitle.ToString();
+                    string content = AllResources[i].ResourceContent.ToString();
+                    var markdownContent = $"[{title}]({content})";
+
+                    await context.PostAsync(markdownContent);
+                }
+                await ResumeAfterOptionDialog(context, result);
+            }
+        }
+
+        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            foreach (Resource r in this.AllResources)
+            {
+                string title = r.ResourceTitle.ToString();
+                string content = r.ResourceContent.ToString();
+                var markdownContent = $"[{title}]({content})";
+
+                await context.PostAsync(markdownContent);
+            }
+            await ResumeAfterOptionDialog(context, result);
+        }
+
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to search with a different keyword?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
+            {
+                await StartAsync(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
+                context.Done(true);
+            }
+
+
+
         }
     }
 }

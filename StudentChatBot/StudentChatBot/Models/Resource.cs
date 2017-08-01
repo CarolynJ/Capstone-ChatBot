@@ -5,6 +5,7 @@ using System.Web;
 
 namespace StudentChatBot.Models
 {
+    [Serializable]
     public class Resource
     {
         public int ResourceId { get; set; }

@@ -11,7 +11,7 @@ namespace StudentChatBot.DAL
     public class SearchByKeywordSQLDAL : ISearchByKeyword
     {
         private string connectionString;
-        private const string SQL_GetResource = "Select top 5 * from Resources inner join Resource_Keyword on Resources.ResourceID = Resource_Keyword.ResourceID inner join Keywords on Keywords.KeywordId = Resource_Keyword.KeywordId where Keywords.Keyword = @keyword;";
+        private const string SQL_GetResource = "Select * from Resources inner join Resource_Keyword on Resources.ResourceID = Resource_Keyword.ResourceID inner join Keywords on Keywords.KeywordId = Resource_Keyword.KeywordId where Keywords.Keyword = @keyword;";
 
         public SearchByKeywordSQLDAL(string connectionString)
         {
