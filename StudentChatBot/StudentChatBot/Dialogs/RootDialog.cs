@@ -16,6 +16,7 @@ namespace StudentChatBot.Dialogs
         private const string BrowseOption = "Browse";
         private const string ChatOption = "Chat with Me";
         private const string HelpOption = "Get Help";
+        private const string CalendarOption = "View Calendar";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
 
@@ -64,7 +65,7 @@ namespace StudentChatBot.Dialogs
         private void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                {  SearchOption, BrowseOption, MotivationOption, ChatOption,  HelpOption, ExitOption },
+                {  SearchOption, BrowseOption, MotivationOption, ChatOption, CalendarOption, HelpOption, ExitOption },
                 "Are you looking to search for info, get help, or just chat?",
                 "Hmmm, I didn't understand that, try again...",
                 2);
@@ -95,6 +96,10 @@ namespace StudentChatBot.Dialogs
 
                     case HelpOption:
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
+                    case CalendarOption:
+                        context.Call(new GoogleCalDialog(), this.ResumeAfterOptionDialog);
                         break;
 
                     case ExitOption:

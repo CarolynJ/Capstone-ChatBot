@@ -11,7 +11,7 @@ namespace teHelperResourceManager.DAL
     public class ResourceSqlDal : IResourceSource
     {
         private const string SQL_AllGetAlphabeticalResources = "SELECT * FROM Resources ORDER BY ResourceTitle ASC;";
-        private const string SQL_AddNewResource = "INSERT INTO Resources VALUES (@resourceTitle, @resourceContent, @pathwayResource);";
+        private const string SQL_AddNewResource = "INSERT INTO Resources VALUES (@resourceTitle, @resourceContent, @pathwayResource); SELECT CAST(SCOPE_IDENTITY() as int);";
         private const string SQL_GetAllResourcesForAKeyword = "SELECT Resources.* FROM Resources INNER JOIN Resource_Keyword ON Resource_Keyword.ResourceId = Resources.ResourceId WHERE Resource_Keyword.KeywordId = @kwId;";
         private const string SQL_GetResourceById = "SELECT * FROM Resources WHERE ResourceId = @rId;";
         private const string SQL_GetResourceByName = "SELECT * FROM Resources WHERE ResourceTitle = @rName;";
@@ -23,7 +23,7 @@ namespace teHelperResourceManager.DAL
             this.connectionString = connectionString;
         }
 
-        public bool AddNewResource(Resource newResource)
+        public int AddNewResource(Resource newResource)
         {
             try
             {
@@ -31,18 +31,14 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
 
-                    int rowsAffected = conn.Execute(SQL_AddNewResource, new
+                    int newResourceId = conn.Query<int>(SQL_AddNewResource, new
                     {
                         resourceTitle = newResource.ResourceTitle,
                         resourceContent = newResource.ResourceContent,
                         pathwayResource = newResource.PathwayResource
-                    });
+                    }).First();
 
-                    if (rowsAffected > 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return newResourceId;
                 }
             }
             catch

@@ -66,7 +66,10 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource");
+                        string title = "Git resources";
+                        string content = "http://lmgtfy.com/?q=help+me+with+git";
+                        var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync(markdownContent);
                     }
 
                     break;
@@ -84,7 +87,10 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource");
+                        string title = "Variables in C#";
+                        string content = "http://lmgtfy.com/?q=C%23+variables";
+                        var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync(markdownContent);
                     }
 
                     break;
@@ -102,7 +108,10 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource");
+                        string title = "Learn about OOP";
+                        string content = "http://lmgtfy.com/?q=oop";
+                        var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync(markdownContent); ;
                     }
 
                     break;
