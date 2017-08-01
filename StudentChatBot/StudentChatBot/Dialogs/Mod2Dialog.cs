@@ -22,7 +22,7 @@ namespace StudentChatBot.Dialogs
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
         private const string DatabaseOption = "Databases";
-        private const string CommandsOption = "Commands - Insert, Delete etc...";
+        private const string CommandsOption = "Joins";
         private const string SubqueriesOption = "Subqueries";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
@@ -73,7 +73,7 @@ namespace StudentChatBot.Dialogs
 
                 case CommandsOption:
                     await context.PostAsync("Need some help with insert, join, update, delete ...?");
-                    keyword = "commands";
+                    keyword = "joins";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
 
