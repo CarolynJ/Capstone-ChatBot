@@ -25,13 +25,13 @@ namespace StudentChatBot.Dialogs
         private const string PhoneOption = "Phone Interviews";
         private const string BehavioralOption = "Behavioral Interview Preparation";
         private const string FollowUpOption = "Interview Follow Up";
-        private const string TechnicalOption = "Technical Interviewsr";
+        private const string PreparationOption = "Preparation";
         private const string ExitOption = "Exit";
 
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Get your Pathway Resources here!");
+            await context.PostAsync("We have a lot of resources on interviewing.");
 
             this.ShowInterviewMenu(context);
         }
@@ -39,8 +39,8 @@ namespace StudentChatBot.Dialogs
         private void ShowInterviewMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterInterviewMenu, new List<string>()
-                { PracticeQuestionsOption, PhoneOption, BehavioralOption, FollowUpOption, TechnicalOption, ExitOption },
-                "Do any of these options suit your fancy?",
+                { PracticeQuestionsOption, PhoneOption, BehavioralOption, FollowUpOption, PreparationOption, ExitOption },
+                " ",
                 "Hmm, I didn't understand that, try again.",
                 2);
         }
@@ -62,11 +62,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach (Resource r in resources)
                         {
-                            var hotlink = "[r.ResourceContent](r.ResourceTitle)";
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
 
-                            await context.PostAsync(hotlink);
-
-                            await context.PostAsync(r.ResourceContent);
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
@@ -88,8 +88,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach (Resource r in resources)
                         {
-                            await context.PostAsync(r.ResourceTitle);
-                            await context.PostAsync(r.ResourceContent);
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
@@ -111,8 +114,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach (Resource r in resources)
                         {
-                            await context.PostAsync(r.ResourceTitle);
-                            await context.PostAsync(r.ResourceContent);
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
@@ -134,8 +140,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach (Resource r in resources)
                         {
-                            await context.PostAsync(r.ResourceTitle);
-                            await context.PostAsync(r.ResourceContent);
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
@@ -147,9 +156,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case TechnicalOption:
-                    await context.PostAsync("Technical Interview resources");
-                    keyword = "technical";
+                case PreparationOption:
+                    await context.PostAsync("Interview Preparation");
+                    keyword = "preparation";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
@@ -157,8 +166,11 @@ namespace StudentChatBot.Dialogs
                     {
                         foreach (Resource r in resources)
                         {
-                            await context.PostAsync(r.ResourceTitle);
-                            await context.PostAsync(r.ResourceContent);
+                            string title = r.ResourceTitle.ToString();
+                            string content = r.ResourceContent.ToString();
+                            var markdownContent = $"[{title}]({content})";
+
+                            await context.PostAsync(markdownContent);
                         }
                     }
                     else
@@ -177,7 +189,7 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        public async Task ResumeAfterPathwayDialog(IDialogContext context, IAwaitable<object> result)
+        public async Task ResumeAfterInterviewDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource to improve your job search.");
             context.Done(true);
@@ -186,7 +198,7 @@ namespace StudentChatBot.Dialogs
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync("Would you like to browse for another pathway resource?");
+            await context.PostAsync("Would you like to browse for another resource on interviewing?");
             context.Wait(Redirect);
 
         }
@@ -199,7 +211,7 @@ namespace StudentChatBot.Dialogs
 
             if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
             {
-                this.ShowPathwayMenu(context);
+                this.ShowInterviewMenu(context);
             }
             else
             {

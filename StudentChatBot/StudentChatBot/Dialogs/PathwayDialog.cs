@@ -105,29 +105,8 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case PWInterviewOption:
-                    await context.PostAsync("interviewing help selected");
-                    keyword = "interview";
-                    dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
-
-                    if (resources.Count > 0)
-                    {
-                        foreach (Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
-                    }
-                    else
-                    {
-                        await context.PostAsync("Sorry that did not return a resource");
-                    }
-
-                    await ResumeAfterOptionDialog(context, result);
-
+                    context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
+                   // await ResumeAfterOptionDialog(context, result);
                     break;
 
                 case PWLinkedInOption:
