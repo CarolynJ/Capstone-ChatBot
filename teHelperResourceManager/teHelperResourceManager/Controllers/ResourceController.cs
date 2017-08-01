@@ -85,22 +85,32 @@ namespace teHelperResourceManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(NewResourceKeywordViewModel model)
+        public ActionResult Edit(int id, NewResourceKeywordViewModel model)
         {
-            Resource r = resourceDal.GetResource(model.newResource.ResourceTitle);
+            // update the resource
+            Resource r = new Resource()
+            {
+                ResourceContent = model.newResource.ResourceContent,
+                PathwayResource = model.newResource.PathwayResource,
+                ResourceTitle = model.newResource.ResourceTitle,
+                ResourceId = id
+            };
 
+            bool successfullyUpdatedResource = resourceDal.UpdateExistingResource(r);
+            
+            // update the keywords
             List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
             List<Keywords> newKeywords = new List<Keywords>();
             
             foreach (string kw in newKeywordStrings)
             {
                 keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw }); // only saves it if it's not already in the db
-                newKeywords.Add(keywordDal.GetSingleKeyword(kw));
+                newKeywords.Add(keywordDal.GetSingleKeyword(kw)); // add it to the List of Resources to save to Resource_Keyword db
             }
 
-            bool successfullyUpdatedResource = keywordDal.UpdateKeywordsToOneResource(newKeywords, r);
+            bool successfullyUpdatedResourceKeywords = keywordDal.UpdateKeywordsToOneResource(newKeywords, r); // returns true if saving to Resource_Keyword db is successful
 
-            if (successfullyUpdatedResource)
+            if (successfullyUpdatedResource && successfullyUpdatedResourceKeywords)
             {
                 TempData["UpdateResource_Success"] = true;
             }
