@@ -70,8 +70,6 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
-                    await ResumeAfterOptionDialog(context, result);
-
                     break;
 
                 case PWElevatorPitchOption:
@@ -89,8 +87,6 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-
-                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -115,8 +111,6 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
-                    await ResumeAfterOptionDialog(context, result);
-
                     break;
 
                 case PWUpcomingEventsOption:
@@ -135,8 +129,6 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-
-                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 

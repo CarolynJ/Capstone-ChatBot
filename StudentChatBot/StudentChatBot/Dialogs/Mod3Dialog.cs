@@ -26,6 +26,9 @@ namespace StudentChatBot.Dialogs
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
 
+        private List<Resource> AllResources { get; set; } = new List<Resource>();
+
+
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("Looking for help with Module 3?");
@@ -52,25 +55,17 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("Http internet basics");
                     string keyword = "http";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
-                    List<Resource> resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach (Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-
-                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -78,25 +73,17 @@ namespace StudentChatBot.Dialogs
                     await context.PostAsync("In the end you want a good user experience");
                     keyword = "css";
                     dal = new SearchByKeywordSQLDAL(connectionString);
-                    resources = dal.GetResources(keyword);
+                    AllResources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0)
+                    if (AllResources.Count > 0)
                     {
-                        foreach (Resource r in resources)
-                        {
-                            string title = r.ResourceTitle.ToString();
-                            string content = r.ResourceContent.ToString();
-                            var markdownContent = $"[{title}]({content})";
-
-                            await context.PostAsync(markdownContent);
-                        }
+                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                        context.Wait(HowManyResults);
                     }
                     else
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-
-                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -110,6 +97,45 @@ namespace StudentChatBot.Dialogs
             }
 
         }
+
+        public async Task HowManyResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var activity = await result;
+            var userInput = activity.Text.ToString();
+            int userCount = 0;
+            Int32.TryParse(userInput, out userCount);
+            if (userCount <= 0 || userCount > this.AllResources.Count)
+            {
+                await context.PostAsync("That was not a valid response, all available resources will be shown");
+                await AllResults(context, result);
+            }
+            else
+            {
+                for (int i = 0; i < userCount; i++)
+                {
+                    string title = AllResources[i].ResourceTitle.ToString();
+                    string content = AllResources[i].ResourceContent.ToString();
+                    var markdownContent = $"[{title}]({content})";
+
+                    await context.PostAsync(markdownContent);
+                }
+                await ResumeAfterOptionDialog(context, result);
+            }
+        }
+
+        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            foreach (Resource r in this.AllResources)
+            {
+                string title = r.ResourceTitle.ToString();
+                string content = r.ResourceContent.ToString();
+                var markdownContent = $"[{title}]({content})";
+
+                await context.PostAsync(markdownContent);
+            }
+            await ResumeAfterOptionDialog(context, result);
+        }
+
 
         private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {

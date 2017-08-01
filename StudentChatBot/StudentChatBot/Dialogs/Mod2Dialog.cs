@@ -67,8 +67,6 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
-                    await ResumeAfterOptionDialog(context, result);
-
                     break;
 
                 case CommandsOption:
@@ -87,8 +85,6 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
-                    await ResumeAfterOptionDialog(context, result);
-
                     break;
 
                 case SubqueriesOption:
@@ -106,8 +102,6 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-
-                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
