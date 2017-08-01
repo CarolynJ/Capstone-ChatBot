@@ -40,6 +40,7 @@
             <button type="submit" class="btn btn-primary">Update Resource</button>
         }
 
-        <a class="btn btn-default back-btn" href="@Url.Action("Index", "Home")">Back to Home</a>
+        <p><a class="btn btn-danger back-btn" href="@Url.Action("Delete", "Resource", new { id = Model.newResource.ResourceId })"><span class="glyphicon glyphicon-remove"></span> Delete Resource</a></p>
+        <p><a class="btn btn-default back-btn" href="@Url.Action("Index", "Home")">Back to Home</a></p>
     </div>
 </div>

@@ -1,0 +1,23 @@
+﻿@using teHelperResourceManager.Models;
+@model Resource
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Delete</h2>
+        <p>Are you sure you want to delete <strong>@Model.ResourceTitle</strong>?</p>
+        @using (Html.BeginForm("Delete", "Resource", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.ResourceId) {
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a class="btn btn-default back-btn" href="@Url.Action("Edit", "Resource", new { id = Model.ResourceId })">No, Nevermind</a>
+            }
+        }
+    </div>
+</div>
+
+
