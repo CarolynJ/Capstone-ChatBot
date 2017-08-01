@@ -194,7 +194,7 @@ namespace teHelperResourceManager.DAL
                 {
                     conn.Open();
                     
-                    // delete all Resource_Keyword references to that resource first, and we'll add them back in
+                    // delete all Resource_Keyword references to that resource first, and we'll add them back in because we don't care about IDs for this db
                     conn.Execute(SQL_DeleteAllReferencesToKeywordResourcePair, new { resourceId = r.ResourceId });
                     
                     int rowsAffected = 0;

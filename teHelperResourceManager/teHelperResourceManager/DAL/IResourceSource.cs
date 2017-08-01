@@ -14,5 +14,6 @@ namespace teHelperResourceManager.DAL
         List<Resource> GetAllResourcesForAKeyword(Keywords kw);
         Resource GetResource(int resourceId);
         Resource GetResource(string resourceName);
+        bool UpdateExistingResource(Resource r);
     }
 }

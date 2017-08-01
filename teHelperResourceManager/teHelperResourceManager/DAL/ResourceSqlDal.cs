@@ -15,6 +15,7 @@ namespace teHelperResourceManager.DAL
         private const string SQL_GetAllResourcesForAKeyword = "SELECT Resources.* FROM Resources INNER JOIN Resource_Keyword ON Resource_Keyword.ResourceId = Resources.ResourceId WHERE Resource_Keyword.KeywordId = @kwId;";
         private const string SQL_GetResourceById = "SELECT * FROM Resources WHERE ResourceId = @rId;";
         private const string SQL_GetResourceByName = "SELECT * FROM Resources WHERE ResourceTitle = @rName;";
+        private const string SQL_UpdateExistingResource = "UPDATE Resources SET ResourceTitle = @resourceTitle, ResourceContent = @resourceContent, PathwayResource = @isPathway WHERE ResourceId = @resourceId;";
         private string connectionString;
 
         public ResourceSqlDal(string connectionString)
@@ -123,6 +124,29 @@ namespace teHelperResourceManager.DAL
                     Resource r = conn.Query<Resource>(SQL_GetResourceByName, new { rName = resourceName }).FirstOrDefault();
 
                     return r;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public bool UpdateExistingResource(Resource r)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    int rowsAffected = conn.Execute(SQL_UpdateExistingResource, new { resourceTitle = r.ResourceTitle, resourceContent = r.ResourceContent, isPathway = r.PathwayResource, resourceId = r.ResourceId });
+
+                    if (rowsAffected > 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             catch
