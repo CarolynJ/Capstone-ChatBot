@@ -28,7 +28,7 @@ namespace StudentChatBot.Dialogs
         private const string PWUpcomingEventsOption = "Upcoming Pathway Events";
         private const string OtherOption = "Other";
         private const string ExitOption = "Exit";
-        
+
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -58,9 +58,9 @@ namespace StudentChatBot.Dialogs
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     List<Resource> resources = dal.GetResources(keyword);
 
-                    if (resources != null)
+                    if (resources.Count > 0)
                     {
-                        foreach(Resource r in resources)
+                        foreach (Resource r in resources)
                         {
                             await context.PostAsync(r.ResourceTitle);
                             await context.PostAsync(r.ResourceContent);
@@ -70,6 +70,8 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -79,7 +81,7 @@ namespace StudentChatBot.Dialogs
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
-                    if (resources != null)
+                    if (resources.Count > 0)
                     {
                         foreach (Resource r in resources)
                         {
@@ -91,6 +93,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case PWInterviewOption:
@@ -99,7 +104,7 @@ namespace StudentChatBot.Dialogs
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
-                    if (resources != null)
+                    if (resources.Count > 0)
                     {
                         foreach (Resource r in resources)
                         {
@@ -111,6 +116,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case PWLinkedInOption:
@@ -119,7 +127,7 @@ namespace StudentChatBot.Dialogs
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
-                    if (resources != null)
+                    if (resources.Count > 0)
                     {
                         foreach (Resource r in resources)
                         {
@@ -131,14 +139,18 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
+
                 case PWUpcomingEventsOption:
                     await context.PostAsync("view upcoming pathway events");
                     keyword = "events";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
-                    if (resources != null)
+                    if (resources.Count > 0)
                     {
                         foreach (Resource r in resources)
                         {
@@ -151,6 +163,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case OtherOption:
@@ -163,10 +178,36 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-            public async Task ResumeAfterPathwayDialog(IDialogContext context, IAwaitable<object> result)
+        public async Task ResumeAfterPathwayDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            await context.PostAsync("I hope you found a useful resource to improve your job search.");
+            context.Done(true);
+        }
+
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to browse for another pathway resource?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
             {
-                await context.PostAsync("I hope you found a useful resource to improve your job search.");
+                this.ShowPathwayMenu(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
                 context.Done(true);
             }
+
         }
     }
+}
