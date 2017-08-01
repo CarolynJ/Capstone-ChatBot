@@ -97,19 +97,23 @@ namespace teHelperResourceManager.Controllers
             };
 
             bool successfullyUpdatedResource = resourceDal.UpdateExistingResource(r);
-            
-            // update the keywords
-            List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
-            List<Keywords> newKeywords = new List<Keywords>();
-            
-            foreach (string kw in newKeywordStrings)
-            {
-                keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw }); // only saves it if it's not already in the db
-                newKeywords.Add(keywordDal.GetSingleKeyword(kw)); // add it to the List of Resources to save to Resource_Keyword db
-            }
+            bool successfullyUpdatedResourceKeywords = true;
 
-            bool successfullyUpdatedResourceKeywords = keywordDal.UpdateKeywordsToOneResource(newKeywords, r); // returns true if saving to Resource_Keyword db is successful
-            
+            // update the keywords if it's not empty
+            if (model.keywordsAsString != null)
+            {
+                List<string> newKeywordStrings = model.keywordsAsString.Split(',').Select(str => str.Trim()).ToList();
+                List<Keywords> newKeywords = new List<Keywords>();
+
+                foreach (string kw in newKeywordStrings)
+                {
+                    keywordDal.SaveNewKeyword(new Keywords() { Keyword = kw }); // only saves it if it's not already in the db
+                    newKeywords.Add(keywordDal.GetSingleKeyword(kw)); // add it to the List of Resources to save to Resource_Keyword db
+                }
+
+                successfullyUpdatedResourceKeywords = keywordDal.UpdateKeywordsToOneResource(newKeywords, r);
+            }
+                        
             if (successfullyUpdatedResource && successfullyUpdatedResourceKeywords)
             {
                 TempData["UpdateResource_Success"] = true;
@@ -120,6 +124,30 @@ namespace teHelperResourceManager.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            Resource r = resourceDal.GetResource(id);
+
+            return View("Delete", r);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, Resource model)
+        {
+            bool successfullyDeleted = resourceDal.DeleteResource(id);
+
+            if (successfullyDeleted)
+            {
+                TempData["DeleteResource_Success"] = true;
+                return RedirectToAction("Index");
+            }
+
+            TempData["DeleteResource_Success"] = false;
+            return RedirectToAction("Delete", id);
+            
         }
     }
 }
