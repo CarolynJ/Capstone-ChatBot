@@ -138,7 +138,7 @@ namespace StudentChatBot.Dialogs
             {
                 context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
             }
-            else if (userInput.Contains("no") || userInput.Contains("bye"))
+            else
             {
                 await context.PostAsync("Please come again. Have a nice day!");
                 context.Done(true);

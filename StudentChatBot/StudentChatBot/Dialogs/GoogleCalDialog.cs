@@ -46,21 +46,21 @@ namespace StudentChatBot.Dialogs
         
         private async Task<GoogleCalendarApi> GoogleCalApiCall(string datetimeInRFC3339)
         {
-            //GoogleCalendarApi data = new GoogleCalendarApi();
+            GoogleCalendarApi data = new GoogleCalendarApi();
 
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    string APIRequest = "https://www.googleapis.com/calendar/v3/calendars/techelevator.com_23ti34t7igbca7rv9g4kljeihg@group.calendar.google.com/events?timeMax=2017-09-01T14:38:04+00:00&timeMin=2017-08-01T14:38:04+00:00";
-            //    HttpResponseMessage msg = await client.GetAsync(APIRequest);
+            using (HttpClient client = new HttpClient())
+            {
+                string APIRequest = "https://www.googleapis.com/calendar/v3/calendars/techelevator.com_23ti34t7igbca7rv9g4kljeihg@group.calendar.google.com/events?timeMax=2017-09-01T14:38:04+00:00&timeMin=2017-08-01T14:38:04+00:00";
+                HttpResponseMessage msg = await client.GetAsync(APIRequest);
 
-            //    if (msg.IsSuccessStatusCode)
-            //    {
-            //        var jsonDataResponse = await msg.Content.ReadAsStringAsync();
-            //        data = JsonConvert.DeserializeObject<GoogleCalendarApi>(jsonDataResponse);
-            //    }
-            //}
+                if (msg.IsSuccessStatusCode)
+                {
+                    var jsonDataResponse = await msg.Content.ReadAsStringAsync();
+                    data = JsonConvert.DeserializeObject<GoogleCalendarApi>(jsonDataResponse);
+                }
+            }
 
-            //return data;
+            return data;
 
 
 

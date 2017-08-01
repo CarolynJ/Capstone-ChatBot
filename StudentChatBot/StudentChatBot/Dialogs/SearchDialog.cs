@@ -60,7 +60,7 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource");
+                        await context.PostAsync("Sorry that did not return a resource, try again or enter exit to leave search by keyword");
                     }
                 }
             }
