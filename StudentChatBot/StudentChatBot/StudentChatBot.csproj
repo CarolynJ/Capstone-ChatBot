@@ -201,6 +201,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="client_secret.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -220,7 +223,6 @@
     <Compile Include="DAL\SearchByKeywordSQLDAL.cs" />
     <Compile Include="Dialogs\BrowseDialog.cs" />
     <Compile Include="Dialogs\ChatDialog.cs" />
-    <Compile Include="Dialogs\GoogleCalDialog.cs" />
     <Compile Include="Dialogs\GreetingDialog.cs" />
     <Compile Include="Dialogs\HelpDialog.cs" />
     <Compile Include="Dialogs\Mod5Dialog.cs" />
