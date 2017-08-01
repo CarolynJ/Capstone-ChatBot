@@ -30,19 +30,19 @@ namespace StudentChatBot.Dialogs
         {
             await context.PostAsync("Looking for help with Module 3?");
 
-            this.ShowPathwayMenu(context);
+            this.ShowModFiveMenu(context);
         }
 
-        private void ShowPathwayMenu(IDialogContext context)
+        private void ShowModFiveMenu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
+            PromptDialog.Choice(context, this.ResumeAfterModFiveMenu, new List<string>()
                 { AuthenticationOption, AuthorizationOption, SqlInjectionOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterModFiveMenu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
@@ -67,6 +67,8 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case AuthorizationOption:
@@ -87,6 +89,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case SqlInjectionOption:
@@ -107,10 +112,13 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterModThreeDialog);
+                    context.Call(new SearchDialog(), this.ResumeAfterOtherOptionDialog);
                     break;
 
                 case ExitOption:
@@ -120,11 +128,38 @@ namespace StudentChatBot.Dialogs
             
         }
 
-        private async Task ResumeAfterModThreeDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource. I'll return you to the main menu now.");
             context.Done(true);
         }
+
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to browse for another module 5 resource?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
+            {
+                this.ShowModFiveMenu(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
+                context.Done(true);
+            }
+
+        }
+
 
     }
 }

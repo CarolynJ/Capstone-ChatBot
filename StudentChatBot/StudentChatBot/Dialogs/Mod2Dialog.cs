@@ -30,26 +30,26 @@ namespace StudentChatBot.Dialogs
         {
             await context.PostAsync("Looking for resources to study SQL?");
 
-            this.ShowPathwayMenu(context);
+            this.ShowModTwoMenu(context);
         }
 
-        private void ShowPathwayMenu(IDialogContext context)
+        private void ShowModTwoMenu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
+            PromptDialog.Choice(context, this.ResumeAfterModTwoMenu, new List<string>()
                 { DatabaseOption, CommandsOption, SubqueriesOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterModTwoMenu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
             switch (optionSelected)
             {
                 case DatabaseOption:
-                    await context.PostAsync("You can read up on git");
+                    await context.PostAsync("You can read up on SQL");
                     string keyword = "sql";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     List<Resource> resources = dal.GetResources(keyword);
@@ -67,6 +67,8 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -88,6 +90,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case SubqueriesOption:
@@ -108,10 +113,13 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterModTwoDialog);
+                    context.Call(new SearchDialog(), this.ResumeAfterOtherOptionDialog);
                     break;
 
                 case ExitOption:
@@ -122,11 +130,38 @@ namespace StudentChatBot.Dialogs
           
         }
 
-        private async Task ResumeAfterModTwoDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource. I'll return you to the main menu now.");
             context.Done(true);
         }
+
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to browse for another module 2 resource?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
+            {
+                this.ShowModTwoMenu(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
+                context.Done(true);
+            }
+
+        }
+
 
     }
 }

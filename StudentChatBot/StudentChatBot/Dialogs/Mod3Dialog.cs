@@ -16,7 +16,7 @@ using System.Web.Services.Description;
 namespace StudentChatBot.Dialogs
 {
     [Serializable]
-    public class Mod3Dialog: IDialog<object>
+    public class Mod3Dialog : IDialog<object>
     {
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tehelper"].ConnectionString;
 
@@ -30,19 +30,19 @@ namespace StudentChatBot.Dialogs
         {
             await context.PostAsync("Looking for help with Module 3?");
 
-            this.ShowPathwayMenu(context);
+            this.ShowModThreeMenu(context);
         }
 
-        private void ShowPathwayMenu(IDialogContext context)
+        private void ShowModThreeMenu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
+            PromptDialog.Choice(context, this.ResumeAfterModThreeMenu, new List<string>()
                 { HttpOption, CSSOption, MVCOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterModThreeMenu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
@@ -56,7 +56,7 @@ namespace StudentChatBot.Dialogs
 
                     if (resources.Count > 0)
                     {
-                        foreach(Resource r in resources)
+                        foreach (Resource r in resources)
                         {
                             await context.PostAsync(r.ResourceTitle);
                             await context.PostAsync(r.ResourceContent);
@@ -66,6 +66,8 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
 
                     break;
 
@@ -87,6 +89,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case MVCOption:
@@ -95,7 +100,7 @@ namespace StudentChatBot.Dialogs
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);
 
-                    if (resources.Count > 0 )
+                    if (resources.Count > 0)
                     {
                         foreach (Resource r in resources)
                         {
@@ -107,24 +112,53 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterModThreeDialog);
+                    context.Call(new SearchDialog(), this.ResumeAfterOtherOptionDialog);
                     break;
 
                 case ExitOption:
                     context.Done(true);
                     break;
             }
-            
+
         }
 
-        private async Task ResumeAfterModThreeDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource. I'll return you to the main menu now.");
             context.Done(true);
         }
 
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to browse for another module 3 resource?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
+            {
+                this.ShowModThreeMenu(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
+                context.Done(true);
+            }
+
+
+        }
     }
 }

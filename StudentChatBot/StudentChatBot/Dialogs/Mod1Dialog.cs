@@ -32,19 +32,19 @@ namespace StudentChatBot.Dialogs
         {
             await context.PostAsync("Looking for resources to study Module 1 topics?");
 
-            this.ShowMod1Menu(context);
+            this.ShowModOneMenu(context);
         }
 
-        private void ShowMod1Menu(IDialogContext context)
+        private void ShowModOneMenu(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.ResumeAfterMod1Menu, new List<string>()
+            PromptDialog.Choice(context, this.ResumeAfterModOneMenu, new List<string>()
                 { GitOption, VariablesOption, ObjectsOption, ClassesOption, TestingOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
 
-        private async Task ResumeAfterMod1Menu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterModOneMenu(IDialogContext context, IAwaitable<string> result)
         {
             var optionSelected = await result;
 
@@ -69,6 +69,8 @@ namespace StudentChatBot.Dialogs
                         await context.PostAsync("Sorry that did not return a resource");
                     }
 
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case VariablesOption:
@@ -89,7 +91,10 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
-                   break;
+
+                    await ResumeAfterOptionDialog(context, result);
+
+                    break;
 
                 case ObjectsOption:
                     await context.PostAsync("Object Oriented programming (OOP)");
@@ -109,6 +114,9 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case ClassesOption:
@@ -129,7 +137,11 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
+
                 case TestingOption:
                     await context.PostAsync("Learn to test your own code.");
                     keyword = "testing";
@@ -148,10 +160,13 @@ namespace StudentChatBot.Dialogs
                     {
                         await context.PostAsync("Sorry that did not return a resource");
                     }
+
+                    await ResumeAfterOptionDialog(context, result);
+
                     break;
 
                 case OtherOption:
-                    context.Call(new SearchDialog(), this.ResumeAfterModOneDialog);
+                    context.Call(new SearchDialog(), this.ResumeAfterOtherOptionDialog);
                     break;
 
                 case ExitOption:
@@ -162,11 +177,36 @@ namespace StudentChatBot.Dialogs
            
         }
 
-        private async Task ResumeAfterModOneDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterOtherOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync("I hope you found a useful resource. I'll return you to the main menu now.");
             context.Done(true);
         }
 
+        private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var message = await result;
+            await context.PostAsync("Would you like to browse for another module 1 resource?");
+            context.Wait(Redirect);
+
+        }
+
+        private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+
+            var activity = await result;
+            var userInput = activity.Text.ToString().ToLower();
+
+            if (userInput == "yes" || userInput == "y" || userInput == "ok" || userInput == "menu")
+            {
+                this.ShowModOneMenu(context);
+            }
+            else
+            {
+                await context.PostAsync("Please come again. Have a nice day!");
+                context.Done(true);
+            }
+
+        }
     }
 }
