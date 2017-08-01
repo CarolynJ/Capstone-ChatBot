@@ -105,7 +105,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case PWInterviewOption:
-                    context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
+                    //context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
                    // await ResumeAfterOptionDialog(context, result);
                     break;
 
