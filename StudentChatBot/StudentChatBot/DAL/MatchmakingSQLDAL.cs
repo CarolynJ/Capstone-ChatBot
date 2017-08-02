@@ -29,6 +29,8 @@ namespace StudentChatBot.DAL
             onlyScheduleLines.RemoveAt(onlyScheduleLines.Count - 1); // remove bottom line with interview count
 
             StudentMatchmakingSchedule studentSchedule = new StudentMatchmakingSchedule();
+            studentSchedule.StudentName = studentName;
+            
             List<ScheduleItem> allScheduleItems = new List<ScheduleItem>();
             List<string[]> allStudentScheduleStrings = new List<string[]>();
 
@@ -39,7 +41,10 @@ namespace StudentChatBot.DAL
 
             int indexOfStartOfSecondDay = allStudentScheduleStrings.FindIndex(1, x => x[0] != "");
 
-            foreach (string[] str in allStudentScheduleStrings)
+            List<string[]> firstHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(0, indexOfStartOfSecondDay));
+            List<string[]> secondHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(indexOfStartOfSecondDay, allStudentScheduleStrings.Count - firstHalfOfSchedule.Count));
+            
+            foreach (string[] str in firstHalfOfSchedule)
             {
                 studentSchedule.AllInterviewsOnDayOne.Add(new ScheduleItem()
                 {
@@ -49,8 +54,17 @@ namespace StudentChatBot.DAL
                 });
             }
 
-            return new StudentMatchmakingSchedule();
-
+            foreach (string[] str in secondHalfOfSchedule)
+            {
+                studentSchedule.AllInterviewsOnDayTwo.Add(new ScheduleItem()
+                {
+                    StartTime = str[1].Substring(0, indexOfStartOfSecondDay),
+                    EndTime = str[1].Substring(indexOfStartOfSecondDay + 1),
+                    CompanyName = str[indexOfStudentNameInFile]
+                });
+            }
+            
+            return studentSchedule;
         }
 
         private List<string[]> ReadFromFile(string fileName)
