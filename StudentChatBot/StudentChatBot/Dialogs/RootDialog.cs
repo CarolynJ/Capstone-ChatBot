@@ -32,12 +32,19 @@ namespace StudentChatBot.Dialogs
             var activity = await result;
             var userInput = activity.Text.ToString().ToLower();
 
-            if (userInput == "hello" || userInput == "hey" || userInput == "hi")
+            if (userInput == "hello" || userInput == "hey" || userInput == "hi" || userInput == "greetings" || userInput.Contains("good") || 
+                userInput.Contains("morning") || userInput.Contains("afternoon") ||  userInput.Contains("hi ") || userInput.Contains("howdy")
+                || userInput.Contains("hey") || userInput.Contains("evening") || userInput.Contains("bonjour") || userInput.Contains("ciao"))
             {
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
             }
             else if (userInput.Contains("menu"))
             {
+                this.ShowOptions(context);
+            }
+            else if (userInput.Contains("help"))
+            {
+                await context.Forward(new HelpDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
                 this.ShowOptions(context);
             }
             else if (userInput.Contains("search"))
@@ -46,7 +53,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information.");
+                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information. Or greet me to start a conversation... :)");
                 context.Done(true);
             }
         }
@@ -101,7 +108,8 @@ namespace StudentChatBot.Dialogs
 
                     case ExitOption:
                         await context.PostAsync("Alrighty, well is there anything else I can help you with?");
-                        context.Done(true);
+                        context.Wait(Redirect);
+                  
                         break;
                 }
             }
