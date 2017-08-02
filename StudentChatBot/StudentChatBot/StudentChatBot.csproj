@@ -60,9 +60,6 @@
     <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.28.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.Auth.1.28.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Calendar.v3, Version=1.28.0.929, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Calendar.v3.1.28.0.929\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Apis.Core, Version=1.28.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.Core.1.28.0\lib\net45\Google.Apis.Core.dll</HintPath>
     </Reference>
@@ -201,6 +198,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\Summer2017MatchmakingScheduleByStudent.csv" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -214,14 +212,17 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="DAL\IMatchmakingDAL.cs" />
     <Compile Include="DAL\IMotivationDAL.cs" />
     <Compile Include="DAL\ISearchByKeyword.cs" />
+    <Compile Include="DAL\MatchmakingSQLDAL.cs" />
     <Compile Include="DAL\MotivationSQLDAL.cs" />
     <Compile Include="DAL\SearchByKeywordSQLDAL.cs" />
     <Compile Include="Dialogs\BrowseDialog.cs" />
     <Compile Include="Dialogs\ChatDialog.cs" />
     <Compile Include="Dialogs\GreetingDialog.cs" />
     <Compile Include="Dialogs\HelpDialog.cs" />
+    <Compile Include="Dialogs\InterviewDialog.cs" />
     <Compile Include="Dialogs\Mod5Dialog.cs" />
     <Compile Include="Dialogs\Mod4Dialog.cs" />
     <Compile Include="Dialogs\Mod3Dialog.cs" />
@@ -238,10 +239,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GoogleCalendarApi.cs" />
     <Compile Include="Models\LuisData.cs" />
+    <Compile Include="Models\Matchmaking\CompanyContact.cs" />
+    <Compile Include="Models\Matchmaking\ScheduleItem.cs" />
     <Compile Include="Models\Motivation.cs" />
     <Compile Include="Models\Resource.cs" />
+    <Compile Include="Models\Matchmaking\StudentMatchmakingSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
