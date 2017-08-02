@@ -17,6 +17,7 @@ namespace StudentChatBot.Dialogs
         private const string ViewStudentsScheduleOption = "View a Student's Schedule";
         private const string ExitOption = "Exit";
 
+
         public async Task StartAsync(IDialogContext context)
         {
             await context.PostAsync("Yay it's matchmaking time, check your schedule or set a reminder to follow up with an employer.");
@@ -67,7 +68,8 @@ namespace StudentChatBot.Dialogs
             }
 
             await context.PostAsync($"Here's {studentSchedule.StudentName}'s Schedule: \n {studentSchedule.ToString()}");
-
         }
+
+ 
     }
 }
