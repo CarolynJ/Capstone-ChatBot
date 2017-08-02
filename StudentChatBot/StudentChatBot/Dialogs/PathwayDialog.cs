@@ -56,7 +56,7 @@ namespace StudentChatBot.Dialogs
             switch (optionSelected)
             {
                 case PWResumeOption:
-                    await context.PostAsync("resume option selected");
+                    //await context.PostAsync("resume option selected");
                     string keyword = "resume";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -75,7 +75,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case PWElevatorPitchOption:
-                    await context.PostAsync("elevator pitch selected");
+                    //await context.PostAsync("elevator pitch selected");
                     keyword = "elevator";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -93,13 +93,13 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                case PWInterviewOption:
-                    //context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
-                   // await ResumeAfterOptionDialog(context, result);
-                    break;
+                //case PWInterviewOption:
+                //    //context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
+                //   // await ResumeAfterOptionDialog(context, result);
+                //    break;
 
                 case PWLinkedInOption:
-                    await context.PostAsync("you need help with linkedin");
+                    //await context.PostAsync("you need help with linkedin");
                     keyword = "linkedin";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -118,7 +118,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case PWUpcomingEventsOption:
-                    await context.PostAsync("view upcoming pathway events");
+                    //await context.PostAsync("view upcoming pathway events");
                     keyword = "events";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
