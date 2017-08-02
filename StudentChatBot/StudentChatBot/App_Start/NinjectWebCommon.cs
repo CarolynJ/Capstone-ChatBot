@@ -13,7 +13,6 @@ namespace StudentChatBot.App_Start
     using System.Web.Http;
     using Ninject.Web.WebApi;
     using StudentChatBot.DAL;
-    using Microsoft.IdentityModel.Protocols;
     using System.Configuration;
 
     public static class NinjectWebCommon 

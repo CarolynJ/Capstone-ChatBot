@@ -18,6 +18,7 @@ namespace StudentChatBot.Dialogs
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
+        private const string MatchmakingOption = "Matchmaking";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -31,12 +32,19 @@ namespace StudentChatBot.Dialogs
             var activity = await result;
             var userInput = activity.Text.ToString().ToLower();
 
-            if (userInput == "hello" || userInput == "hey" || userInput == "hi")
+            if (userInput == "hello" || userInput == "hey" || userInput == "hi" || userInput == "greetings" || userInput.Contains("good") || 
+                userInput.Contains("morning") || userInput.Contains("afternoon") ||  userInput.Contains("hi ") || userInput.Contains("howdy")
+                || userInput.Contains("hey") || userInput.Contains("evening") || userInput.Contains("bonjour") || userInput.Contains("ciao"))
             {
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
             }
             else if (userInput.Contains("menu"))
             {
+                this.ShowOptions(context);
+            }
+            else if (userInput.Contains("help"))
+            {
+                await context.Forward(new HelpDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
                 this.ShowOptions(context);
             }
             else if (userInput.Contains("search"))
@@ -45,7 +53,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information.");
+                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information. Or greet me to start a conversation... :)");
                 context.Done(true);
             }
         }
@@ -89,17 +97,19 @@ namespace StudentChatBot.Dialogs
                     case MotivationOption:
                         context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
                         break;
-                    case ChatOption:
-                        context.Call(new ChatDialog(), this.ResumeAfterOptionDialog);
-                        break;
 
                     case HelpOption:
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
                         break;
 
+                    case MatchmakingOption:
+                        context.Call(new MatchmakingDialog(), this.ResumeAfterGreetingDialog);
+                        break;
+
                     case ExitOption:
                         await context.PostAsync("Alrighty, well is there anything else I can help you with?");
-                        context.Done(true);
+                        context.Wait(Redirect);
+                  
                         break;
                 }
             }
