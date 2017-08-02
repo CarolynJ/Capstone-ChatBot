@@ -18,6 +18,7 @@ namespace StudentChatBot.Dialogs
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
+        private const string MatchmakingOption = "Matchmaking";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -89,12 +90,13 @@ namespace StudentChatBot.Dialogs
                     case MotivationOption:
                         context.Call(new MotivationDialog(), this.ResumeAfterOptionDialog);
                         break;
-                    case ChatOption:
-                        context.Call(new ChatDialog(), this.ResumeAfterOptionDialog);
-                        break;
 
                     case HelpOption:
                         context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+                        break;
+
+                    case MatchmakingOption:
+                        context.Call(new MatchmakingDialog(), this.ResumeAfterGreetingDialog);
                         break;
 
                     case ExitOption:
