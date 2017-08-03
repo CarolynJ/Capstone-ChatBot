@@ -34,7 +34,8 @@ namespace StudentChatBot.Dialogs
 
             if (userInput == "hello" || userInput == "hey" || userInput == "hi" || userInput == "greetings" || userInput.Contains("good") || 
                 userInput.Contains("morning") || userInput.Contains("afternoon") ||  userInput.Contains("hi ") || userInput.Contains("howdy")
-                || userInput.Contains("hey") || userInput.Contains("evening") || userInput.Contains("bonjour") || userInput.Contains("ciao"))
+                || userInput.Contains("hey") || userInput.Contains("evening") || userInput.Contains("bonjour") || userInput.Contains("ciao")
+                || userInput.Contains("up") || userInput == "whats up" || userInput.Contains("salutations"))
             {
                 await context.Forward(new GreetingDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
             }
@@ -53,7 +54,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information. Or greet me to start a conversation... :)");
+                await context.PostAsync("Sorry, I didn't understand that command. Please type 'menu' for more information.    Or greet me to start a conversation... :)");
                 context.Done(true);
             }
         }
@@ -131,7 +132,7 @@ namespace StudentChatBot.Dialogs
             }
             catch (TooManyAttemptsException ex)
             {
-                await context.PostAsync("Ooops! Too many attemps :(. But don't worry, I'm handling that exception and you can try again!");
+                await context.PostAsync("Ooops! Too many attemps :(  But don't worry, I'm handling that exception and you can try again!");
 
                 context.Wait(this.MessageReceivedAsync);
             }
