@@ -19,29 +19,45 @@
                 <h2>Table of Contents</h2>
                 <p><a href="#welcome">Welcome</a></p>
                 <p><a href="#basics">Basics &amp; Deployment</a></p>
+                <p><a href="#keys">Keys &amp; ConnectionString Locations</a></p>
                 <p><a href="#resourceManager">teHelper Resource Manager</a></p>
                 <p><a href="#luis">Luis AI API</a></p>
                 <p><a href="#database">Database</a></p>
                 <p><a href="#dialogs">Dialog Stacks</a></p>
                 <p><a href="#matchmaking">Updating the Matchmaking Schedule</a></p>
+                <p><a href="#troubleshooting">Troubleshooting</a></p>
                 <p><a href="#tests">Tests</a></p>
             </div>
 
             <div class="col-md-8 col-md-pull-4">
                 <a name="welcome"></a>
                 <h2>Welcome</h2>
-                <p>So you're a proud new owner/contributor to teHelperBot2017. Use this guide for information on deploying, 
-                maintaining, adding, and changing teHelperBot.</p>
+                <p>
+                    So you're a proud new owner/contributor to teHelperBot2017. Use this guide for information on deploying,
+                    maintaining, adding, and changing teHelperBot.
+                </p>
                 <p><a href="#top">Back to Top</a></p>
 
                 <a name="basics"></a>
                 <h2>Basics &amp; Deployment</h2>
+                <p>You can install the Bot Framework by installing via NuGet: <span class="helper-tag">Install-Package Microsoft.Bot.Builder</span>.</p>
                 <p>teHelperBot lives on Azure, while the database lives on an AppHarbor SQLServer database.</p>
-                <p>teHelperBot uses the Microsoft Bot Framework, which is built on an API. You can manage the bot API via the 
-                <a href="https://dev.botframework.com" target="_blank">Bot Framework</a> website. If you want to add the bot to additional channels, 
-                such as Slack or Facebook Messenger, you would turn these channels on via the Bot Framework interface.</p>
-                <p>Luis AI is also used via API integration. The API call is made from <span class="helper-tag">SearchDialog.cs</span>. 
-                You can read more about Luis in the <a href="#luis">Luis AI section</a>.</p>
+                <p>
+                    teHelperBot uses the Microsoft Bot Framework, which is built on an API. You can manage the bot API via the
+                    <a href="https://dev.botframework.com" target="_blank">Bot Framework</a> website. If you want to add the bot to additional channels,
+                    such as Slack or Facebook Messenger, you would turn these channels on via the Bot Framework interface.
+                </p>
+                <p>
+                    To publish via VisualStudio, you'll need to configure your deployment credentials via the Azure Portal.
+                </p>
+                <p>
+                    Luis AI is also used via API integration. The API call is made from <span class="helper-tag">SearchDialog.cs</span>.
+                    You can read more about Luis in the <a href="#luis">Luis AI section</a>.
+                </p>
+                <p>
+                    All times are hard-coded as Eastern Standard Time due to the inability to use DateTime.Now to calculate the user's timezone.
+                    You can get the timestamp and timezone off of the latest message, but the result has to be cast as an Activity in order to do so.
+                </p>
                 <p>Packages Used:</p>
                 <ul>
                     <li>Microsoft Bot Framework</li>
@@ -52,37 +68,82 @@
                 <p><a href="#top">Back to Top</a></p>
 
 
+                <a name="keys"></a>
+                <h2>Keys &amp; ConnectionString Locations</h2>
+                <p><strong>API Keys &amp; Microsoft Credentials</strong></p>
+                <ul>
+                    <li>Microsoft Bot Credentials: Web.config</li>
+                </ul>
+                <p><strong>Connection Strings</strong></p>
+                <ul>
+                    <li>
+                        Defined in: Web.config (referenced in the following)
+                        <ul>
+                            <li>InterviewDialog.cs</li>
+                            <li>MatchmakingDialog.cs</li>
+                            <li>Mod1Dialog.cs</li>
+                            <li>Mod2Dialog.cs</li>
+                            <li>Mod3Dialog.cs</li>
+                            <li>Mod4Dialog.cs</li>
+                            <li>Mod5Dialog.cs</li>
+                            <li>MotivationDialog.cs</li>
+                            <li>PathwayDialog.cs</li>
+                            <li>SearchDialog.cs</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>File Names</strong></p>
+                <ul>
+                    <li>Matchmaking: MatchmakingSQLDAL.cs</li>
+                </ul>
+                <p><a href="#top">Back to Top</a></p>
+
+
                 <a name="resourceManager"></a>
                 <h2>teHelper Resource Manager</h2>
-                <p>The teHelper Resource Manager is an easy way to add and update resources in the database. You can easily attach and 
-                remove keywords to any resource, whether Pathway or Technical.</p>
-                <p>The teHelper Resource Manager must be run locally because there are no users or security in place. It syncs with the live 
-                AppHarbor database, so any changes you make while running locally will update instantly.</p>
+                <p>
+                    The teHelper Resource Manager is an easy way to add and update resources in the database. You can easily attach and
+                    remove keywords to any resource, whether Pathway or Technical.
+                </p>
+                <p>
+                    The teHelper Resource Manager must be run locally because there are no users or security in place. It syncs with the live
+                    AppHarbor database, so any changes you make while running locally will update instantly.
+                </p>
                 <p><a href="#top">Back to Top</a></p>
 
 
                 <a name="luis"></a>
                 <h2>Luis AI API</h2>
-                <p><a href="https://www.luis.ai/" target="_blank">Luis AI</a> understands what a user is asking for (their intent), 
-                though doesn't understand the keywords the user is looking for. It looks for the basic structure of a question/prompt/statement 
-                made by the user (called an utterance), and knows what part of the sentence is the keyword (called an entity) we need to 
-                search the database for.</p>
-                <p>To add new utterances, you'll need to log in to your Luis AI account (via Microsoft account). Navigate to Intents > listen for keyword 
-                and then you can add new utterances and mark the part of the sentence that represents the keyword.</p>
-                <p>We've had difficulty in getting Luis to understand what a user is asking for if they only send the keyword ("variables" versus 
-                "i need help with variables"). This may require training Luis to understand what to look for, though we're not sure.</p>
+                <p>
+                    <a href="https://www.luis.ai/" target="_blank">Luis AI</a> understands what a user is asking for (their intent),
+                    though doesn't understand the keywords the user is looking for. It looks for the basic structure of a question/prompt/statement
+                    made by the user (called an utterance), and knows what part of the sentence is the keyword (called an entity) we need to
+                    search the database for.
+                </p>
+                <p>
+                    To add new utterances, you'll need to log in to your Luis AI account (via Microsoft account). Navigate to Intents > listen for keyword
+                    and then you can add new utterances and mark the part of the sentence that represents the keyword.
+                </p>
+                <p>
+                    We've had difficulty in getting Luis to understand what a user is asking for if they only send the keyword ("variables" versus
+                    "i need help with variables"). This may require training Luis to understand what to look for, though we're not sure.
+                </p>
                 <p>You can train, test, and manage the Luis API (which returns JSON) from the Publish App section of Luis.ai.</p>
                 <p><a href="#top">Back to Top</a></p>
 
 
                 <a name="database"></a>
                 <h2>Database</h2>
-                <p>The database is currently hosted on AppHarbor on a SQLServer database. There's a seed/schema script included in the teHelper 
-                capstone project <span class="helper-tag">database</span> folder. We recommend backing it up periodically, especially after 
-                updating resources.</p>
-                <p>We were not able to use Ninject or dependency injection in this application because of the differences between MVC and the Bot 
-                Framework. If you need to change a source, you'll have to dive into the code to change the connection strings for each area that 
-                talks with the DAL.</p>
+                <p>
+                    The database is currently hosted on AppHarbor on a SQLServer database. There's a seed/schema script included in the teHelper
+                    capstone project <span class="helper-tag">database</span> folder. We recommend backing it up periodically, especially after
+                    updating resources.
+                </p>
+                <p>
+                    We were not able to use Ninject or dependency injection in this application because of the differences between MVC and the Bot
+                    Framework. If you need to change a source, you'll have to dive into the code to change the connection strings for each area that
+                    talks with the DAL.
+                </p>
                 <p><a href="#top">Back to Top</a></p>
 
 
@@ -91,30 +152,45 @@
                 <p>The heart of teHelperBot lives in Dialogs. Each path of a conversation will roughly follow a dialog stack.</p>
                 <p>The MessagesController calls the Root Dialog, which takes care of all possible paths of conversations.</p>
                 <p>Reading through the code and seeing what different commands do is the best way to learn and modify the bot.</p>
-                <p>Every dialog always starts in the <span class="helper-tag">StartAsync</span> method, and from there will travel through 
-                various methods.</p>
+                <p>
+                    Every dialog always starts in the <span class="helper-tag">StartAsync</span> method, and from there will travel through
+                    various methods.
+                </p>
                 <p>The most common thing you'll do is update an existing menu, which should be under it's own method in a Dialog Prompt.</p>
                 <p><a href="#top">Back to Top</a></p>
 
 
                 <a name="matchmaking"></a>
                 <h2>Updating the Matchmaking Schedule</h2>
-                <p>To update the files for the Matchmaking section of the teHelperBot you'll need to export as a tab-separated values file (.tsv) by going
-                to File > Download As > .tsv file (last option) the following two files:
-                <ul>
-                    <li>
-                        <span class="helper-tag">Matchmaking Schedule - EXTERNAL - Schedule (by Student)</span> should be renamed 
-                        <span class="helper-tag">MatchmakingScheduleByStudent.tsv</span> and placed in the 
-                        <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
-                    </li>
-                    <li>
-                        <span class="helper-tag">Matchmaking - Company Emails</span> should be renamed 
-                        <span class="helper-tag">MatchmakingCompanies.tsv</span> and also placed in the 
-                        <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
-                    </li>
-                </ul>
+                <p>
+                    To update the files for the Matchmaking section of the teHelperBot you'll need to export as a tab-separated values file (.tsv) by going
+                    to File > Download As > .tsv file (last option) the following two files:
+                    <ul>
+                        <li>
+                            <span class="helper-tag">Matchmaking Schedule - EXTERNAL - Schedule (by Student)</span> should be renamed
+                            <span class="helper-tag">MatchmakingScheduleByStudent.tsv</span> and placed in the
+                            <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
+                        </li>
+                        <li>
+                            <span class="helper-tag">Matchmaking - Company Emails</span> should be renamed
+                            <span class="helper-tag">MatchmakingCompanies.tsv</span> and also placed in the
+                            <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
+                        </li>
+                    </ul>
                 </p>
                 <p>Keeping the format (columns, spacing, etc) in each Google Sheets document is incredibly important.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="troubleshootings"></a>
+                <h2>Troubleshooting</h2>
+                <p>Common ways to fix broken code:</p>
+                <ul>
+                    <li>Make sure <span class="helper-tag">[Serializable]</span> is at the top of every class.</li>
+                    <li>Datatypes of IAwaitable result in parameters can be IAwaitable&lt;string&gt;, IAwaitable&lt;object&gt;, and IAwaitable&lt;IMessageActivity&gt;</li>
+                    <li>Set up your Resume methods for context.Call or context.Forward</li>
+                    <li>context.Wait will always wait for user input and pass it along as the result in a parameter.</li>
+                </ul>
                 <p><a href="#top">Back to Top</a></p>
 
 
