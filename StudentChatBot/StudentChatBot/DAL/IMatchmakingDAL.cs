@@ -11,5 +11,6 @@ namespace StudentChatBot.DAL
     {
         StudentMatchmakingSchedule GetStudentSchedule(string studentName);
         CompanyContact GetCompanyContactInfo(string companyName);
+        List<string> GetListOfAllAttendingCompanies();
     }
 }

@@ -18,9 +18,11 @@ namespace StudentChatBot.Models
 
             if (AllInterviewsOnDayOne != null)
             {
+                schedule += "\n\n--\n\n";
+                schedule += "\n\n\t\n\nDay One\n\n";
+
                 foreach (ScheduleItem item in AllInterviewsOnDayOne)
                 {
-                    schedule += "Day One\n";
                     schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
                 }
             }
@@ -31,9 +33,10 @@ namespace StudentChatBot.Models
             
             if (AllInterviewsOnDayTwo != null)
             {
+                schedule += "\n\n--\n\n";
+                schedule += "\n\nDay Two\n\n";
                 foreach (ScheduleItem item in AllInterviewsOnDayTwo)
                 {
-                    schedule += "Day Two\n";
                     schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
                 }
             }

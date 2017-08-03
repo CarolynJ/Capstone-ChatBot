@@ -69,7 +69,8 @@ namespace StudentChatBot.Dialogs
         }
         public async Task ResumeAfterLookup(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync("");
+            //await context.PostAsync("");
+            var browse = await result;
             context.Done(true);
         }
     }

@@ -8,6 +8,7 @@ using Microsoft.Bot.Connector;
 using StudentChatBot.DAL;
 using StudentChatBot.Models;
 using StudentChatBot.Models.Matchmaking;
+using System.Threading;
 
 namespace StudentChatBot.Dialogs
 {
@@ -16,6 +17,7 @@ namespace StudentChatBot.Dialogs
     {
         private const string AllCompaniesOption = "View All Companies";
         private const string ViewStudentsScheduleOption = "View a Student's Schedule";
+        private const string ViewCompanyContactInfoOption = "Get a Company's Contact Info";
         private const string ExitOption = "Exit";
 
 
@@ -29,7 +31,7 @@ namespace StudentChatBot.Dialogs
         private void ShowMatchmakingMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterMatchmakingMenu, new List<string>()
-                { ViewStudentsScheduleOption, ExitOption },
+                { ViewStudentsScheduleOption, AllCompaniesOption, ViewCompanyContactInfoOption, ExitOption },
                 "Do any of these options suit your fancy?",
                 "Hmm, I didn't understand that, try again.",
                 2);
@@ -41,18 +43,32 @@ namespace StudentChatBot.Dialogs
 
             switch (optionSelected)
             {
-                //case AllCompaniesOption:
-                //    MatchmakingSQLDAL dal = new MatchmakingSQLDAL();
-                //    List<Company> allCompanies = dal.
-                //    // dal call
-                //    // return list of companies and show to user
-                //    // if (allCompanies.Count > 0) {
-                //    //show allc ompanies
-                //    // else {
-                //    // await ResumeAfterAllCompaniesOption(context, result);
+                case AllCompaniesOption:
+                    MatchmakingSQLDAL dal = new MatchmakingSQLDAL();
+                    List<string> allCompanies = dal.GetListOfAllAttendingCompanies();
+                    string output = "";
 
-                //    //context.Wait(ResumeAfterAllCompaniesOption);
-                //    break;
+                    if (allCompanies.Count > 0)
+                    {
+                        foreach(string str in allCompanies)
+                        {
+                            output += str + "\n\n";
+                        }
+                    }
+                    else
+                    {
+                        await context.PostAsync("Hmm, something went wrong and I couldn't find any companies...");
+                    }
+
+                    await context.PostAsync(output);
+                    Thread.Sleep(1000);
+                    ShowMatchmakingMenu(context);
+                    break;
+
+                case ViewCompanyContactInfoOption:
+                    await context.PostAsync("What company do you need contact information for?");
+                    context.Wait(GetCompanyContactInfo);
+                    break;
 
                 case ViewStudentsScheduleOption:
                     await context.PostAsync("Which student's schedule are you interested in?");
@@ -65,22 +81,43 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        private Task ResumeAfterAllCompaniesOption(IDialogContext context, IAwaitable<string> result)
+        private async Task GetCompanyContactInfo(IDialogContext context, IAwaitable<object> result)
         {
-            throw new NotImplementedException();
-        }
+            var userInput = (await result as Activity).Text;
 
-        private void ViewAllCompanies(IDialogContext context)
-        {
-            throw new NotImplementedException();
+            if (userInput == "exit")
+            {
+                ShowMatchmakingMenu(context);
+                return;
+            }
+
+            IMatchmakingDAL dal = new MatchmakingSQLDAL();
+            CompanyContact companyContactInfo = dal.GetCompanyContactInfo(userInput);
+
+            if (companyContactInfo.CompanyName == null)
+            {
+                await context.PostAsync("Hmm, I didn't understand that. Check your spelling or try another company.");
+            }
+            else
+            {
+                await context.PostAsync(companyContactInfo.ToString());
+                Thread.Sleep(1000);
+                await context.PostAsync("If you want another company's contact information, go ahead and type the company name. Otherwise you can say 'exit' and I'll return you to the main menu.");
+            }
         }
 
         private async Task ViewStudentSchedule(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            var userInput = await result;
+            var userInput = (await result as Activity).Text;
+
+            if (userInput == "exit")
+            {
+                ShowMatchmakingMenu(context);
+                return;
+            }
 
             IMatchmakingDAL dal = new MatchmakingSQLDAL();
-            StudentMatchmakingSchedule studentSchedule = dal.GetStudentSchedule(userInput.Text);
+            StudentMatchmakingSchedule studentSchedule = dal.GetStudentSchedule(userInput);
 
             if (studentSchedule == null)
             {
@@ -88,6 +125,8 @@ namespace StudentChatBot.Dialogs
             }
 
             await context.PostAsync($"Here's {studentSchedule.StudentName}'s Schedule: \n {studentSchedule.ToString()}");
+            Thread.Sleep(1000);
+            await context.PostAsync("Enter another student's name if you want to view their schedule. Otherwise you can say 'exit' to go back to the Matchmaking Menu.");
         }
 
  

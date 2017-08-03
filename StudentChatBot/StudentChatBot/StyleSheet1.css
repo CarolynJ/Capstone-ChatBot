@@ -1,5 +1,6 @@
 ﻿body {
     background-color: aliceblue;
+    font-size: 16px;
 }
 
 .bot-container {
@@ -20,7 +21,6 @@
 .helper-tag {
     font-family: 'Lucida Console';
     color: #000000;
-    font-weight: bold;
     background-color: #e6e6e6;
     padding: 2px 5px;
 }

@@ -49,7 +49,7 @@ namespace StudentChatBot.Dialogs
                 2);
         }
 
-        private async Task ResumeAfterModFiveMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterModFiveMenu(IDialogContext context, IAwaitable<object> result)
         {
             var optionSelected = await result;
 
@@ -63,8 +63,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -80,10 +87,17 @@ namespace StudentChatBot.Dialogs
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
 
-                    if (AllResources.Count > 0)
+                    if(AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if(AllResources.Count == 1)
+                        {
+                             await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -101,8 +115,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -120,8 +141,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -168,7 +196,7 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        public async Task AllResults(IDialogContext context, IAwaitable<object> result)
         {
             foreach (Resource r in this.AllResources)
             {
@@ -190,7 +218,7 @@ namespace StudentChatBot.Dialogs
 
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
-            var message = await result;
+            //var message = await result;
             await context.PostAsync("Would you like to browse for another module 5 resource?");
             context.Wait(Redirect);
 
