@@ -25,6 +25,21 @@
     padding: 2px 5px;
 }
 
+#footer {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+}
+
+#footer, #header {
+    padding: 20px;
+    background: #fff;
+}
+
+#header {
+    margin-bottom: 20px;
+}
+
 
 @media(max-width: 991px) {
     .bot-container {
