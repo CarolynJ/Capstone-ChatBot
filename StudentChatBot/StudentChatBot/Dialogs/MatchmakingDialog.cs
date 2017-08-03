@@ -11,6 +11,7 @@ using StudentChatBot.Models.Matchmaking;
 
 namespace StudentChatBot.Dialogs
 {
+    [Serializable]
     public class MatchmakingDialog : IDialog<object>
     {
         private const string AllCompaniesOption = "View All Companies";
@@ -20,7 +21,7 @@ namespace StudentChatBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Yay it's matchmaking time, check your schedule or set a reminder to follow up with an employer.");
+            await context.PostAsync("Yay it's matchmaking time, view all companies coming to matchmaking or check your schedule.");
 
             this.ShowMatchmakingMenu(context);
         }
@@ -28,7 +29,7 @@ namespace StudentChatBot.Dialogs
         private void ShowMatchmakingMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterMatchmakingMenu, new List<string>()
-                { AllCompaniesOption, ViewStudentsScheduleOption, ExitOption },
+                { ViewStudentsScheduleOption, ExitOption },
                 "Do any of these options suit your fancy?",
                 "Hmm, I didn't understand that, try again.",
                 2);
@@ -40,11 +41,21 @@ namespace StudentChatBot.Dialogs
 
             switch (optionSelected)
             {
-                case AllCompaniesOption:
-                    break;
+                //case AllCompaniesOption:
+                //    MatchmakingSQLDAL dal = new MatchmakingSQLDAL();
+                //    List<Company> allCompanies = dal.
+                //    // dal call
+                //    // return list of companies and show to user
+                //    // if (allCompanies.Count > 0) {
+                //    //show allc ompanies
+                //    // else {
+                //    // await ResumeAfterAllCompaniesOption(context, result);
+
+                //    //context.Wait(ResumeAfterAllCompaniesOption);
+                //    break;
 
                 case ViewStudentsScheduleOption:
-                    await context.PostAsync("Enter a student name:");
+                    await context.PostAsync("Which student's schedule are you interested in?");
                     context.Wait(ViewStudentSchedule);
                     break;
 
@@ -52,7 +63,16 @@ namespace StudentChatBot.Dialogs
                     context.Done(true);
                     break;
             }
+        }
 
+        private Task ResumeAfterAllCompaniesOption(IDialogContext context, IAwaitable<string> result)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ViewAllCompanies(IDialogContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task ViewStudentSchedule(IDialogContext context, IAwaitable<IMessageActivity> result)

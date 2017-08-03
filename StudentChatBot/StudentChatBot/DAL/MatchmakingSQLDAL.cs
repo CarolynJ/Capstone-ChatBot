@@ -22,14 +22,20 @@ namespace StudentChatBot.DAL
             string fileName = "Content/Summer2017MatchmakingScheduleByStudent.tsv";
             List<string[]> allLinesFromFile = this.ReadFromFile(fileName);
 
-            int indexOfStudentNameInFile = Array.FindIndex(allLinesFromFile[0], x => x.Contains(studentName));
+            int indexOfStudentNameInFile = Array.FindIndex(allLinesFromFile[0], x => x.ToLower().Contains(studentName.ToLower()));
+
+            if (indexOfStudentNameInFile == -1) // doesn't contain the name they're looking for
+            {
+                return new StudentMatchmakingSchedule(); // return empty which will be caught in MatchmakingDialog
+            }
 
             List<string[]> onlyScheduleLines = new List<string[]>(allLinesFromFile); // make a deep copy w/ different references to memory
             onlyScheduleLines.RemoveAt(0); // remove top line of names
             onlyScheduleLines.RemoveAt(onlyScheduleLines.Count - 1); // remove bottom line with interview count
+            onlyScheduleLines.RemoveAt(onlyScheduleLines.Count - 1); // remove another empty bottom line
 
             StudentMatchmakingSchedule studentSchedule = new StudentMatchmakingSchedule();
-            studentSchedule.StudentName = studentName;
+            studentSchedule.StudentName = allLinesFromFile[0][indexOfStudentNameInFile];
             
             List<ScheduleItem> allScheduleItems = new List<ScheduleItem>();
             List<string[]> allStudentScheduleStrings = new List<string[]>();
@@ -44,32 +50,32 @@ namespace StudentChatBot.DAL
             List<string[]> firstHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(0, indexOfStartOfSecondDay));
             List<string[]> secondHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(indexOfStartOfSecondDay, allStudentScheduleStrings.Count - firstHalfOfSchedule.Count));
             
-            foreach (string[] str in firstHalfOfSchedule)
-            {
-                studentSchedule.AllInterviewsOnDayOne.Add(new ScheduleItem()
-                {
-                    StartTime = str[1].Substring(0, indexOfStartOfSecondDay),
-                    EndTime = str[1].Substring(indexOfStartOfSecondDay + 1),
-                    CompanyName = str[indexOfStudentNameInFile]
-                });
-            }
+            //foreach (string[] str in firstHalfOfSchedule)
+            //{
+            //    studentSchedule.AllInterviewsOnDayOne.Add(new ScheduleItem()
+            //    {
+            //        StartTime = str[0],
+            //        EndTime = str[0],
+            //        CompanyName = str[0]
+            //    });
+            //}
 
-            foreach (string[] str in secondHalfOfSchedule)
-            {
-                studentSchedule.AllInterviewsOnDayTwo.Add(new ScheduleItem()
-                {
-                    StartTime = str[1].Substring(0, indexOfStartOfSecondDay),
-                    EndTime = str[1].Substring(indexOfStartOfSecondDay + 1),
-                    CompanyName = str[indexOfStudentNameInFile]
-                });
-            }
-            
+            //foreach (string[] str in secondHalfOfSchedule)
+            //{
+            //    studentSchedule.AllInterviewsOnDayTwo.Add(new ScheduleItem()
+            //    {
+            //        StartTime = str[1].Substring(0, 4),
+            //        EndTime = str[1].Substring(7),
+            //        CompanyName = str[2]
+            //    });
+            //}
+
             return studentSchedule;
         }
 
         private List<string[]> ReadFromFile(string fileName)
         {
-            string directory = Environment.CurrentDirectory;
+            string directory = AppDomain.CurrentDomain.BaseDirectory;
             string fullPath = Path.Combine(directory, fileName);
 
             List<string[]> allWords = new List<string[]>();
@@ -80,7 +86,7 @@ namespace StudentChatBot.DAL
                 {
                     while (!sr.EndOfStream)
                     {
-                        string[] words = sr.ReadLine().Split(',');
+                        string[] words = sr.ReadLine().Split('\t');
                         allWords.Add(words);
                     }
                 }
