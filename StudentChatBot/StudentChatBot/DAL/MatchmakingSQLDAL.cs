@@ -10,8 +10,9 @@ namespace StudentChatBot.DAL
 {
     public class MatchmakingSQLDAL : IMatchmakingDAL
     {
-        private enum DaysOfTheWeek { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
-
+        private const string companiesTSVFileName = "Content/Summer2017MatchmakingCompanies.tsv";
+        private const string matchmakingTSVFileName = "Content/Summer2017MatchmakingScheduleByStudent.tsv";
+        
         public CompanyContact GetCompanyContactInfo(string companyName)
         {
             throw new NotImplementedException();
@@ -19,8 +20,7 @@ namespace StudentChatBot.DAL
 
         public StudentMatchmakingSchedule GetStudentSchedule(string studentName)
         {
-            string fileName = "Content/Summer2017MatchmakingScheduleByStudent.tsv";
-            List<string[]> allLinesFromFile = this.ReadFromFile(fileName);
+            List<string[]> allLinesFromFile = this.ReadFromFile(matchmakingTSVFileName);
 
             int indexOfStudentNameInFile = Array.FindIndex(allLinesFromFile[0], x => x.ToLower().Contains(studentName.ToLower()));
 
@@ -108,6 +108,17 @@ namespace StudentChatBot.DAL
             }
 
             return allWords;
+        }
+
+        public List<string> GetListOfAllAttendingCompanies()
+        {
+            List<string[]> allLinesFromFile = this.ReadFromFile(companiesTSVFileName);
+
+            List<string> allCompanyNames = allLinesFromFile[0].ToList();
+            allCompanyNames.RemoveAt(0); // remove "company name" from list
+            allCompanyNames.Sort();
+
+            return allCompanyNames;
         }
     }
 }

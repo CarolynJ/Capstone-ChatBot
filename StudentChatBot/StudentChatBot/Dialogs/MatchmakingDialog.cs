@@ -29,7 +29,7 @@ namespace StudentChatBot.Dialogs
         private void ShowMatchmakingMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterMatchmakingMenu, new List<string>()
-                { ViewStudentsScheduleOption, ExitOption },
+                { ViewStudentsScheduleOption, AllCompaniesOption, ExitOption },
                 "Do any of these options suit your fancy?",
                 "Hmm, I didn't understand that, try again.",
                 2);
@@ -41,18 +41,27 @@ namespace StudentChatBot.Dialogs
 
             switch (optionSelected)
             {
-                //case AllCompaniesOption:
-                //    MatchmakingSQLDAL dal = new MatchmakingSQLDAL();
-                //    List<Company> allCompanies = dal.
-                //    // dal call
-                //    // return list of companies and show to user
-                //    // if (allCompanies.Count > 0) {
-                //    //show allc ompanies
-                //    // else {
-                //    // await ResumeAfterAllCompaniesOption(context, result);
+                case AllCompaniesOption:
+                    MatchmakingSQLDAL dal = new MatchmakingSQLDAL();
+                    List<string> allCompanies = dal.GetListOfAllAttendingCompanies();
+                    string output = "";
 
-                //    //context.Wait(ResumeAfterAllCompaniesOption);
-                //    break;
+                    if (allCompanies.Count > 0)
+                    {
+                        foreach(string str in allCompanies)
+                        {
+                            output += str + "\n\n";
+                        }
+                    }
+                    else
+                    {
+                        await context.PostAsync("Hmm, something went wrong and I couldn't find any companies...");
+                    }
+
+                    await context.PostAsync(output);
+                    ShowMatchmakingMenu(context);
+
+                    break;
 
                 case ViewStudentsScheduleOption:
                     await context.PostAsync("Which student's schedule are you interested in?");
@@ -63,11 +72,6 @@ namespace StudentChatBot.Dialogs
                     context.Done(true);
                     break;
             }
-        }
-
-        private Task ResumeAfterAllCompaniesOption(IDialogContext context, IAwaitable<string> result)
-        {
-            throw new NotImplementedException();
         }
 
         private void ViewAllCompanies(IDialogContext context)
