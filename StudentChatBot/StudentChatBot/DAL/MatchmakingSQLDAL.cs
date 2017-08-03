@@ -49,26 +49,37 @@ namespace StudentChatBot.DAL
 
             List<string[]> firstHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(0, indexOfStartOfSecondDay));
             List<string[]> secondHalfOfSchedule = new List<string[]>(allStudentScheduleStrings.GetRange(indexOfStartOfSecondDay, allStudentScheduleStrings.Count - firstHalfOfSchedule.Count));
-            
-            //foreach (string[] str in firstHalfOfSchedule)
-            //{
-            //    studentSchedule.AllInterviewsOnDayOne.Add(new ScheduleItem()
-            //    {
-            //        StartTime = str[0],
-            //        EndTime = str[0],
-            //        CompanyName = str[0]
-            //    });
-            //}
+            List<ScheduleItem> firstDayScheduleItems = new List<ScheduleItem>();
+            List<ScheduleItem> secondDayScheduleItems = new List<ScheduleItem>();
 
-            //foreach (string[] str in secondHalfOfSchedule)
-            //{
-            //    studentSchedule.AllInterviewsOnDayTwo.Add(new ScheduleItem()
-            //    {
-            //        StartTime = str[1].Substring(0, 4),
-            //        EndTime = str[1].Substring(7),
-            //        CompanyName = str[2]
-            //    });
-            //}
+            foreach (string[] str in firstHalfOfSchedule)
+            {
+                if (str[2] != "")
+                {
+                    firstDayScheduleItems.Add(new ScheduleItem()
+                    {
+                        StartTime = str[1].Substring(0, 5),
+                        EndTime = str[1].Substring(7),
+                        CompanyName = str[2]
+                    });
+                }
+            }
+
+            foreach (string[] str in secondHalfOfSchedule)
+            {
+                if (str[2] != "")
+                {
+                    secondDayScheduleItems.Add(new ScheduleItem()
+                    {
+                        StartTime = str[1].Substring(0, 5),
+                        EndTime = str[1].Substring(7),
+                        CompanyName = str[2]
+                    });
+                }
+            }
+
+            studentSchedule.AllInterviewsOnDayOne = firstDayScheduleItems;
+            studentSchedule.AllInterviewsOnDayTwo = secondDayScheduleItems;
 
             return studentSchedule;
         }
