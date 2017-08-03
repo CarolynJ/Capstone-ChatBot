@@ -10,8 +10,8 @@ namespace StudentChatBot.DAL
 {
     public class MatchmakingSQLDAL : IMatchmakingDAL
     {
-        private const string companiesTSVFileName = "Content/Summer2017MatchmakingCompanies.tsv";
-        private const string matchmakingTSVFileName = "Content/Summer2017MatchmakingScheduleByStudent.tsv";
+        private const string companiesTSVFileName = "Content/MatchmakingCompanies.tsv";
+        private const string matchmakingTSVFileName = "Content/MatchmakingScheduleByStudent.tsv";
         
         public CompanyContact GetCompanyContactInfo(string companyName)
         {

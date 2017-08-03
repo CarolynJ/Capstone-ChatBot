@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>teHelperBot Documentation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="StyleSheet1.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>teHelperBot Documentation<a name="top"></a></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-push-8">
+                <h2>Table of Contents</h2>
+                <p><a href="#welcome">Welcome</a></p>
+                <p><a href="#basics">Basics &amp; Deployment</a></p>
+                <p><a href="#resourceManager">teHelper Resource Manager</a></p>
+                <p><a href="#luis">Luis AI API</a></p>
+                <p><a href="#database">Database</a></p>
+                <p><a href="#dialogs">Dialog Stacks</a></p>
+                <p><a href="#matchmaking">Updating the Matchmaking Schedule</a></p>
+                <p><a href="#tests">Tests</a></p>
+            </div>
+
+            <div class="col-md-8 col-md-pull-4">
+                <a name="welcome"></a>
+                <h2>Welcome</h2>
+                <p>So you're a proud new owner/contributor to teHelperBot2017. Use this guide for information on deploying, 
+                maintaining, adding, and changing teHelperBot.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+                <a name="basics"></a>
+                <h2>Basics &amp; Deployment</h2>
+                <p>teHelperBot lives on Azure, while the database lives on an AppHarbor SQLServer database.</p>
+                <p>teHelperBot uses the Microsoft Bot Framework, which is built on an API. You can manage the bot API via the 
+                <a href="https://dev.botframework.com" target="_blank">Bot Framework</a> website. If you want to add the bot to additional channels, 
+                such as Slack or Facebook Messenger, you would turn these channels on via the Bot Framework interface.</p>
+                <p>Luis AI is also used via API integration. The API call is made from <span class="helper-tag">SearchDialog.cs</span>. 
+                You can read more about Luis in the <a href="#luis">Luis AI section</a>.</p>
+                <p>Packages Used:</p>
+                <ul>
+                    <li>Microsoft Bot Framework</li>
+                    <li>Bootstrap (CSS)</li>
+                    <li>Dapper</li>
+                    <li>Newtonsoft.Json</li>
+                </ul>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="resourceManager"></a>
+                <h2>teHelper Resource Manager</h2>
+                <p>The teHelper Resource Manager is an easy way to add and update resources in the database. You can easily attach and 
+                remove keywords to any resource, whether Pathway or Technical.</p>
+                <p>The teHelper Resource Manager must be run locally because there are no users or security in place. It syncs with the live 
+                AppHarbor database, so any changes you make while running locally will update instantly.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="luis"></a>
+                <h2>Luis AI API</h2>
+                <p><a href="https://www.luis.ai/" target="_blank">Luis AI</a> understands what a user is asking for (their intent), 
+                though doesn't understand the keywords the user is looking for. It looks for the basic structure of a question/prompt/statement 
+                made by the user (called an utterance), and knows what part of the sentence is the keyword (called an entity) we need to 
+                search the database for.</p>
+                <p>To add new utterances, you'll need to log in to your Luis AI account (via Microsoft account). Navigate to Intents > listen for keyword 
+                and then you can add new utterances and mark the part of the sentence that represents the keyword.</p>
+                <p>We've had difficulty in getting Luis to understand what a user is asking for if they only send the keyword ("variables" versus 
+                "i need help with variables"). This may require training Luis to understand what to look for, though we're not sure.</p>
+                <p>You can train, test, and manage the Luis API (which returns JSON) from the Publish App section of Luis.ai.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="database"></a>
+                <h2>Database</h2>
+                <p>The database is currently hosted on AppHarbor on a SQLServer database. There's a seed/schema script included in the teHelper 
+                capstone project <span class="helper-tag">database</span> folder. We recommend backing it up periodically, especially after 
+                updating resources.</p>
+                <p>We were not able to use Ninject or dependency injection in this application because of the differences between MVC and the Bot 
+                Framework. If you need to change a source, you'll have to dive into the code to change the connection strings for each area that 
+                talks with the DAL.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="dialogs"></a>
+                <h2>Dialog Stacks</h2>
+                <p>The heart of teHelperBot lives in Dialogs. Each path of a conversation will roughly follow a dialog stack.</p>
+                <p>The MessagesController calls the Root Dialog, which takes care of all possible paths of conversations.</p>
+                <p>Reading through the code and seeing what different commands do is the best way to learn and modify the bot.</p>
+                <p>Every dialog always starts in the <span class="helper-tag">StartAsync</span> method, and from there will travel through 
+                various methods.</p>
+                <p>The most common thing you'll do is update an existing menu, which should be under it's own method in a Dialog Prompt.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="matchmaking"></a>
+                <h2>Updating the Matchmaking Schedule</h2>
+                <p>To update the files for the Matchmaking section of the teHelperBot you'll need to export as a tab-separated values file (.tsv) by going
+                to File > Download As > .tsv file (last option) the following two files:
+                <ul>
+                    <li>
+                        <span class="helper-tag">Matchmaking Schedule - EXTERNAL - Schedule (by Student)</span> should be renamed 
+                        <span class="helper-tag">MatchmakingScheduleByStudent.tsv</span> and placed in the 
+                        <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
+                    </li>
+                    <li>
+                        <span class="helper-tag">Matchmaking - Company Emails</span> should be renamed 
+                        <span class="helper-tag">MatchmakingCompanies.tsv</span> and also placed in the 
+                        <span class="helper-tag">StudentChatBot\StudentChatBot\Content</span> folder.
+                    </li>
+                </ul>
+                </p>
+                <p>Keeping the format (columns, spacing, etc) in each Google Sheets document is incredibly important.</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+                <a name="tests"></a>
+                <h2>Tests</h2>
+                <p>lol, no, sry</p>
+                <p><a href="#top">Back to Top</a></p>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

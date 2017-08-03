@@ -189,6 +189,7 @@
     </Content>
     <Content Include="Content\telogo.png" />
     <Content Include="default.htm" />
+    <Content Include="documentation.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -199,7 +200,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\Summer2017MatchmakingScheduleByStudent.csv" />
+    <Content Include="Content\Summer2017MatchmakingCompanies.tsv" />
+    <Content Include="Content\Summer2017MatchmakingScheduleByStudent.tsv" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
