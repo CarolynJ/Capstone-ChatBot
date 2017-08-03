@@ -2,10 +2,11 @@
     background-color: aliceblue;
 }
 
-.bot-container{
+.bot-container {
     position: relative;
     height: 0;
     overflow: hidden;
+    padding-bottom: 70%;
 }
 
 .bot-container iframe{
@@ -14,4 +15,19 @@
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.helper-tag {
+    font-family: 'Lucida Console';
+    color: #000000;
+    font-weight: bold;
+    background-color: #e6e6e6;
+    padding: 2px 5px;
+}
+
+
+@media(max-width: 991px) {
+    .bot-container {
+        padding-bottom: 120%;
+    }
 }
