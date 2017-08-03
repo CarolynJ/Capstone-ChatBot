@@ -15,7 +15,38 @@ namespace StudentChatBot.DAL
         
         public CompanyContact GetCompanyContactInfo(string companyName)
         {
-            throw new NotImplementedException();
+            List<string[]> allLinesFromFile = this.ReadFromFile(companiesTSVFileName);
+
+            int indexOfCompanyInFile = Array.FindIndex(allLinesFromFile[0], x => x.ToLower().Contains(companyName.ToLower()));
+
+            if (indexOfCompanyInFile == -1)
+            {
+                return new CompanyContact(); // return empty which will be caught in MatchmakingDialog
+            }
+
+            // get list<string> of interviewers and add to companycontact
+            List<string> companyInterviewersAndMainContact = new List<string>();
+
+            if (allLinesFromFile[1][indexOfCompanyInFile].Length > 0) // only add interviewers to companyContact if there's something in the field (not empty)
+            {
+                string[] arrayOfInterviewers = allLinesFromFile[1][indexOfCompanyInFile].Split(',');
+                companyInterviewersAndMainContact.Add(String.Join(", ", arrayOfInterviewers));
+            }
+
+            companyInterviewersAndMainContact.Add(allLinesFromFile[2][indexOfCompanyInFile]);
+
+            Dictionary<string, string> mainContactInfo = new Dictionary<string, string>();
+            mainContactInfo.Add(allLinesFromFile[2][indexOfCompanyInFile], allLinesFromFile[3][indexOfCompanyInFile]);
+            
+            // populate the companycontact object to return
+            CompanyContact companyContact = new CompanyContact()
+            {
+                CompanyName = allLinesFromFile[0][indexOfCompanyInFile],
+                Interviewers = companyInterviewersAndMainContact,
+                MainContactInfo = mainContactInfo
+            };
+
+            return companyContact;
         }
 
         public StudentMatchmakingSchedule GetStudentSchedule(string studentName)

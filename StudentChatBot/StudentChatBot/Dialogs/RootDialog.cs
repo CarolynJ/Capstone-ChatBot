@@ -119,7 +119,7 @@ namespace StudentChatBot.Dialogs
                         break;
 
                     case MatchmakingOption:
-                        context.Call(new MatchmakingDialog(), this.ResumeAfterGreetingDialog);
+                        context.Call(new MatchmakingDialog(), this.ResumeAfterOptionDialog);
                         break;
 
                     case ExitOption:
