@@ -18,7 +18,7 @@ namespace StudentChatBot.Dialogs
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
-        private const string MatchmakingOption = "Matchmaking";
+        private const string MatchmakingOption = "Matchmaking Schedule";
 
         public Task StartAsync(IDialogContext context)
         {
@@ -88,7 +88,7 @@ namespace StudentChatBot.Dialogs
             }
 
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                {  SearchOption, BrowseOption, MotivationOption, HelpOption, ExitOption },
+                {  SearchOption, BrowseOption, MotivationOption, MatchmakingOption, HelpOption, ExitOption },
                 header,
                 "Hmmm, I didn't understand that, try again...",
                 2);
