@@ -131,7 +131,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case FollowUpOption:
-                    await context.PostAsync("Remeber to follow up");
+                    await context.PostAsync("Remember to follow up");
                     keyword = "follow up";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     resources = dal.GetResources(keyword);

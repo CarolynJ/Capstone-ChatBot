@@ -36,11 +36,11 @@ namespace StudentChatBot.Dialogs
 
                 message.Attachments.Add(attachment);
 
-                await context.PostAsync(message);
+                await context.PostAsync(message).ConfigureAwait(false);
+                context.Wait(JoshResponse);
             }
             else
             {
-                context.Wait(OtherResponse);
                 response = "It's nice to meet you " + userName;
                 await context.PostAsync(response);
                 Thread.Sleep(4000);
@@ -52,7 +52,6 @@ namespace StudentChatBot.Dialogs
                 context.Done(true);
             }
 
-            context.Wait(JoshResponse);
         }
 
         public async Task JoshResponse(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -68,11 +67,13 @@ namespace StudentChatBot.Dialogs
                 await context.PostAsync(markdownContent);
 
                 Thread.Sleep(4000);
-                context.Done(true);
             }
-            await context.PostAsync("Oh ok nevermind, how can I help you today?");
-            context.Done(true);
-
+            else
+            {
+                await context.PostAsync("Oh ok nevermind, how can I help you today?");
+            }
+            RootDialog dialog = new RootDialog();
+            await dialog.ResumeAfterNameResponse(context, result);
         }
 
     }

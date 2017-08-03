@@ -14,7 +14,7 @@ namespace StudentChatBot.Dialogs
 
         private const string SearchOption = "Search By Keyword";
         private const string BrowseOption = "Browse";
-        private const string ChatOption = "Chat with Me";
+        //private const string ChatOption = "Chat with Me";
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
@@ -63,7 +63,7 @@ namespace StudentChatBot.Dialogs
             var activity = await result;
             context.Call(new NameResponseDialog(), this.ResumeAfterNameResponse);
         }
-        private async Task ResumeAfterNameResponse(IDialogContext context, IAwaitable<object> result)
+        public async Task ResumeAfterNameResponse(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result;
             this.ShowOptions(context);
@@ -71,9 +71,25 @@ namespace StudentChatBot.Dialogs
 
         private void ShowOptions(IDialogContext context)
         {
+            string header = "Are you looking to search for info, get help, or get motivation?";
+            Random r = new Random();
+            int num = r.Next(0, 10);
+            if(num == 0)
+            {
+                header = "Choose Wisely";
+            }
+            if(num == 1)
+            {
+                header = "Based on your lethargic keystrokes I would suggest motivation";
+            }
+            if(num == 2)
+            {
+                header = "Hi! Please choose one of these fine options!";
+            }
+
             PromptDialog.Choice(context, this.OnOptionSelected, new List<string>()
-                {  SearchOption, BrowseOption, MotivationOption, ChatOption, HelpOption, ExitOption },
-                "Are you looking to search for info, get help, or just chat?",
+                {  SearchOption, BrowseOption, MotivationOption, HelpOption, ExitOption },
+                header,
                 "Hmmm, I didn't understand that, try again...",
                 2);
         }
@@ -123,10 +139,20 @@ namespace StudentChatBot.Dialogs
 
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
+            string asterisk = "*";
             var message = await result;
             await context.PostAsync("Anything else I can help you with?");
+            Random r = new Random();
+            int num = r.Next(0, 7);
+            if(num == 1)
+            {
+                await context.PostAsync($"{asterisk}Please ask me something, I'm lonely :({asterisk}");
+            }
+            if(num == 2)
+            {
+                await context.PostAsync($"{asterisk}I'm really not in the mood to help you much more though...{asterisk}");
+            }
             context.Wait(Redirect);
-            //context.Done(true);
 
         }
         private async Task Redirect(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -142,6 +168,11 @@ namespace StudentChatBot.Dialogs
             else if (userInput.Contains("help"))
             {
                 context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
+            }
+            else if (userInput.Contains("?"))
+            {
+                await context.PostAsync("Thank you for validating my existence, I really do not feel like answering that question though.");
+                this.ShowOptions(context);
             }
             else
             {

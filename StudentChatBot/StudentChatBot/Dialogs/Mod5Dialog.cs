@@ -40,9 +40,11 @@ namespace StudentChatBot.Dialogs
 
         private void ShowModFiveMenu(IDialogContext context)
         {
+            string header = Guid.NewGuid().ToString();
+
             PromptDialog.Choice(context, this.ResumeAfterModFiveMenu, new List<string>()
                 { AuthenticationOption, AuthorizationOption, SqlInjectionOption, XSSOption, OtherOption, ExitOption },
-                "Do you see what you're looking for?",
+                header.ToString(),
                 "Hmm, your intentions weren't clear, try again.",
                 2);
         }
@@ -92,7 +94,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case SqlInjectionOption:
-                    await context.PostAsync("Learn about destruction via SQL injection");
+                    await context.PostAsync("SQL injection: not as dirty as it sounds");
                     keyword = "sqlinjection";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);

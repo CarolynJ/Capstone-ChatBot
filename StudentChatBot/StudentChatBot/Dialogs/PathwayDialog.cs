@@ -42,9 +42,16 @@ namespace StudentChatBot.Dialogs
 
         private void ShowPathwayMenu(IDialogContext context)
         {
+            string header = "The Pathway Program is extremely important to helping you get a good job.";
+            Random r = new Random();
+            int num = r.Next(0, 6);
+            if(num == 1)
+            {
+                header = "The path of the righteous man is beset on all sides by the inequities of the selfish and the tyranny of evil men. Just checking to see if you are actually reading this.";
+            }
             PromptDialog.Choice(context, this.ResumeAfterPathwayMenu, new List<string>()
                 { PWResumeOption, PWElevatorPitchOption, PWInterviewOption, PWLinkedInOption, PWUpcomingEventsOption, OtherOption, ExitOption },
-                "Do any of these options suit your fancy?",
+                header,
                 "Hmm, I didn't understand that, try again.",
                 2);
         }
@@ -93,10 +100,9 @@ namespace StudentChatBot.Dialogs
 
                     break;
 
-                //case PWInterviewOption:
-                //    //context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
-                //   // await ResumeAfterOptionDialog(context, result);
-                //    break;
+                case PWInterviewOption:
+                    context.Call(new InterviewDialog(), this.ResumeAfterPathwayDialog);
+                    break;
 
                 case PWLinkedInOption:
                     //await context.PostAsync("you need help with linkedin");

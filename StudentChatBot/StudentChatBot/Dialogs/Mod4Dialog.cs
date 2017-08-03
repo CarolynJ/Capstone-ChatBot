@@ -64,14 +64,21 @@ namespace StudentChatBot.Dialogs
                     }
                     else
                     {
-                        await context.PostAsync("Sorry JavaScript don't care");
+                        Attachment attachment = new Attachment();
+                        attachment.ContentType = "image/png";
+                        attachment.ContentUrl = "https://static1.squarespace.com/static/55ef2da9e4b03f6e1ef0cd28/t/57a8d229bebafbbe8b4c8657/1470681655352/david+gif.gif";
+                        var message = context.MakeMessage();
+                        message.Text = "Sorry JavaScript don't care, see this man for more information.";
+                        message.Attachments.Add(attachment);
+
+                        await context.PostAsync(message);
                         await ResumeAfterOptionDialog(context, result);
                     }
 
                     break;
 
                 case JQueryOption:
-                    await context.PostAsync("Learn to animate your website");
+                    await context.PostAsync("$$$$$$$$$$$$$$");
                     keyword = "JQuery";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);

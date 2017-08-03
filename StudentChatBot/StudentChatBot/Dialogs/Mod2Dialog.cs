@@ -53,7 +53,7 @@ namespace StudentChatBot.Dialogs
             switch (optionSelected)
             {
                 case DatabaseOption:
-                    await context.PostAsync("You can read up on SQL");
+                    await context.PostAsync("I hope you're not trying to learn this right before a technical interview. Too late buddy!");
                     string keyword = "sql";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -91,7 +91,6 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case SubqueriesOption:
-                    await context.PostAsync("Subqueries can get complicated");
                     keyword = "subqueries";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);

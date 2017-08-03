@@ -2,13 +2,11 @@
     background-color: aliceblue;
 }
 
-/*.bot-container{
+.bot-container{
     position: relative;
-    /*padding-bottom: 800px;*/
-   width: 100%;
-    height: 100%;
-    /*overflow: hidden;*/
-}*/
+    height: 0;
+    overflow: hidden;
+}
 
 .bot-container iframe{
     position: absolute;

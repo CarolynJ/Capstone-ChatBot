@@ -41,7 +41,7 @@ namespace StudentChatBot.Dialogs
         private void ShowModOneMenu(IDialogContext context)
         {
             PromptDialog.Choice(context, this.ResumeAfterModOneMenu, new List<string>()
-                { GitOption, VariablesOption, ObjectsOption, ClassesOption, TestingOption, OtherOption, ExitOption },
+                { ObjectsOption, ClassesOption, GitOption, VariablesOption, TestingOption, OtherOption, ExitOption },
                 "Do you see what you're looking for?",
                 "Hmm, your intentions weren't clear, try again.",
                 2);
@@ -54,7 +54,7 @@ namespace StudentChatBot.Dialogs
             switch (optionSelected)
             {
                 case GitOption:
-                    await context.PostAsync("You can read up on git");
+                    await context.PostAsync("better git reading, ha ha git it? ... I'll stop now)");
                     string keyword = "git";
                     ISearchByKeyword dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -74,7 +74,6 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case VariablesOption:
-                    await context.PostAsync("Need some help with variables?");
                     keyword = "variables";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -96,7 +95,6 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case ObjectsOption:
-                    await context.PostAsync("Object Oriented programming (OOP)");
                     keyword = "oop";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -115,7 +113,6 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case ClassesOption:
-                    await context.PostAsync("Classes in C# are key to understand");
                     keyword = "classes";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
@@ -134,7 +131,7 @@ namespace StudentChatBot.Dialogs
                     break;
 
                 case TestingOption:
-                    await context.PostAsync("Learn to test your own code.");
+                    await context.PostAsync("Learn to test your code. Or learn to be more assertive and tell someone else to do it.");
                     keyword = "testing";
                     dal = new SearchByKeywordSQLDAL(connectionString);
                     AllResources = dal.GetResources(keyword);
