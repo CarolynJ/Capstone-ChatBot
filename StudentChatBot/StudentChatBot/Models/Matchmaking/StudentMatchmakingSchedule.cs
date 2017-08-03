@@ -16,18 +16,35 @@ namespace StudentChatBot.Models
         {
             string schedule = "";
 
-            foreach (ScheduleItem item in AllInterviewsOnDayOne)
+            if (AllInterviewsOnDayOne != null)
             {
-                schedule += "Day One\n";
-                schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
-            }
+                schedule += "\n\n--\n\n";
+                schedule += "\n\n\t\n\nDay One\n\n";
 
-            foreach (ScheduleItem item in AllInterviewsOnDayTwo)
+                foreach (ScheduleItem item in AllInterviewsOnDayOne)
+                {
+                    schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
+                }
+            }
+            else
             {
-                schedule += "Day Two\n";
-                schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
+                schedule += "\nNothing schedule on Day One\n";
             }
-
+            
+            if (AllInterviewsOnDayTwo != null)
+            {
+                schedule += "\n\n--\n\n";
+                schedule += "\n\nDay Two\n\n";
+                foreach (ScheduleItem item in AllInterviewsOnDayTwo)
+                {
+                    schedule += $"{item.StartTime} - {item.EndTime} -- {item.CompanyName}\n\n";
+                }
+            }
+            else
+            {
+                schedule += "\nNothing scheduled on Day Two\n";
+            }
+            
             return schedule;
         }
     }
