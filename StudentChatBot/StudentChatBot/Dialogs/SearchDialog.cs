@@ -56,12 +56,25 @@ namespace StudentChatBot.Dialogs
 
                     if (this.AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
-                        await context.PostAsync("Sorry that did not return a resource, try again or enter exit to leave search by keyword");
+                        //await context.PostAsync("Sorry that did not return a resource, try again or enter exit to leave search by keyword");\
+                        string title = keyword;
+                        string content = "http://lmgtfy.com/?q=" + keyword;
+                        var markdownContent = $"[{title}]({content})";
+                        await context.PostAsync(markdownContent);
+                        await ResumeAfterOptionDialog(context, result);
+
                     }
                 }
             }
@@ -113,7 +126,7 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        public async Task AllResults(IDialogContext context, IAwaitable<object> result)
         {
             foreach (Resource r in this.AllResources)
             {
