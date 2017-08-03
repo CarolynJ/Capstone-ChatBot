@@ -14,7 +14,6 @@ namespace StudentChatBot.Dialogs
 
         private const string SearchOption = "Search By Keyword";
         private const string BrowseOption = "Browse";
-        //private const string ChatOption = "Chat with Me";
         private const string HelpOption = "Get Help";
         private const string ExitOption = "Exit";
         private const string MotivationOption = "Get Motivated";
