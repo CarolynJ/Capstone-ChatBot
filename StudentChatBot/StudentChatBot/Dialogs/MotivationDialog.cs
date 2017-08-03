@@ -20,15 +20,14 @@ namespace StudentChatBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("If motivation and inspiration is what you want, you have come to the right place! Would you like a random quote?");
+            await context.PostAsync("If motivation and inspiration is what you want, you have come to the right place!");
 
-            
-            context.Wait(MessageReceivedAsync);
+            await this.MessageReceivedAsync(context);
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task MessageReceivedAsync(IDialogContext context)
         {
-            var activity = await result as Activity;
+           
             if(this.motivations.Count == 0)
             {
                 this.FetchMotivationList();
@@ -47,10 +46,8 @@ namespace StudentChatBot.Dialogs
             message.Attachments.Add(attachment);
 
             await context.PostAsync(message);
-            Thread.Sleep(5000);
-            await context.PostAsync(motive.QuoteSource);
-
-            await context.PostAsync("Would you like another quote?");
+            Thread.Sleep(2000);
+            await context.PostAsync("That quote was by " + motive.QuoteSource + ". Would you like another?");
 
             context.Wait(Continue);
 
@@ -65,9 +62,9 @@ namespace StudentChatBot.Dialogs
 
             if (response == "yes" || response == "y" || response == "sure" || response == "fine")
             {
-                IAwaitable<IMessageActivity> forward = result;
+              //  IAwaitable<IMessageActivity> forward = result;
 
-                await MessageReceivedAsync(context, forward);
+                await MessageReceivedAsync(context);
             }
             else
             {

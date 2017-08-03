@@ -43,7 +43,7 @@ namespace StudentChatBot.Dialogs
             {
                 response = "It's nice to meet you " + userName;
                 await context.PostAsync(response);
-                Thread.Sleep(4000);
+                Thread.Sleep(2500);
 
                 StateClient stateClient = activity.GetStateClient();
                 BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
@@ -66,7 +66,7 @@ namespace StudentChatBot.Dialogs
 
                 await context.PostAsync(markdownContent);
 
-                Thread.Sleep(4000);
+                Thread.Sleep(3000);
             }
             else
             {

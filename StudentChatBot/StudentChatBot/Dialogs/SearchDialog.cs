@@ -142,7 +142,7 @@ namespace StudentChatBot.Dialogs
         private async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
-            await context.PostAsync("Would you like to search with a different keyword?");
+            await context.PostAsync("Would you like to search another topic?");
             context.Wait(Redirect);
 
         }
@@ -158,8 +158,7 @@ namespace StudentChatBot.Dialogs
                 await StartAsync(context);
             }
             else
-            {
-                await context.PostAsync("Please come again. Have a nice day!");
+            { 
                 context.Done(true);
             }
 
