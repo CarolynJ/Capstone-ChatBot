@@ -56,7 +56,7 @@ namespace StudentChatBot.Dialogs
                 2);
         }
 
-        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<string> result)
+        private async Task ResumeAfterPathwayMenu(IDialogContext context, IAwaitable<object> result)
         {
             var optionSelected = await result;
 
@@ -70,8 +70,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -89,8 +96,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -112,8 +126,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
                     }
                     else
                     {
@@ -131,8 +152,15 @@ namespace StudentChatBot.Dialogs
 
                     if (AllResources.Count > 0)
                     {
-                        await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
-                        context.Wait(HowManyResults);
+                        if (AllResources.Count == 1)
+                        {
+                            await AllResults(context, result);
+                        }
+                        else
+                        {
+                            await context.PostAsync($"There are {this.AllResources.Count} resources available. How many would you like to see?");
+                            context.Wait(HowManyResults);
+                        }
 
                     }
                     else
@@ -179,7 +207,7 @@ namespace StudentChatBot.Dialogs
             }
         }
 
-        public async Task AllResults(IDialogContext context, IAwaitable<IMessageActivity> result)
+        public async Task AllResults(IDialogContext context, IAwaitable<object> result)
         {
             foreach (Resource r in this.AllResources)
             {
