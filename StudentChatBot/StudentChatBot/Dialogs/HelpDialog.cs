@@ -52,7 +52,7 @@ namespace StudentChatBot.Dialogs
             }
             else
             {
-                await context.PostAsync("Sorry, I didn't understand that command. Please type help for more information.");
+                await context.PostAsync("Sorry, I didn't understand that command.");
                 context.Done(true);
             }
 
