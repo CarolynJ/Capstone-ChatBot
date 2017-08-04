@@ -45,12 +45,11 @@ namespace StudentChatBot.Dialogs
             }
             else if (userInput.Contains("help"))
             {
-                await context.Forward(new HelpDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
-                this.ShowOptions(context);
+                context.Call(new HelpDialog(), this.ResumeAfterOptionDialog);
             }
             else if (userInput.Contains("search"))
             {
-                await context.Forward(new SearchDialog(), this.ResumeAfterGreetingDialog, activity, CancellationToken.None);
+                context.Call(new SearchDialog(), this.ResumeAfterOptionDialog);
             }
             else
             {
